@@ -2,56 +2,83 @@
 export const websites = [
 	{
 		id: '1',
-		title: 'NextCommerce',
-		description:
-			'NextCommerce is a free and open-source Next.js template for creating decentralized marketplaces for non-fungible tokens (NFTs).',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://nextcommerce.com',
-		tags: ['eCommerce', 'Next.js', 'Sanity']
+		title: 'Next.js Boilerplate',
+		description: 'Get started with Next.js and React in seconds.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/nextjs-boilerplate/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/nextjs-boilerplate',
+		author: 'Vercel',
+		tags: ['Starter', 'Next.js']
 	},
 	{
 		id: '2',
-		title: 'SaaS UI',
-		description:
-			'SaaS UI is a free and open-source Next.js template for creating landing pages for SaaS products.',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://saasui.com',
-		tags: ['SaaS', 'Next.js', 'Landing Page']
+		title: 'Image Gallery Starter',
+		description: 'A full-featured, hackable Next.js AI chatbot built by Vercel.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/image-gallery-starter/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/image-gallery-starter',
+		author: 'Vercel',
+		tags: ['Starter', 'Next.js', 'AI']
 	},
 	{
 		id: '3',
-		title: 'Plutonium',
-		description:
-			'Plutonium is a free and open-source Next.js + Tailwind CSS template that provides a solid foundation for starting a new project.',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://plutonium.com',
-		tags: ['Next.js', 'Tailwind CSS', 'Template']
+		title: 'Next.js AI Chatbot',
+		description: 'A full-featured, hackable Next.js AI chatbot built by Vercel.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/nextjs-ai-chatbot/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/nextjs-ai-chatbot',
+		author: 'Vercel',
+		tags: ['Starter', 'Next.js', 'AI']
 	},
 	{
 		id: '4',
-		title: 'Crypto',
-		description:
-			'Crypto is a powerful Next.js template meticulously crafted to create fully functional websites for cryptocurrencies.',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://crypto.com',
-		tags: ['Crypto', 'Next.js', 'Blockchain']
+		title: 'SaaS Starter Kit',
+		description: 'A Next.js starter kit for building SaaS applications.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/saas-starter-kit/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/saas-starter-kit',
+		author: 'Vercel',
+		tags: ['SaaS', 'Next.js']
 	},
 	{
 		id: '5',
-		title: 'Agency',
-		description:
-			'Meet the Agency Next.js Template - your all-in-one Next.js starter kit designed specifically for agencies and freelancers.',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://agency.com',
-		tags: ['Agency', 'Next.js', 'Portfolio']
+		title: 'Next.js Commerce',
+		description: 'An all-in-one starter kit for high-performance e-commerce sites.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/commerce-starter/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/commerce-starter',
+		author: 'Vercel',
+		tags: ['E-commerce', 'Next.js']
 	},
 	{
 		id: '6',
-		title: 'NextAdmin',
-		description:
-			'NextAdmin is Next.js 15 admin dashboard toolkit and template provides over 200 UI components and templates.',
-		thumbnailUrl: 'https://placehold.co/600x400/png',
-		websiteUrl: 'https://nextadmin.com',
-		tags: ['Admin', 'Next.js', 'Dashboard']
+		title: 'Blog Starter',
+		description: 'A statically generated blog example using Next.js and Markdown.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/blog-starter-kit/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/blog-starter-kit',
+		author: 'Vercel',
+		tags: ['Blog', 'Next.js']
+	},
+	{
+		id: '7',
+		title: 'Portfolio Starter',
+		description: 'A portfolio starter kit for developers.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/portfolio-starter-kit/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/portfolio-starter-kit',
+		author: 'Vercel',
+		tags: ['Portfolio', 'Next.js']
+	},
+	{
+		id: '8',
+		title: 'Documentation Starter',
+		description: 'A documentation starter kit for your Next.js project.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/documentation-starter-kit/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/documentation-starter-kit',
+		author: 'Vercel',
+		tags: ['Documentation', 'Next.js']
+	},
+	{
+		id: '9',
+		title: 'Marketplace Starter',
+		description: 'A marketplace starter kit for your Next.js project.',
+		thumbnailUrl: 'https://vercel.com/templates/next.js/marketplace-starter-kit/thumbnail',
+		websiteUrl: 'https://vercel.com/templates/next.js/marketplace-starter-kit',
+		author: 'Vercel',
+		tags: ['Marketplace', 'Next.js']
 	}
 ];

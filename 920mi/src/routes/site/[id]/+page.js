@@ -1,9 +1,11 @@
-import { error } from '@sveltejs/kit';
+import { websites } from '$lib/data.js';
 
 export function load({ params }) {
-	// In a real app, you'd fetch this data from an API
-	// based on the params.id
+	const website = websites.find((w) => w.id === params.id);
+	const relatedTemplates = websites.filter((w) => w.id !== params.id).slice(0, 4);
+
 	return {
-		id: params.id
+		website,
+		relatedTemplates
 	};
 }
