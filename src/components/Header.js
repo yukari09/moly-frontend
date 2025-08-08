@@ -96,6 +96,13 @@ export default function Header() {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/submit" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
+                    Submit
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>

@@ -134,7 +134,7 @@ export const authOptions = {
           query: `
             mutation SignInWithPassword($email: String!, $password: String!) {
               signInWithPassword(email: $email, password: $password, agreement: "true") {
-                id, name, email, avatar, username, token
+                id, name, email, avatar, username, token, status
               }
             }
           `,
@@ -166,6 +166,7 @@ export const authOptions = {
             email: userWithToken.email,
             image: userWithToken.avatar,
             accessToken: userWithToken.token,
+            status: userWithToken.status,
           };
 
         } catch (error) {
@@ -185,16 +186,22 @@ export const authOptions = {
         token.email = user.email;
         token.image = user.image;
         token.accessToken = user.accessToken;
+        // @ts-ignore
+        token.status = user.status;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
+        // @ts-ignore
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.image;
+        // @ts-ignore
+        session.user.status = token.status;
       }
+      // @ts-ignore
       session.accessToken = token.accessToken;
       return session;
     }
