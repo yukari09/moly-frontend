@@ -179,7 +179,13 @@ export const authOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      // Handle session updates, specifically for the user's status
+      if (trigger === "update" && session?.user?.status) {
+        token.status = session.user.status;
+      }
+
+      // Handle initial sign-in
       if (user) {
         token.id = user.id;
         token.name = user.name;
