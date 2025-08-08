@@ -23,12 +23,25 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
+import { getMetaValue } from "@/lib/utils";
+import { buildImageUrl } from "@/lib/imagor";
+import { useMemo } from "react";
 
 const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
 
 export default function Header() {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  // @ts-ignore
+  const userMeta = session?.user?.userMeta;
+  const name = getMetaValue(userMeta, "name");
+  const avatarPath = getMetaValue(userMeta, "avatar");
+  
+  const avatarUrl = useMemo(() => 
+    buildImageUrl(avatarPath, { width: 64, height: 64, smart: true, filters: ['quality(85)'] }),
+    [avatarPath]
+  );
 
   return (
     <header className="border-b border-gray-200">
@@ -129,10 +142,10 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={session.user.image || ""} alt={session.user.name || ""} />
+                    <AvatarImage src={avatarUrl || ""} alt={name || ""} className="object-cover" />
                     <AvatarFallback>
-                      {session.user.name ? (
-                        session.user.name.charAt(0).toUpperCase()
+                      {name ? (
+                        name.charAt(0).toUpperCase()
                       ) : (
                         <User className="h-4 w-4" />
                       )}
@@ -143,12 +156,16 @@ export default function Header() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{session.user.name}</p>
+                    <p className="text-sm font-medium leading-none">{name}</p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {session.user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push('/account/profile')}>
+                  Profile
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/auth/signout')}>
                   Log out

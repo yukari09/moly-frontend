@@ -10,14 +10,13 @@ import Link from 'next/link';
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const callbackUrl = searchParams.get('callbackUrl');
   const { data: session, update: updateSession } = useSession();
   
-  // State for the verification process itself
   const [verificationStatus, setVerificationStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState('Verifying your email address...');
 
   // Effect 1: Perform the API call for verification.
-  // This runs only when the 'token' from the URL changes.
   useEffect(() => {
     if (!token) {
       setVerificationStatus('error');
@@ -46,11 +45,8 @@ export default function VerifyEmailPage() {
   }, [token]);
 
   // Effect 2: Update the user's session after successful verification.
-  // This runs when verificationStatus or the session itself changes.
   useEffect(() => {
-    // If verification was successful AND the user is logged in AND their status isn't already active
     if (verificationStatus === 'success' && session && session.user?.status !== 'active') {
-      // We only need to update the status field
       updateSession({ user: { status: 'active' } });
     }
   }, [verificationStatus, session, updateSession]);
@@ -68,8 +64,8 @@ export default function VerifyEmailPage() {
             {verificationStatus === 'error' && <XCircle className="h-12 w-12 text-red-500" />}
             <p className="text-lg">{message}</p>
             {verificationStatus === 'success' && (
-               <Link href="/submit" className="text-blue-500 underline">
-                Go to Submit Page
+               <Link href={callbackUrl || '/login'} className="text-blue-500 underline">
+                {callbackUrl ? 'Continue' : 'Go to Login'}
               </Link>
             )}
             {verificationStatus === 'error' && (

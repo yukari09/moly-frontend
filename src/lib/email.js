@@ -1,12 +1,13 @@
 import nodemailer from 'nodemailer';
 import { render } from '@react-email/render';
+import logger from './logger';
 
 let transporter;
 
 async function initializeTransporter() {
   if (process.env.NODE_ENV === 'production' || process.env.EMAIL_SERVER_HOST) {
     if (!process.env.EMAIL_SERVER_HOST) {
-      console.error("Production environment is missing EMAIL_SERVER_HOST.");
+      logger.error("Production environment is missing EMAIL_SERVER_HOST.");
       return null;
     }
     transporter = nodemailer.createTransport({
@@ -20,7 +21,7 @@ async function initializeTransporter() {
     });
   } else {
     const testAccount = await nodemailer.createTestAccount();
-    console.log("📧 Ethereal test account created. User: %s, Pass: %s", testAccount.user, testAccount.pass);
+    logger.info("📧 Ethereal test account created. User: %s, Pass: %s", testAccount.user, testAccount.pass);
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
@@ -62,7 +63,7 @@ export async function sendEmail({ to, subject, react }) {
   const info = await transporter.sendMail(mailOptions);
 
   if (process.env.NODE_ENV !== 'production' && !process.env.EMAIL_SERVER_HOST) {
-    console.log("✉️ Email sent! Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    logger.info("✉️ Email sent! Preview URL: %s", nodemailer.getTestMessageUrl(info));
   }
 
   return info;
