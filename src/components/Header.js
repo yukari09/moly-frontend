@@ -24,8 +24,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { getMetaValue } from "@/lib/utils";
-import { buildImageUrl } from "@/lib/imagor";
-import { useMemo } from "react";
 
 const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
 
@@ -36,12 +34,7 @@ export default function Header() {
   // @ts-ignore
   const userMeta = session?.user?.userMeta;
   const name = getMetaValue(userMeta, "name");
-  const avatarPath = getMetaValue(userMeta, "avatar");
-  
-  const avatarUrl = useMemo(() => 
-    buildImageUrl(avatarPath, { width: 64, height: 64, smart: true, filters: ['quality(85)'] }),
-    [avatarPath]
-  );
+  const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL
 
   return (
     <header className="border-b border-gray-200">

@@ -203,39 +203,43 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      if (trigger === "update" && session?.user) {
-        if (session.user.userMeta) {
-          // @ts-ignore
-          token.userMeta = session.user.userMeta;
-          // @ts-ignore
-          token.name = getMetaValue(session.user.userMeta, "name");
-          // @ts-ignore
-          token.image = getMetaValue(session.user.userMeta, "avatar");
-          // @ts-ignore
-          token.username = getMetaValue(session.user.userMeta, "username");
-        }
-        if (session.user.status) {
-          token.status = session.user.status;
-        }
+      // Initial sign in
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          accessToken: user.accessToken,
+          status: user.status,
+          username: user.username,
+          userMeta: user.userMeta,
+        };
       }
 
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.image = user.image;
-        token.accessToken = user.accessToken;
-        // @ts-ignore
-        token.status = user.status;
-        // @ts-ignore
-        token.username = user.username;
-        // @ts-ignore
-        token.userMeta = user.userMeta;
+      // Session update
+      if (trigger === "update" && session?.user) {
+        const newSessionUser = session.user;
+        const updatedToken = { ...token }; // Start with the existing token
+
+        if (newSessionUser.userMeta) {
+          updatedToken.userMeta = newSessionUser.userMeta;
+          updatedToken.name = getMetaValue(newSessionUser.userMeta, "name");
+          updatedToken.image = getMetaValue(newSessionUser.userMeta, "avatar");
+          updatedToken.username = getMetaValue(newSessionUser.userMeta, "username");
+        }
+        if (newSessionUser.status) {
+          updatedToken.status = newSessionUser.status;
+        }
+        
+        return updatedToken;
       }
+
       return token;
     },
     async session({ session, token }) {
-      if (token && session.user) {
+      if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
@@ -246,9 +250,9 @@ export const authOptions = {
         session.user.username = token.username;
         // @ts-ignore
         session.user.userMeta = token.userMeta;
+        // @ts-ignore
+        session.accessToken = token.accessToken;
       }
-      // @ts-ignore
-      session.accessToken = token.accessToken;
       return session;
     }
   },

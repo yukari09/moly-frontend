@@ -6,12 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getMetaValue } from "@/lib/utils";
 import logger from "@/lib/logger";
-import { buildImageUrl } from "@/lib/imagor";
 
 export default function ProfilePage() {
   const { data: session, update: updateSession } = useSession();
@@ -48,7 +47,7 @@ export default function ProfilePage() {
     const avatarFile = avatarFileRef.current?.files?.[0];
 
     try {
-      let newAvatarPath = null;
+      let finalAvatarUrl = null;
 
       if (avatarFile) {
         const signedUrlRes = await fetch('/api/user/avatar/request-upload-url', {
@@ -57,10 +56,10 @@ export default function ProfilePage() {
           body: JSON.stringify({ contentType: avatarFile.type }),
         });
         if (!signedUrlRes.ok) throw new Error("Failed to get upload URL.");
-        const { signedUrl, imageUrl } = await signedUrlRes.json();
-        newAvatarPath = imageUrl;
+        const resData = await signedUrlRes.json();
+        finalAvatarUrl = resData.finalAvatarUrl;
 
-        const uploadRes = await fetch(signedUrl, {
+        const uploadRes = await fetch(resData.signedUrl, {
           method: 'PUT',
           body: avatarFile,
           headers: { 'Content-Type': avatarFile.type },
@@ -74,11 +73,11 @@ export default function ProfilePage() {
           userMetaPayload.push({ metaKey: key, metaValue: profileData[key] });
         }
       }
-      if (newAvatarPath) {
-        userMetaPayload.push({ metaKey: "avatar", metaValue: newAvatarPath });
+      if (finalAvatarUrl) {
+        userMetaPayload.push({ metaKey: "avatar", metaValue: finalAvatarUrl });
       }
       
-      if (userMetaPayload.length === 0 && !newAvatarPath) {
+      if (userMetaPayload.length === 0 && !finalAvatarUrl) {
         toast.info("No changes to save.");
         setIsSubmitting(false);
         return;
@@ -114,16 +113,11 @@ export default function ProfilePage() {
   const userMeta = session?.user?.userMeta;
   const name = getMetaValue(userMeta, "name");
   const username = getMetaValue(userMeta, "username");
-  const avatarPath = getMetaValue(userMeta, "avatar");
+  const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL from session
   const bio = getMetaValue(userMeta, "bio");
   const website = getMetaValue(userMeta, "website");
   const twitter = getMetaValue(userMeta, "twitter");
   const github = getMetaValue(userMeta, "github");
-
-  const avatarUrl = useMemo(() => 
-    buildImageUrl(avatarPath, { width: 160, height: 160, smart: true, filters: ['quality(85)'] }),
-    [avatarPath]
-  );
 
   return (
     <div className="space-y-6">
