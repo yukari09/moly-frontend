@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,15 +18,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Github, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -35,6 +44,7 @@ export default function LoginPage() {
         redirect: false,
         email: data.email,
         password: data.password,
+        turnstileToken: turnstileToken,
       });
 
       if (result.error) {
@@ -49,6 +59,14 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  if (status === "loading" || status === "authenticated") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-12 w-12 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center py-24 bg-white">
@@ -76,7 +94,7 @@ export default function LoginPage() {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    href="#"
+                    href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -89,7 +107,11 @@ export default function LoginPage() {
                 />
                  {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+               <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+                onSuccess={setTurnstileToken}
+              />
+              <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Login
               </Button>

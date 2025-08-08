@@ -1,9 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import prisma from "@/lib/prisma"
 import { sendEmail } from "@/lib/email";
 import { EmailVerificationTemplate } from "@/emails/EmailVerificationTemplate";
-import crypto from "crypto";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 
 export const authOptions = {
@@ -45,59 +43,73 @@ export const authOptions = {
           },
         };
 
-        const res = await fetch(GRAPHQL_ENDPOINT, {
+        const registerRes = await fetch(GRAPHQL_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(registerMutation),
         });
 
-        const data = await res.json();
+        const registerData = await registerRes.json();
 
-        if (data.errors || (data.data.registerWithPassword && data.data.registerWithPassword.errors.length > 0)) {
-          const apiErrors = data.data?.registerWithPassword?.errors || data.errors;
+        if (registerData.errors || (registerData.data.registerWithPassword && registerData.data.registerWithPassword.errors.length > 0)) {
+          const apiErrors = registerData.data?.registerWithPassword?.errors || registerData.errors;
           const errorMessage = apiErrors?.[0]?.message || 'An unknown error occurred during registration.';
           throw new Error(errorMessage);
         }
 
-        if (!data.data.registerWithPassword.result) {
+        if (!registerData.data.registerWithPassword.result) {
           throw new Error('Registration failed: No user data returned.');
         }
         
-        const gqlUser = data.data.registerWithPassword.result;
-        const token = data.data.registerWithPassword.metadata.token;
+        const gqlUser = registerData.data.registerWithPassword.result;
+        const accessToken = registerData.data.registerWithPassword.metadata.token;
 
-        const verificationToken = crypto.randomBytes(32).toString("hex");
-        const hashedToken = crypto.createHash("sha256").update(verificationToken).digest("hex");
-        const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+        // Generate email confirmation token by calling the GraphQL API
+        const generateTokenMutation = {
+          query: `
+            mutation GenerateConfirmToken($purpose: String!) {
+              generateConfirmToken(purpose: $purpose)
+            }
+          `,
+          variables: {
+            purpose: "confirm_new_user",
+          },
+        };
 
-        const user = await prisma.user.create({
-          data: {
-            id: gqlUser.id,
-            email: gqlUser.email,
-            name: gqlUser.name || gqlUser.username,
-            avatar: gqlUser.avatar,
-            verificationToken: hashedToken,
-            verificationTokenExpires: tokenExpires,
-          }
+        const tokenRes = await fetch(GRAPHQL_ENDPOINT, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify(generateTokenMutation),
         });
-        
-        const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
 
-        sendEmail({
-          to: user.email,
-          subject: "Verify your email address",
-          react: <EmailVerificationTemplate 
-                    name={user.name} 
-                    verificationLink={verificationLink}
-                 />
-        }).catch(console.error);
+        const tokenData = await tokenRes.json();
+        
+        if (tokenData.errors || !tokenData.data.generateConfirmToken) {
+            // Log the error but don't block the user from logging in
+            console.error("Could not generate email verification token:", tokenData.errors?.[0]?.message);
+        } else {
+            const verificationToken = tokenData.data.generateConfirmToken;
+            const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
+    
+            sendEmail({
+              to: gqlUser.email,
+              subject: `Welcome to ${process.env.APP_NAME}! Please Verify Your Email`,
+              react: <EmailVerificationTemplate 
+                        name={gqlUser.name || gqlUser.username} 
+                        verificationLink={verificationLink}
+                     />
+            }).catch(console.error);
+        }
 
         return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.avatar,
-          accessToken: token,
+          id: gqlUser.id,
+          name: gqlUser.name || gqlUser.username,
+          email: gqlUser.email,
+          image: gqlUser.avatar,
+          accessToken: accessToken,
         };
       }
     }),
@@ -106,10 +118,16 @@ export const authOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        turnstileToken: { label: "Turnstile Token", type: "text" },
       },
       async authorize(credentials, req) {
         if (!credentials) return null;
+
+        const isTokenValid = await verifyTurnstileToken(credentials.turnstileToken);
+        if (!isTokenValid) {
+          throw new Error("Invalid Turnstile token. Please try again.");
+        }
 
         const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
         const loginMutation = {

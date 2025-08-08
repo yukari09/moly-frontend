@@ -1,43 +1,48 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import crypto from "crypto";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
 
   if (!token) {
-    return NextResponse.json({ error: 'Token is missing.' }, { status: 400 });
+    return NextResponse.json({ error: 'Token is required' }, { status: 400 });
   }
 
-  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
+  const verifyTokenMutation = {
+    query: `
+      mutation VerifyConfirmToken($token: String!, $purpose: String!) {
+        verifyConfirmToken(token: $token, purpose: $purpose) {
+          id
+          email
+        }
+      }
+    `,
+    variables: {
+      token: token,
+      purpose: 'confirm_new_user',
+    },
+  };
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { verificationToken: hashedToken },
+    const res = await fetch(GRAPHQL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(verifyTokenMutation),
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'Invalid token.' }, { status: 400 });
+    const data = await res.json();
+
+    // If the GraphQL response contains errors, or if the verifyConfirmToken field is null/missing, treat as failure.
+    if (data.errors || !data.data || !data.data.verifyConfirmToken) {
+      const errorMessage = data.errors?.[0]?.message || 'Invalid or expired token.';
+      throw new Error(errorMessage);
     }
 
-    if (new Date() > new Date(user.verificationTokenExpires)) {
-      return NextResponse.json({ error: 'Token has expired.' }, { status: 400 });
-    }
-
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        emailVerified: new Date(),
-        verificationToken: null,
-        verificationTokenExpires: null,
-      },
-    });
-
-    return NextResponse.json({ success: true, message: 'Email verified successfully.' });
+    // If we get a user object back (e.g., with an id), verification was successful.
+    return NextResponse.json({ message: 'Email verified successfully' });
 
   } catch (error) {
-    console.error("Email verification error:", error);
-    return NextResponse.json({ error: 'An unexpected error occurred.' }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
