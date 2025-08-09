@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import logger from '@/lib/logger';
 import { sendEmail } from '@/lib/email';
 import { EmailVerificationTemplate } from '@/emails/EmailVerificationTemplate';
+import * as gql from '@/lib/graphql';
 import { emailRateLimiter } from '@/lib/ratelimiter';
 
 export async function POST(request) {
@@ -11,42 +12,17 @@ export async function POST(request) {
 
   try {
     const { success } = await emailRateLimiter.limit(ip);
-    
     if (!success) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
-        { status: 429 }
-      );
+      return new NextResponse(JSON.stringify({ error: 'Too many requests.' }), { status: 429 });
     }
 
     const session = await getServerSession(authOptions);
-    if (!session || !session.user || !session.accessToken) {
+    if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     const { email, name } = session.user;
 
-    const generateTokenMutation = {
-      query: `mutation GenerateConfirmToken($purpose: String!) { generateConfirmToken(purpose: $purpose) }`,
-      variables: { purpose: "confirm_new_user" },
-    };
-
-    const res = await fetch(process.env.GRAPHQL_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.accessToken}`,
-      },
-      body: JSON.stringify(generateTokenMutation),
-    });
-
-    const data = await res.json();
-    if (!res.ok || data.errors || !data.data.generateConfirmToken) {
-      const errorMessage = data.errors?.[0]?.message || "Failed to generate verification token.";
-      logger.error("Verification token generation failed:", errorMessage);
-      return NextResponse.json({ error: errorMessage }, { status: 500 });
-    }
-
-    const verificationToken = data.data.generateConfirmToken;
+    const verificationToken = await gql.generateConfirmToken("confirm_new_user", session);
     const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
 
     await sendEmail({
@@ -59,6 +35,6 @@ export async function POST(request) {
 
   } catch (error) {
     logger.error("Error in /api/user/resend-verification:", error.message);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
