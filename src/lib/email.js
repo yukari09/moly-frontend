@@ -2,13 +2,19 @@ import nodemailer from 'nodemailer';
 import { render } from '@react-email/render';
 import logger from './logger';
 
-let transporter;
-
-async function initializeTransporter() {
-  if (process.env.NODE_ENV === 'production' || process.env.EMAIL_SERVER_HOST) {
+/**
+ * Sends an email.
+ * In development, it uses Ethereal.email.
+ * In production, it uses the configured SMTP transport.
+ * @param {{to: string, subject: string, react: React.ReactElement}} mailOptions
+ */
+export async function sendEmail({ to, subject, react }) {
+  
+  let transporter;
+  if (process.env.NODE_ENV === 'production') {
     if (!process.env.EMAIL_SERVER_HOST) {
       logger.error("Production environment is missing EMAIL_SERVER_HOST.");
-      return null;
+      throw new Error("Email server is not configured.");
     }
     transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVER_HOST,
@@ -20,8 +26,8 @@ async function initializeTransporter() {
       },
     });
   } else {
+    // Use Ethereal for development to avoid sending real emails
     const testAccount = await nodemailer.createTestAccount();
-    logger.info("📧 Ethereal test account created. User: %s, Pass: %s", testAccount.user, testAccount.pass);
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
@@ -32,29 +38,12 @@ async function initializeTransporter() {
       },
     });
   }
-  return transporter;
-}
 
-/**
- * Sends an email using the configured Nodemailer transport.
- * @param {string} to - The recipient's email address.
- * @param {string} subject - The subject of the email.
- * @param {React.ReactElement} react - The React component to render as the email body.
- * @returns {Promise<object>} - The result from Nodemailer.
- */
-export async function sendEmail({ to, subject, react }) {
-  if (!transporter) {
-    await initializeTransporter();
-  }
-
-  if (!transporter) {
-    throw new Error("Email transporter could not be initialized.");
-  }
-
+  // CORRECTED: Await the render function to get the HTML string
   const html = await render(react);
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || '"Your App" <noreply@example.com>',
+    from: process.env.EMAIL_FROM || '"Moly" <noreply@moly.com>',
     to,
     subject,
     html,
@@ -62,8 +51,8 @@ export async function sendEmail({ to, subject, react }) {
 
   const info = await transporter.sendMail(mailOptions);
 
-  if (process.env.NODE_ENV !== 'production' && !process.env.EMAIL_SERVER_HOST) {
-    logger.info("✉️ Email sent! Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  if (process.env.NODE_ENV !== 'production') {
+    logger.info("✉️ Dev email sent! Preview URL: ", nodemailer.getTestMessageUrl(info));
   }
 
   return info;

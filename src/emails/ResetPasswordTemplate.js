@@ -36,9 +36,7 @@ export const ResetPasswordTemplate = ({
           </Button>
         </Section>
         <Text style={text}>
-          Thanks,
-          <br />
-          {process.env.APP_NAME || "The Team"}
+          Thanks, {process.env.APP_NAME || "The Team"}
         </Text>
       </Container>
     </Body>

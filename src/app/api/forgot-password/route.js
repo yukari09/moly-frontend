@@ -1,36 +1,36 @@
 import { NextResponse } from 'next/server';
-import { verifyTurnstileToken } from '@/lib/turnstile';
 import { sendEmail } from '@/lib/email';
 import { ResetPasswordTemplate } from '@/emails/ResetPasswordTemplate';
+import { verifyTurnstileToken } from '@/lib/turnstile';
+import logger from '@/lib/logger';
+import { emailRateLimiter } from '@/lib/ratelimiter';
 
 export async function POST(request) {
-  const { email, turnstileToken } = await request.json();
-
-  if (!email || !turnstileToken) {
-    return NextResponse.json({ error: 'Email and Turnstile token are required' }, { status: 400 });
-  }
-
-  // 1. Verify the Turnstile token
-  const isTokenValid = await verifyTurnstileToken(turnstileToken);
-  if (!isTokenValid) {
-    return NextResponse.json({ error: 'Invalid Turnstile token. Please try again.' }, { status: 400 });
-  }
-
-  const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
-
-  // 2. Call the GraphQL mutation to get a reset token
-  const generateTokenMutation = {
-    query: `
-      mutation GenerateResetToken($email: String!) {
-        generateResetToken(email: $email)
-      }
-    `,
-    variables: {
-      email: email,
-    },
-  };
+  const ip = request.headers.get('x-forwarded-for') || request.ip || '127.0.0.1';
 
   try {
+    const { success } = await emailRateLimiter.limit(ip);
+    
+    if (!success) {
+      return new NextResponse(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { status: 429 }
+      );
+    }
+
+    const { email, turnstileToken } = await request.json();
+
+    const isTokenValid = await verifyTurnstileToken(turnstileToken);
+    if (!isTokenValid) {
+      return NextResponse.json({ error: "Invalid Turnstile token. Please try again." }, { status: 400 });
+    }
+
+    const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
+    const generateTokenMutation = {
+      query: `mutation GenerateResetToken($email: String!) { generateResetToken(email: $email) }`,
+      variables: { email },
+    };
+
     const res = await fetch(GRAPHQL_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,36 +39,24 @@ export async function POST(request) {
 
     const data = await res.json();
 
-    const resetToken = data.data?.generateResetToken;
-    const error = data.errors?.[0]?.message;
-
-    // If there's an error OR if the token is null/empty (e.g., user not found),
-    // we don't throw an error to the client to prevent email enumeration.
-    // We just won't send an email.
-    if (error || !resetToken) {
-      console.error("Could not generate reset token:", error || "Token was null.");
-      // Still return a generic success message.
-      return NextResponse.json({ message: 'Password reset process initiated.' });
+    if (!res.ok || data.errors || !data.data.generateResetToken) {
+      logger.error("Forgot password error (suppressed for security):", data.errors?.[0]?.message);
+      return NextResponse.json({ message: "If an account with that email exists, a password reset link has been sent." });
     }
 
-    // 3. If we got a token, create the link and send the email
+    const resetToken = data.data.generateResetToken;
     const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
 
-    sendEmail({
+    await sendEmail({
       to: email,
-      subject: `Reset your password for ${process.env.APP_NAME}`,
-      react: <ResetPasswordTemplate
-                name={email} // We don't have the user's name here, so we use email
-                resetLink={resetLink}
-                appName={process.env.APP_NAME || "Your App"}
-             />
-    }).catch(console.error);
+      subject: `Reset your ${process.env.APP_NAME} password`,
+      react: <ResetPasswordTemplate resetLink={resetLink} />,
+    });
 
-    return NextResponse.json({ message: 'Password reset email sent.' });
+    return NextResponse.json({ message: "If an account with that email exists, a password reset link has been sent." });
 
   } catch (error) {
-    console.error("Forgot password API error:", error);
-    // Even in case of a network or other unexpected error, return a generic response.
-    return NextResponse.json({ message: 'Password reset process initiated.' });
+    logger.error("Error in /api/forgot-password:", error.message);
+    return NextResponse.json({ error: "An internal error occurred." }, { status: 500 });
   }
 }

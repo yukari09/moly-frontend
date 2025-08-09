@@ -81,31 +81,42 @@ export const authOptions = {
         const accessToken = registrationResult.metadata.token;
         const userMeta = gqlUser.userMeta;
 
-        const generateTokenMutation = {
-          query: `mutation GenerateConfirmToken($purpose: String!) { generateConfirmToken(purpose: $purpose) }`,
-          variables: { purpose: "confirm_new_user" },
-        };
+        // Asynchronously send verification email without blocking the registration process.
+        // Errors in email sending will be logged but will not fail the user's registration.
+        (async () => {
+          try {
+            const generateTokenMutation = {
+              query: `mutation GenerateConfirmToken($purpose: String!) { generateConfirmToken(purpose: $purpose) }`,
+              variables: { purpose: "confirm_new_user" },
+            };
 
-        const tokenRes = await fetch(GRAPHQL_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
-          body: JSON.stringify(generateTokenMutation),
-        });
+            const tokenRes = await fetch(GRAPHQL_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+              body: JSON.stringify(generateTokenMutation),
+            });
 
-        const tokenData = await tokenRes.json();
-        
-        if (tokenData.errors || !tokenData.data.generateConfirmToken) {
-            logger.error("Could not generate email verification token:", tokenData.errors?.[0]?.message);
-        } else {
+            const tokenData = await tokenRes.json();
+          
+            if (tokenData.errors || !tokenData.data.generateConfirmToken) {
+              throw new Error(tokenData.errors?.[0]?.message || "Could not generate email verification token.");
+            }
+            
             const verificationToken = tokenData.data.generateConfirmToken;
             const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
             const userName = getMetaValue(userMeta, "name") || getMetaValue(userMeta, "username");
-            sendEmail({
+            
+            await sendEmail({
               to: gqlUser.email,
               subject: `Welcome to ${process.env.APP_NAME}! Please Verify Your Email`,
               react: <EmailVerificationTemplate name={userName} verificationLink={verificationLink} />
-            }).catch(logger.error);
-        }
+            });
+
+          } catch (emailError) {
+            logger.error("Failed to send verification email in background:", emailError);
+          }
+        })();
+
 
         const userObject = {
           id: gqlUser.id,
