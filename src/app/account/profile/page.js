@@ -7,17 +7,74 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useState, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getMetaValue } from "@/lib/utils";
 import logger from "@/lib/logger";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import debounce from "lodash.debounce";
+
+// Debounced username check function
+const checkUsernameAvailability = debounce(async (username, originalUsername, resolve) => {
+  if (!username || username === originalUsername) return resolve(true);
+  try {
+    const res = await fetch('/api/user/check-username', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username }),
+    });
+    const data = await res.json();
+    resolve(!data.isNotAvailable);
+  } catch (error) {
+    logger.error("Username check failed:", error);
+    resolve(false);
+  }
+}, 500);
+
+const createProfileSchema = (originalUsername) => z.object({
+  name: z.string().min(1, "Display name is required.").max(50, "Display name must be at most 50 characters."),
+  username: z.string()
+    .min(3, "Username must be at least 3 characters.")
+    .max(20, "Username must be at most 20 characters.")
+    .regex(/^[a-z0-9_.]+$/, "Username can only contain lowercase letters, numbers, underscores, and dots.")
+    .superRefine(async (username, ctx) => {
+      const isAvailable = await new Promise((resolve) => {
+        checkUsernameAvailability(username, originalUsername, resolve);
+      });
+      if (!isAvailable) {
+        ctx.addIssue({
+          code: "custom",
+          message: "This username is already taken.",
+          path: ["username"],
+        });
+      }
+    }),
+  bio: z.string().max(160, "Bio must be at most 160 characters.").optional(),
+});
 
 export default function ProfilePage() {
   const { data: session, update: updateSession } = useSession();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [hostname, setHostname] = useState("");
   const avatarFileRef = useRef(null);
+
+  // @ts-ignore
+  const userMeta = session?.user?.userMeta;
+  const hasChangedUsername = getMetaValue(userMeta, "has_been_changed_username") === 'true';
+  const originalUsername = getMetaValue(userMeta, "username") || "";
+
+  const form = useForm({
+    resolver: zodResolver(createProfileSchema(originalUsername)),
+    defaultValues: {
+      name: getMetaValue(userMeta, "name") || "",
+      username: originalUsername,
+      bio: getMetaValue(userMeta, "bio") || "",
+    },
+    mode: "onChange",
+  });
 
   useEffect(() => {
     setHostname(window.location.hostname);
@@ -26,26 +83,18 @@ export default function ProfilePage() {
   const handleAvatarChange = (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
         toast.error("File is too large. Please select an image smaller than 5MB.");
         return;
       }
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result);
-      };
+      reader.onloadend = () => setAvatarPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-
-    const formData = new FormData(event.currentTarget);
-    const profileData = Object.fromEntries(formData.entries());
+  const onSubmit = async (values) => {
     const avatarFile = avatarFileRef.current?.files?.[0];
-
     try {
       let finalAvatarUrl = null;
 
@@ -67,23 +116,15 @@ export default function ProfilePage() {
         if (!uploadRes.ok) throw new Error("Failed to upload avatar.");
       }
 
-      const userMetaPayload = [];
-      for (const key in profileData) {
-        if (profileData[key] !== null && profileData[key] !== undefined) {
-          userMetaPayload.push({ metaKey: key, metaValue: profileData[key] });
-        }
-      }
+      const userMetaPayload = Object.entries(values).map(([key, value]) => ({ metaKey: key, metaValue: value }));
       if (finalAvatarUrl) {
         userMetaPayload.push({ metaKey: "avatar", metaValue: finalAvatarUrl });
       }
-      
-      if (userMetaPayload.length === 0 && !finalAvatarUrl) {
-        toast.info("No changes to save.");
-        setIsSubmitting(false);
-        return;
+      if (!hasChangedUsername && values.username !== originalUsername) {
+        userMetaPayload.push({ metaKey: "has_been_changed_username", metaValue: "true" });
       }
 
-      logger.info("Submitting profile update to /api/user/update:", userMetaPayload);
+      logger.info("Submitting profile update:", userMetaPayload);
 
       const res = await fetch('/api/user/update', {
         method: 'POST',
@@ -92,155 +133,105 @@ export default function ProfilePage() {
       });
 
       const result = await res.json();
-      if (!res.ok || result.error) {
-        throw new Error(result.error || "An error occurred.");
-      }
+      if (!res.ok || result.error) throw new Error(result.error || "An error occurred.");
 
       const updatedUserMeta = result.user.userMeta;
       await updateSession({ user: { userMeta: updatedUserMeta } });
 
       toast.success("Profile updated successfully!");
       setAvatarPreview(null);
+      form.reset(values);
 
     } catch (error) {
       toast.error(error.message || "Failed to update profile.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
   
-  // @ts-ignore
-  const userMeta = session?.user?.userMeta;
   const name = getMetaValue(userMeta, "name");
-  const username = getMetaValue(userMeta, "username");
-  const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL from session
-  const bio = getMetaValue(userMeta, "bio");
-  const website = getMetaValue(userMeta, "website");
-  const twitter = getMetaValue(userMeta, "twitter");
-  const github = getMetaValue(userMeta, "github");
+  const avatarUrl = getMetaValue(userMeta, "avatar");
+  const { isSubmitting } = form.formState;
 
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          This is how others will see you on the site.
-        </p>
+        <p className="text-sm text-muted-foreground">This is how others will see you on the site.</p>
       </div>
       <Separator />
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="grid grid-cols-3 gap-4 items-center">
-          <Label className="col-span-1 text-right">Avatar</Label>
-          <div className="col-span-2 flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={avatarPreview || avatarUrl || ""} alt="User avatar" className="object-cover" />
-              <AvatarFallback>
-                {name ? name.charAt(0).toUpperCase() : "U"}
-              </AvatarFallback>
-            </Avatar>
-            <input 
-              type="file" 
-              accept="image/jpeg,image/png,image/webp" 
-              ref={avatarFileRef} 
-              onChange={handleAvatarChange}
-              className="hidden" 
-            />
-            <Button type="button" variant="outline" onClick={() => avatarFileRef.current?.click()} disabled={isSubmitting}>
-              Change Avatar
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="space-y-2">
+            <Label>Avatar</Label>
+            <div className="flex items-center space-x-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={avatarPreview || avatarUrl || ""} alt="User avatar" className="object-cover" />
+                <AvatarFallback>{name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
+              </Avatar>
+              <input type="file" accept="image/jpeg,image/png,image/webp" ref={avatarFileRef} onChange={handleAvatarChange} className="hidden" />
+              <Button type="button" variant="outline" onClick={() => avatarFileRef.current?.click()} disabled={isSubmitting}>Change Avatar</Button>
+            </div>
+          </div>
+
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <Label>Username</Label>
+                <FormControl>
+                  <div className="flex rounded-md items-center gap-0.5">
+                    <span className="opacity-60 text-sm">
+                      https://{hostname}/u/
+                    </span>
+                    <Input
+                      className="max-w-sm" 
+                      placeholder="your-username" 
+                      {...field} 
+                      disabled={isSubmitting || hasChangedUsername} 
+                    />
+                  </div>
+                </FormControl>
+                {hasChangedUsername ? (
+                  <p className="text-sm text-muted-foreground mt-2">Username can only be changed once.</p>
+                ) : (
+                  <FormMessage className="mt-2" />
+                )}
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <Label>Display Name</Label>
+                <FormControl><Input {...field} /></FormControl>
+                <p className="text-sm text-muted-foreground">Please enter your full name, or a display name you are comfortable with.</p>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <Label>Bio</Label>
+                <FormControl><Textarea placeholder="I'm a developer who loves..." {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <Label htmlFor="username" className="col-span-1 text-right mt-2">Username</Label>
-          <div className="col-span-2">
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground text-sm">
-                {hostname}/u/
-              </span>
-              <Input
-                id="username"
-                name="username"
-                className="pl-24"
-                defaultValue={username || ""}
-                placeholder="your-username"
-                disabled={isSubmitting}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <Label htmlFor="name" className="col-span-1 text-right mt-2">Display Name</Label>
-          <div className="col-span-2">
-            <Input
-              id="name"
-              name="name"
-              defaultValue={name || ""}
-              required
-              disabled={isSubmitting}
-            />
-            <p className="text-sm text-muted-foreground mt-2">
-              Please enter your full name, or a display name you are comfortable with.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <Label htmlFor="bio" className="col-span-1 text-right mt-2">Bio</Label>
-          <div className="col-span-2">
-            <Textarea
-              id="bio"
-              name="bio"
-              defaultValue={bio || ""}
-              placeholder="I'm a developer who loves..."
-              disabled={isSubmitting}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <Label className="col-span-1 text-right mt-2">Social Links</Label>
-          <div className="col-span-2 space-y-4">
-            <div>
-              <Label htmlFor="website" className="text-sm font-normal">Website</Label>
-              <Input
-                id="website"
-                name="website"
-                defaultValue={website || ""}
-                placeholder="https://your-website.com"
-                disabled={isSubmitting}
-              />
-            </div>
-            <div>
-              <Label htmlFor="twitter" className="text-sm font-normal">Twitter</Label>
-              <Input
-                id="twitter"
-                name="twitter"
-                defaultValue={twitter || ""}
-                placeholder="https://twitter.com/username"
-                disabled={isSubmitting}
-              />
-            </div>
-            <div>
-              <Label htmlFor="github" className="text-sm font-normal">GitHub</Label>
-              <Input
-                id="github"
-                name="github"
-                defaultValue={github || ""}
-                placeholder="https://github.com/username"
-                disabled={isSubmitting}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save Changes"}
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
 }

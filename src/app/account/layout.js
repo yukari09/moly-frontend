@@ -18,6 +18,10 @@ function SidebarNav({ className, ...props }) {
       href: "/account/password",
       title: "Password",
     },
+    {
+      href: "/account/social",
+      title: "Social Links",
+    },
   ];
 
   return (

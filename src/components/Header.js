@@ -159,6 +159,11 @@ export default function Header() {
                 <DropdownMenuItem onClick={() => router.push('/account/profile')}>
                   Profile
                 </DropdownMenuItem>
+                {process.env.NODE_ENV === 'development' && (
+                  <DropdownMenuItem onClick={() => router.push('/debug/session')}>
+                    Debug Session
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/auth/signout')}>
                   Log out
