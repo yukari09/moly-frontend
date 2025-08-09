@@ -25,7 +25,7 @@ async function _request(query, variables = {}, session = null) {
 
   if (!res.ok || data.errors) {
     const errorMessage = data.errors?.[0]?.message || "An unknown GraphQL error occurred.";
-    logger.error("GraphQL Request Failed:", { query: query.trim().split('\n')[0].trim(), variables, errorMessage });
+    logger.error("GraphQL Request Failed:", { query: query.trim().split('\n')[1].trim(), variables, errorMessage });
     throw new Error(errorMessage);
   }
 
@@ -60,6 +60,27 @@ const LIST_TERMS_QUERY = `
 export async function listTerms(taxonomyName, session) {
   const data = await _request(LIST_TERMS_QUERY, { taxonomyName }, session);
   return data.listTerms.edges.map(edge => edge.node);
+}
+
+const GET_USER_BY_USERNAME_QUERY = `
+  query GetUserByUsername($username: String!, $secrectKey: String!) {
+    getUserByUsername(username: $username, secrectKey: $secrectKey) {
+      id
+      email
+      userMeta {
+        metaKey
+        metaValue
+      }
+    }
+  }
+`;
+export async function getUserByUsername(username) {
+  const secrectKey = process.env.GRAPHQL_SECRET_KEY;
+  if (!secrectKey) {
+    throw new Error("GRAPHQL_SECRET_KEY is not defined in environment variables.");
+  }
+  const data = await _request(GET_USER_BY_USERNAME_QUERY, { username, secrectKey });
+  return data.getUserByUsername;
 }
 
 
