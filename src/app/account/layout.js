@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 function SidebarNav({ className, ...props }) {
   const pathname = usePathname();
@@ -52,7 +54,7 @@ function SidebarNav({ className, ...props }) {
 }
 
 export default function AccountLayout({ children }) {
-  const { status } = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect("/login?callbackUrl=/account/profile");
@@ -64,6 +66,21 @@ export default function AccountLayout({ children }) {
       <div className="flex justify-center items-center min-h-screen">
         <p>Loading...</p>
       </div>
+    );
+  }
+
+  // @ts-ignore
+  if (session && session.user?.status !== "active") {
+    return (
+      <main className="max-w-screen-xl mx-auto px-6 py-24">
+        <Alert variant="destructive">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Account Not Active</AlertTitle>
+          <AlertDescription>
+            Your account is not active. Please check your inbox for a verification email to activate your account before managing your settings.
+          </AlertDescription>
+        </Alert>
+      </main>
     );
   }
 
