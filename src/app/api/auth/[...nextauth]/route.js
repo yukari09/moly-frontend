@@ -5,6 +5,7 @@ import { EmailVerificationTemplate } from "@/emails/EmailVerificationTemplate";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { getMetaValue } from "@/lib/utils";
 import logger from "@/lib/logger";
+import * as gql from "@/lib/graphql";
 
 export const authOptions = {
   providers: [
@@ -19,60 +20,15 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
 
-        const isTokenValid = await verifyTurnstileToken(credentials.turnstileToken);
-        if (!isTokenValid) {
-          throw new Error("Invalid Turnstile token. Please try again.");
-        }
+        await verifyTurnstileToken(credentials.turnstileToken);
 
-        const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
-        const registerMutation = {
-          query: `
-            mutation Register($input: RegisterWithPasswordInput!) {
-              registerWithPassword(input: $input) {
-                result {
-                  id
-                  email
-                  userMeta {
-                    id
-                    metaKey
-                    metaValue
-                  }
-                }
-                metadata {
-                  token
-                }
-                errors {
-                  fields
-                  message
-                }
-              }
-            }
-          `,
-          variables: {
-            input: {
-              email: credentials.email,
-              password: credentials.password,
-              passwordConfirmation: credentials.password,
-              agreement: "true",
-            },
-          },
-        };
-
-        const registerRes = await fetch(GRAPHQL_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(registerMutation),
+        const registrationResult = await gql.register({
+          email: credentials.email,
+          password: credentials.password,
+          passwordConfirmation: credentials.password,
+          agreement: "true",
         });
 
-        const registerData = await registerRes.json();
-
-        if (registerData.errors || (registerData.data.registerWithPassword && registerData.data.registerWithPassword.errors.length > 0)) {
-          const apiErrors = registerData.data?.registerWithPassword?.errors || registerData.errors;
-          const errorMessage = apiErrors?.[0]?.message || 'An unknown error occurred during registration.';
-          throw new Error(errorMessage);
-        }
-
-        const registrationResult = registerData.data.registerWithPassword;
         if (!registrationResult || !registrationResult.result) {
           throw new Error('Registration failed: No user data returned.');
         }
@@ -81,28 +37,12 @@ export const authOptions = {
         const accessToken = registrationResult.metadata.token;
         const userMeta = gqlUser.userMeta;
 
-        // Asynchronously send verification email without blocking the registration process.
-        // Errors in email sending will be logged but will not fail the user's registration.
+        // Create a temporary session to generate the confirm token
+        const tempSession = { accessToken };
+
         (async () => {
           try {
-            const generateTokenMutation = {
-              query: `mutation GenerateConfirmToken($purpose: String!) { generateConfirmToken(purpose: $purpose) }`,
-              variables: { purpose: "confirm_new_user" },
-            };
-
-            const tokenRes = await fetch(GRAPHQL_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
-              body: JSON.stringify(generateTokenMutation),
-            });
-
-            const tokenData = await tokenRes.json();
-          
-            if (tokenData.errors || !tokenData.data.generateConfirmToken) {
-              throw new Error(tokenData.errors?.[0]?.message || "Could not generate email verification token.");
-            }
-            
-            const verificationToken = tokenData.data.generateConfirmToken;
+            const verificationToken = await gql.generateConfirmToken("confirm_new_user", tempSession);
             const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
             const userName = getMetaValue(userMeta, "name") || getMetaValue(userMeta, "username");
             
@@ -111,12 +51,10 @@ export const authOptions = {
               subject: `Welcome to ${process.env.APP_NAME}! Please Verify Your Email`,
               react: <EmailVerificationTemplate name={userName} verificationLink={verificationLink} />
             });
-
           } catch (emailError) {
             logger.error("Failed to send verification email in background:", emailError);
           }
         })();
-
 
         const userObject = {
           id: gqlUser.id,
@@ -144,48 +82,10 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
 
-        const isTokenValid = await verifyTurnstileToken(credentials.turnstileToken);
-        if (!isTokenValid) {
-          throw new Error("Invalid Turnstile token. Please try again.");
-        }
-
-        const GRAPHQL_ENDPOINT = process.env.GRAPHQL_API_URL;
-        const loginMutation = {
-          query: `
-            mutation SignInWithPassword($email: String!, $password: String!) {
-              signInWithPassword(email: $email, password: $password, agreement: "true") {
-                id
-                token
-                email
-                userMeta {
-                  id
-                  metaKey
-                  metaValue
-                }
-              }
-            }
-          `,
-          variables: {
-            email: credentials.email,
-            password: credentials.password,
-          },
-        };
+        await verifyTurnstileToken(credentials.turnstileToken);
 
         try {
-          const res = await fetch(GRAPHQL_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(loginMutation),
-          });
-
-          const data = await res.json();
-          
-          if (data.errors || !data.data.signInWithPassword) {
-            const errorMessage = data.errors?.[0]?.message || "Invalid credentials";
-            throw new Error(errorMessage);
-          }
-
-          const gqlUser = data.data.signInWithPassword;
+          const gqlUser = await gql.signInWithPassword(credentials.email, credentials.password);
           const userMeta = gqlUser.userMeta;
 
           const userObject = {
@@ -204,6 +104,7 @@ export const authOptions = {
 
         } catch (error) {
           logger.error("Authentication error:", error);
+          // Re-throw the error to be caught by NextAuth and displayed to the user
           throw error;
         }
       }
@@ -214,8 +115,7 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      // Initial sign in
-      if (user) {
+      if (user) { // Initial sign in
         return {
           ...token,
           id: user.id,
@@ -229,11 +129,9 @@ export const authOptions = {
         };
       }
 
-      // Session update
-      if (trigger === "update" && session?.user) {
+      if (trigger === "update" && session?.user) { // Session update
         const newSessionUser = session.user;
-        const updatedToken = { ...token }; // Start with the existing token
-
+        const updatedToken = { ...token };
         if (newSessionUser.userMeta) {
           updatedToken.userMeta = newSessionUser.userMeta;
           updatedToken.name = getMetaValue(newSessionUser.userMeta, "name");
@@ -243,7 +141,6 @@ export const authOptions = {
         if (newSessionUser.status) {
           updatedToken.status = newSessionUser.status;
         }
-        
         return updatedToken;
       }
 
