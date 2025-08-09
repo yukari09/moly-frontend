@@ -3,6 +3,16 @@
  */
 const logger = {
   /**
+   * Logs debug information - very detailed logging for troubleshooting.
+   * This is ONLY active in the 'development' environment.
+   * @param {...any} args The debug message and any additional data.
+   */
+  debug: (...args) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.debug('[MOLY_DEBUG]', ...args);
+    }
+  },
+  /**
    * Logs an informational message.
    * This is ONLY active in the 'development' environment.
    * @param {...any} args The message and any additional data to log.
