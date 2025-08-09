@@ -179,12 +179,12 @@ export default function ProfilePage() {
               <FormItem>
                 <Label>Username</Label>
                 <FormControl>
-                  <div className="flex rounded-md items-center gap-0.5">
-                    <span className="opacity-60 text-sm">
-                      https://{hostname}/u/
+                  <div className="flex rounded-md shadow-sm">
+                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-background text-sm text-muted-foreground">
+                      {hostname}/u/
                     </span>
-                    <Input
-                      className="max-w-sm" 
+                    <Input 
+                      className="flex-1 min-w-0 block rounded-none rounded-r-md focus-visible:ring-0 focus-visible:ring-offset-0" 
                       placeholder="your-username" 
                       {...field} 
                       disabled={isSubmitting || hasChangedUsername} 
@@ -206,7 +206,7 @@ export default function ProfilePage() {
             render={({ field }) => (
               <FormItem>
                 <Label>Display Name</Label>
-                <FormControl><Input {...field} /></FormControl>
+                <FormControl><Input {...field} disabled={isSubmitting} /></FormControl>
                 <p className="text-sm text-muted-foreground">Please enter your full name, or a display name you are comfortable with.</p>
                 <FormMessage />
               </FormItem>
@@ -219,7 +219,7 @@ export default function ProfilePage() {
             render={({ field }) => (
               <FormItem>
                 <Label>Bio</Label>
-                <FormControl><Textarea placeholder="I'm a developer who loves..." {...field} /></FormControl>
+                <FormControl><Textarea placeholder="I'm a developer who loves..." {...field} disabled={isSubmitting} /></FormControl>
                 <FormMessage />
               </FormItem>
             )}

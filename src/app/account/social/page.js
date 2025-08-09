@@ -76,11 +76,11 @@ export default function SocialLinksPage() {
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField control={form.control} name="website" render={({ field }) => (<FormItem><Label>Website</Label><FormControl><Input placeholder="https://your-website.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
-          <FormField control={form.control} name="x" render={({ field }) => (<FormItem><Label>X (Twitter)</Label><FormControl><Input placeholder="https://x.com/username" {...field} /></FormControl><FormMessage /></FormItem>)} />
-          <FormField control={form.control} name="github" render={({ field }) => (<FormItem><Label>GitHub</Label><FormControl><Input placeholder="https://github.com/username" {...field} /></FormControl><FormMessage /></FormItem>)} />
-          <FormField control={form.control} name="linkedin" render={({ field }) => (<FormItem><Label>LinkedIn</Label><FormControl><Input placeholder="https://linkedin.com/in/username" {...field} /></FormControl><FormMessage /></FormItem>)} />
-          <FormField control={form.control} name="facebook" render={({ field }) => (<FormItem><Label>Facebook</Label><FormControl><Input placeholder="https://facebook.com/username" {...field} /></FormControl><FormMessage /></FormItem>)} />
+          <FormField control={form.control} name="website" render={({ field }) => (<FormItem><Label>Website</Label><FormControl><Input placeholder="https://your-website.com" {...field} disabled={isSubmitting} /></FormControl><FormMessage /></FormItem>)} />
+          <FormField control={form.control} name="x" render={({ field }) => (<FormItem><Label>X (Twitter)</Label><FormControl><Input placeholder="https://x.com/username" {...field} disabled={isSubmitting} /></FormControl><FormMessage /></FormItem>)} />
+          <FormField control={form.control} name="github" render={({ field }) => (<FormItem><Label>GitHub</Label><FormControl><Input placeholder="https://github.com/username" {...field} disabled={isSubmitting} /></FormControl><FormMessage /></FormItem>)} />
+          <FormField control={form.control} name="linkedin" render={({ field }) => (<FormItem><Label>LinkedIn</Label><FormControl><Input placeholder="https://linkedin.com/in/username" {...field} disabled={isSubmitting} /></FormControl><FormMessage /></FormItem>)} />
+          <FormField control={form.control} name="facebook" render={({ field }) => (<FormItem><Label>Facebook</Label><FormControl><Input placeholder="https://facebook.com/username" {...field} disabled={isSubmitting} /></FormControl><FormMessage /></FormItem>)} />
           
           <div className="flex justify-end">
             <Button type="submit" disabled={isSubmitting}>
