@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { ArrowLeft, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TemplateCard } from "@/components/TemplateCard";
+import { SiteCard } from "@/components/SiteCard";
 
 // --- Data ---
 // In a real app, this would likely come from a CMS or database
-const templates = [
-    { name: "Next.js Boilerplate", slug: "next-js-boilerplate", description: "Get started with Next.js and React in seconds.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/next-js-boilerplate/image" },
-    { name: "Image Gallery Starter", slug: "image-gallery-starter", description: "An image gallery built on Next.js and Cloudinary.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/image-gallery-starter/image" },
-    { name: "Next.js AI Chatbot", slug: "next-ai-chatbot", description: "A full-featured, hackable Next.js AI chatbot built by Vercel.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/next-ai-chatbot/image" },
-    { name: "Nextra: Docs Starter Kit", slug: "docs-starter-kit", description: "Simple, powerful and flexible markdown-powered docs site. Built with Next.js.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/docs-starter-kit/image" },
-    { name: "Hume AI - Empathic Voice Interface Starter", slug: "empathic-voice-interface", description: "This template creates a voice chat using Hume AI's Empathic Voice Interface.", author: "Hume AI", imageSrc: "https://vercel.com/templates/next.js/empathic-voice-interface/image" },
-    { name: "Next.js Commerce", slug: "commerce-shopify", description: "Starter kit for high-performance commerce with Shopify.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/commerce-shopify/image" },
+const sites = [
+    { name: "Stripe", slug: "stripe", description: "Online payment processing for internet businesses.", author: "Stripe", imageSrc: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=2832&auto=format&fit=crop" },
+    { name: "Linear", slug: "linear", description: "The issue tracking tool you'll enjoy using.", author: "Linear", imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop" },
+    { name: "Vercel", slug: "vercel", description: "Develop, Preview, Ship. For the best frontend teams.", author: "Vercel", imageSrc: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2831&auto=format&fit=crop" },
+    { name: "Loom", slug: "loom", description: "Video messaging for work.", author: "Loom", imageSrc: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2940&auto=format&fit=crop" },
+    { name: "Figma", slug: "figma", description: "The collaborative interface design tool.", author: "Figma", imageSrc: "https://images.unsplash.com/photo-1599658880436-c61792e70672?q=80&w=2940&auto=format&fit=crop" },
+    { name: "Notion", slug: "notion", description: "The all-in-one workspace for your notes, tasks, wikis, and databases.", author: "Notion", imageSrc: "https://images.unsplash.com/photo-1600195077909-46e573870d99?q=80&w=2875&auto=format&fit=crop" },
 ];
 
 const imageGallery = [
@@ -23,12 +23,7 @@ const imageGallery = [
   "https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2568&auto=format&fit=crop",
 ];
 
-const relatedTemplates = [
-    { name: "Next.js Boilerplate", slug: "next-js-boilerplate", description: "Get started with Next.js and React in seconds.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/next-js-boilerplate/image" },
-    { name: "Platforms Starter Kit", slug: "platforms-starter-kit", description: "Next.js template for building multi-tenant applications with the App Router.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/platforms-starter-kit/image" },
-    { name: "Tailwind CSS Blog", slug: "blog-template", description: "Next.js blog using Markdown for content.", author: "Timothy Lin", imageSrc: "https://vercel.com/templates/next.js/blog-template/image" },
-    { name: "On-Demand ISR", slug: "on-demand-isr", description: "Instantly update content without redeploying.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/on-demand-isr/image" },
-]
+const relatedSites = sites.slice(0, 4);
 
 // --- Helper Components ---
 const CodeBlock = ({ children }) => (
@@ -39,17 +34,17 @@ const CodeBlock = ({ children }) => (
 
 // --- Page Generation ---
 export async function generateStaticParams() {
-  return templates.map((template) => ({
-    slug: template.slug,
+  return sites.map((site) => ({
+    slug: site.slug,
   }))
 }
 
 // --- Page Component ---
 export default function SitePage({ params }) {
-  const template = templates.find((t) => t.slug === params.slug);
+  const site = sites.find((s) => s.slug === params.slug);
 
-  if (!template) {
-    return <div>Template not found</div>
+  if (!site) {
+    return <div>Site not found</div>
   }
 
   return (
@@ -61,43 +56,43 @@ export default function SitePage({ params }) {
             className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
           >
             <ArrowLeft size={16} />
-            <span>Back to Templates</span>
+            <span>Back to Sites</span>
           </Link>
         </div>
 
         <main className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div className="lg:col-span-1 space-y-8">
             <h1 className="text-4xl font-bold tracking-tighter text-black">
-              {template.name}
+              {site.name}
             </h1>
             <p className="text-gray-600">
-              {template.description}
+              {site.description}
             </p>
             <div className="flex items-center gap-4">
-              <Button className="bg-black text-white h-10 px-6">Deploy</Button>
+              <Button className="bg-black text-white h-10 px-6">Visit Site</Button>
               <Button variant="outline" className="h-10 px-6 border-gray-300">
-                View Demo
+                View Details
               </Button>
             </div>
             <div className="space-y-4 border-t border-gray-200 pt-6">
                 <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Repository</span>
+                    <span className="text-gray-600">Submitter</span>
                     <a href="#" className="flex items-center gap-2 text-black hover:text-gray-700">
                         <Github size={16} />
-                        <span>vercel/next.js</span>
+                        <span>{site.author}</span>
                     </a>
                 </div>
                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Framework</span>
+                    <span className="text-gray-600">Category</span>
+                    <span className="text-black">SaaS</span>
+                </div>
+                 <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Style</span>
+                    <span className="text-black">Modern</span>
+                </div>
+                 <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Tech</span>
                     <span className="text-black">Next.js</span>
-                </div>
-                 <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Use Case</span>
-                    <span className="text-black">Starter</span>
-                </div>
-                 <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">CSS</span>
-                    <span className="text-black">Tailwind</span>
                 </div>
             </div>
           </div>
@@ -113,36 +108,33 @@ export default function SitePage({ params }) {
                 </div>
             </div>
             <div className="mt-12 prose prose-gray max-w-none">
-                <h2 className="text-2xl font-semibold text-black">Next.js & Cloudinary example app</h2>
-                <p>This example shows how to create an image gallery site using Next.js, <a href="#">Cloudinary</a>, and <a href="#">Tailwind</a>.</p>
+                <h2 className="text-2xl font-semibold text-black">About {site.name}</h2>
+                <p>This is a placeholder description for {site.name}. In a real application, this content would be fetched from a CMS or a database, providing detailed information about the website, its features, and the technology behind it.</p>
                 
-                <h3 className="text-xl font-semibold text-black">Deploy your own</h3>
-                <p>Deploy the example using <a href="#">Vercel</a> or view the demo <a href="#">here</a>.</p>
-                <p>Check out our <a href="#">Next.js deployment documentation</a> for more details.</p>
+                <h3 className="text-xl font-semibold text-black">Key Features</h3>
+                <ul>
+                    <li>Feature A: A brief description of what this feature does.</li>
+                    <li>Feature B: How this feature helps the user.</li>
+                    <li>Feature C: Another interesting aspect of the site.</li>
+                </ul>
 
-                <h3 className="text-xl font-semibold text-black">How to use</h3>
-                <p>Execute <a href="#">create-next-app</a> with <a href="#">npm</a>, <a href="#">Yarn</a>, or <a href="#">pnpm</a> to bootstrap the example:</p>
+                <h3 className="text-xl font-semibold text-black">Tech Stack</h3>
+                <p>This site was built with a modern tech stack, including:</p>
                 <CodeBlock>
-                    npx create-next-app --example with-cloudinary with-cloudinary-app
+                  - Next.js
+                  - React
+                  - Tailwind CSS
+                  - Vercel
                 </CodeBlock>
-                 <CodeBlock>
-                    yarn create next-app --example with-cloudinary with-cloudinary-app
-                </CodeBlock>
-                 <CodeBlock>
-                    pnpm create next-app --example with-cloudinary with-cloudinary-app
-                </CodeBlock>
-
-                <h3 className="text-xl font-semibold text-black">References</h3>
-                <p>Cloudinary API: <a href="https://cloudinary.com/documentation/transformation_reference">https://cloudinary.com/documentation/transformation_reference</a></p>
             </div>
           </div>
         </main>
 
         <section className="mt-24 pt-16 border-t border-gray-200">
-            <h2 className="text-2xl font-semibold tracking-tighter text-center text-black">Related Templates</h2>
+            <h2 className="text-2xl font-semibold tracking-tighter text-center text-black">Related Sites</h2>
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedTemplates.map(template => (
-                    <TemplateCard key={template.name} {...template} />
+                {relatedSites.map(site => (
+                    <SiteCard key={site.name} {...site} />
                 ))}
             </div>
         </section>
@@ -150,11 +142,11 @@ export default function SitePage({ params }) {
         <section className="my-24">
             <div className="bg-black text-white rounded-lg p-12 flex flex-col md:flex-row justify-between items-center">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tighter">Unleash New Possibilities</h2>
-                    <p className="mt-2 text-gray-400">Deploy your app on Vercel and unlock its full potential</p>
+                    <h2 className="text-3xl font-bold tracking-tighter">Explore More</h2>
+                    <p className="mt-2 text-gray-400">Browse our collection of inspiring websites.</p>
                 </div>
                 <Button variant="secondary" className="mt-6 md:mt-0 bg-white text-black h-12 px-6">
-                    Try Vercel Free
+                    Browse Sites
                 </Button>
             </div>
         </section>

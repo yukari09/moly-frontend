@@ -62,7 +62,8 @@ export const authOptions = {
           email: gqlUser.email,
           image: getMetaValue(userMeta, "avatar"),
           username: getMetaValue(userMeta, "username"),
-          status: getMetaValue(userMeta, "status"),
+          status: gqlUser.status || getMetaValue(userMeta, "status"),
+          roles: gqlUser.roles || [],
           accessToken: accessToken,
           userMeta: userMeta,
         };
@@ -94,7 +95,8 @@ export const authOptions = {
             email: gqlUser.email,
             image: getMetaValue(userMeta, "avatar"),
             username: getMetaValue(userMeta, "username"),
-            status: getMetaValue(userMeta, "status"),
+            status: gqlUser.status || getMetaValue(userMeta, "status"),
+            roles: gqlUser.roles || [],
             accessToken: gqlUser.token,
             userMeta: userMeta,
           };
@@ -125,6 +127,7 @@ export const authOptions = {
           accessToken: user.accessToken,
           status: user.status,
           username: user.username,
+          roles: user.roles,
           userMeta: user.userMeta,
         };
       }
@@ -156,6 +159,8 @@ export const authOptions = {
         session.user.status = token.status;
         // @ts-ignore
         session.user.username = token.username;
+        // @ts-ignore
+        session.user.roles = token.roles;
         // @ts-ignore
         session.user.userMeta = token.userMeta;
         // @ts-ignore

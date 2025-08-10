@@ -92,6 +92,8 @@ const REGISTER_MUTATION = `
       result {
         id
         email
+        status
+        roles
         userMeta {
           id
           metaKey
@@ -115,6 +117,8 @@ const SIGN_IN_MUTATION = `
       id
       token
       email
+      status
+      roles
       userMeta {
         id
         metaKey

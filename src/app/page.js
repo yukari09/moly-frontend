@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { TemplateCard } from "@/components/TemplateCard";
+import { SiteCard } from "@/components/SiteCard";
 
 const FilterSection = ({ title, options }) => (
   <AccordionItem value={title} className="border-b border-gray-200">
@@ -36,19 +36,67 @@ const FilterSection = ({ title, options }) => (
 );
 
 export default function Home() {
-  const templates = [
-      { name: "Next.js Boilerplate", slug: "next-js-boilerplate", description: "Get started with Next.js and React in seconds.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/next-js-boilerplate/image" },
-      { name: "Image Gallery Starter", slug: "image-gallery-starter", description: "An image gallery built on Next.js and Cloudinary.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/image-gallery-starter/image" },
-      { name: "Next.js AI Chatbot", slug: "next-ai-chatbot", description: "A full-featured, hackable Next.js AI chatbot built by Vercel.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/next-ai-chatbot/image" },
-      { name: "Nextra: Docs Starter Kit", slug: "docs-starter-kit", description: "Simple, powerful and flexible markdown-powered docs site. Built with Next.js.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/docs-starter-kit/image" },
-      { name: "Hume AI - Empathic Voice Interface Starter", slug: "empathic-voice-interface", description: "This template creates a voice chat using Hume AI's Empathic Voice Interface.", author: "Hume AI", imageSrc: "https://vercel.com/templates/next.js/empathic-voice-interface/image" },
-      { name: "Next.js Commerce", slug: "commerce-shopify", description: "Starter kit for high-performance commerce with Shopify.", author: "Vercel", imageSrc: "https://vercel.com/templates/next.js/commerce-shopify/image" },
+  const sites = [
+      { 
+        name: "Stripe", 
+        slug: "stripe", 
+        description: "Online payment processing for internet businesses.", 
+        author: "Stripe", 
+        authorImage: "https://avatars.githubusercontent.com/u/139536?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=2832&auto=format&fit=crop",
+        tags: ["SaaS", "Payments", "Fintech"]
+      },
+      { 
+        name: "Linear", 
+        slug: "linear", 
+        description: "The issue tracking tool you'll enjoy using.", 
+        author: "Linear", 
+        authorImage: "https://avatars.githubusercontent.com/u/35640035?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop",
+        tags: ["SaaS", "Developer Tools"]
+      },
+      { 
+        name: "Vercel", 
+        slug: "vercel", 
+        description: "Develop, Preview, Ship. For the best frontend teams.", 
+        author: "Vercel", 
+        authorImage: "https://avatars.githubusercontent.com/u/14985020?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2831&auto=format&fit=crop",
+        tags: ["Hosting", "PaaS", "Next.js"]
+      },
+      { 
+        name: "Loom", 
+        slug: "loom", 
+        description: "Video messaging for work.", 
+        author: "Loom", 
+        authorImage: "https://avatars.githubusercontent.com/u/11398433?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Video", "Productivity"]
+      },
+      { 
+        name: "Figma", 
+        slug: "figma", 
+        description: "The collaborative interface design tool.", 
+        author: "Figma", 
+        authorImage: "https://avatars.githubusercontent.com/u/5153879?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1599658880436-c61792e70672?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Design", "SaaS", "Collaboration"]
+      },
+      { 
+        name: "Notion", 
+        slug: "notion", 
+        description: "The all-in-one workspace for your notes, tasks, wikis, and databases.", 
+        author: "Notion", 
+        authorImage: "https://avatars.githubusercontent.com/u/1 Notion?s=200&v=4",
+        imageSrc: "https://images.unsplash.com/photo-1600195077909-46e573870d99?q=80&w=2875&auto=format&fit=crop",
+        tags: ["Productivity", "Notes", "Docs"]
+      },
   ];
 
   const filterOptions = {
-    "Use Case": ["AI", "Starter", "Ecommerce", "SaaS", "Blog", "Portfolio"],
-    "Framework": ["Next.js"],
-    "CSS": ["Tailwind CSS"],
+    "Category": ["SaaS", "Portfolio", "Ecommerce", "Blog", "Community"],
+    "Style": ["Minimalist", "Modern", "Brutalist", "Corporate"],
+    "Tech": ["Next.js", "Gatsby", "Wordpress", "Shopify"],
   };
 
   return (
@@ -56,18 +104,17 @@ export default function Home() {
       <main className="max-w-screen-xl mx-auto px-6">
         <div className="py-24 text-center">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight text-black">
-            Next.js starter templates <br /> and themes
+            Website Gallery
           </h1>
           <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover Next.js templates, starters, and themes to jumpstart your
-            application or website build.
+            Discover the best websites on the internet. A curated gallery of inspiration and creativity.
           </p>
         </div>
 
         <div className="flex gap-10">
           <aside className="w-1/4 max-w-[280px] hidden md:block">
             <div className="flex justify-between items-center mb-5">
-              <h2 className="font-semibold text-base text-black">Filter Templates</h2>
+              <h2 className="font-semibold text-base text-black">Filters</h2>
               <Button variant="link" className="text-gray-600 p-0 h-auto hover:text-black">Clear</Button>
             </div>
             <div className="relative mb-4">
@@ -75,7 +122,7 @@ export default function Home() {
               <Input placeholder="Search..." className="pl-9 h-10 border-gray-200 rounded-lg" />
             </div>
 
-            <Accordion type="multiple" className="w-full" defaultValue={["Use Case"]}>
+            <Accordion type="multiple" className="w-full" defaultValue={["Category"]}>
               {Object.entries(filterOptions).map(([title, options]) => (
                 <FilterSection key={title} title={title} options={options} />
               ))}
@@ -84,8 +131,8 @@ export default function Home() {
           
           <section className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {templates.map((template) => (
-                <TemplateCard key={template.name} {...template} />
+              {sites.map((site) => (
+                <SiteCard key={site.name} {...site} />
               ))}
             </div>
           </section>
