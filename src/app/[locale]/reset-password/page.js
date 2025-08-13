@@ -25,21 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
-
-const formSchema = z
-  .object({
-    password: z.string()
-      .min(8, { message: "Password must be at least 8 characters." })
-      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
-      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
-      .regex(/[0-9]/, { message: "Password must contain at least one number." })
-      .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one special character." }),
-    passwordConfirmation: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: "Passwords do not match.",
-    path: ["passwordConfirmation"],
-  });
+import { useTranslations } from "next-intl";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -47,6 +33,22 @@ export default function ResetPasswordPage() {
   const token = searchParams.get('token');
   const [isLoading, setIsLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const t = useTranslations('ResetPasswordPage');
+
+  const formSchema = z
+    .object({
+      password: z.string()
+        .min(8, { message: t("passwordMinLength") })
+        .regex(/[a-z]/, { message: t("passwordLowercase") })
+        .regex(/[A-Z]/, { message: t("passwordUppercase") })
+        .regex(/[0-9]/, { message: t("passwordNumber") })
+        .regex(/[^a-zA-Z0-9]/, { message: t("passwordSpecialChar") }),
+      passwordConfirmation: z.string(),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: t("passwordMismatch"),
+      path: ["passwordConfirmation"],
+    });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -58,7 +60,7 @@ export default function ResetPasswordPage() {
 
   const onSubmit = async (values) => {
     if (!token) {
-      toast.error("Reset token is missing. Please use the link from your email.");
+      toast.error(t("tokenMissingError"));
       return;
     }
     setIsLoading(true);
@@ -77,10 +79,10 @@ export default function ResetPasswordPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to reset password.");
+        throw new Error(data.error || t("resetFailedError"));
       }
 
-      toast.success("Your password has been reset successfully! Please log in.");
+      toast.success(t("resetSuccess"));
       router.push("/login");
 
     } catch (error) {
@@ -95,10 +97,10 @@ export default function ResetPasswordPage() {
         <div className="flex items-center justify-center py-24 bg-white">
             <Card className="w-full max-w-md text-center">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-red-600">Error</CardTitle>
+                    <CardTitle className="text-2xl text-red-600">{t("errorTitle")}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p>Password reset token not found. Please make sure you have the correct link.</p>
+                    <p>{t("tokenNotFoundMessage")}</p>
                 </CardContent>
             </Card>
         </div>
@@ -109,9 +111,9 @@ export default function ResetPasswordPage() {
     <div className="flex items-center justify-center py-24 bg-white">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Reset Your Password</CardTitle>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>
-            Enter your new password below.
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -122,7 +124,7 @@ export default function ResetPasswordPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New Password</FormLabel>
+                    <FormLabel>{t("newPasswordLabel")}</FormLabel>
                     <FormControl>
                       <Input type="password" {...field} />
                     </FormControl>
@@ -135,7 +137,7 @@ export default function ResetPasswordPage() {
                 name="passwordConfirmation"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm New Password</FormLabel>
+                    <FormLabel>{t("confirmNewPasswordLabel")}</FormLabel>
                     <FormControl>
                       <Input type="password" {...field} />
                     </FormControl>
@@ -149,7 +151,7 @@ export default function ResetPasswordPage() {
               />
               <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Reset Password
+                {t("resetPasswordButton")}
               </Button>
             </form>
           </Form>

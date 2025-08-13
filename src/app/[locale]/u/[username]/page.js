@@ -3,30 +3,33 @@ import { getMetaValue } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Globe, Github, Twitter, Facebook, Linkedin } from "lucide-react";
+import { getTranslations } from 'next-intl/server';
 
 // This function generates dynamic metadata for the page
 export async function generateMetadata({ params }) {
   const { username } = params;
+  const t = await getTranslations('PublicUserProfile');
   try {
     const user = await getUserByUsername(username);
     if (!user) {
       return {
-        title: "User Not Found",
-        description: "The user you are looking for does not exist.",
+        title: t('userNotFoundTitle'),
+        description: t('userNotFoundDescription'),
       };
     }
 
     const name = getMetaValue(user.userMeta, "name") || username;
     const bio = getMetaValue(user.userMeta, "bio");
+    const appName = process.env.APP_NAME || 'Moly';
 
     return {
-      title: `${name} (@${username}) | ${process.env.APP_NAME || 'Moly'}`,
-      description: bio || `Check out the profile and submissions of ${name} on ${process.env.APP_NAME || 'Moly'}.`,
+      title: t('metaTitle', { name, username, appName }),
+      description: bio || t('metaDescription', { name, appName }),
     };
   } catch (error) {
     return {
-      title: "Error",
-      description: "Failed to load user profile.",
+      title: t('errorTitle'),
+      description: t('errorDescription'),
     };
   }
 }
@@ -42,6 +45,7 @@ function SocialLink({ icon, href }) {
 
 export default async function UserProfilePage({ params }) {
   const { username } = params;
+  const t = await getTranslations('PublicUserProfile');
   let user;
 
   try {
@@ -68,7 +72,7 @@ export default async function UserProfilePage({ params }) {
     <main className="max-w-screen-md mx-auto px-6 py-24">
       <div className="flex flex-col items-center text-center">
         <Avatar className="h-32 w-32 mb-6">
-          <AvatarImage src={avatarUrl || ""} alt={`${name}'s avatar`} className="object-cover" />
+          <AvatarImage src={avatarUrl || ""} alt={t('avatarAlt', { name })} className="object-cover" />
           <AvatarFallback className="text-5xl">
             {name ? name.charAt(0).toUpperCase() : "U"}
           </AvatarFallback>
@@ -91,9 +95,9 @@ export default async function UserProfilePage({ params }) {
 
       {/* TODO: Add a section to display the websites submitted by this user */}
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-center mb-8">Submitted Websites</h2>
+        <h2 className="text-2xl font-bold text-center mb-8">{t('submittedWebsites')}</h2>
         <div className="text-center text-muted-foreground">
-          <p>(Coming Soon)</p>
+          <p>({t('comingSoon')})</p>
         </div>
       </div>
     </main>

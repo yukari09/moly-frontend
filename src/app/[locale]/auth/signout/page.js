@@ -13,19 +13,21 @@ import {
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function SignOutPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations('SignOutPage');
 
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
       // This will sign the user out and then redirect them to the homepage.
       await signOut({ redirect: true, callbackUrl: "/" });
-      toast.success("You have been signed out.");
+      toast.success(t("signOutSuccess"));
     } catch (error) {
-      toast.error("There was an error signing out.");
+      toast.error(t("signOutError"));
       setIsLoading(false);
     }
   };
@@ -34,18 +36,18 @@ export default function SignOutPage() {
     <div className="flex items-center justify-center py-24 bg-white">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Sign Out</CardTitle>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>
-            Are you sure you want to sign out of your account?
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex justify-center gap-4">
           <Button variant="outline" onClick={() => router.back()}>
-            Cancel
+            {t("cancelButton")}
           </Button>
           <Button onClick={handleSignOut} disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Sign Out
+            {t("signOutButton")}
           </Button>
         </CardFooter>
       </Card>

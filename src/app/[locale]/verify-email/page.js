@@ -6,21 +6,23 @@ import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const callbackUrl = searchParams.get('callbackUrl');
   const { data: session, update: updateSession } = useSession();
+  const t = useTranslations('VerifyEmailPage');
   
   const [verificationStatus, setVerificationStatus] = useState('verifying'); // 'verifying', 'success', 'error'
-  const [message, setMessage] = useState('Verifying your email address...');
+  const [message, setMessage] = useState(t('verifyingMessage'));
 
   // Effect 1: Perform the API call for verification.
   useEffect(() => {
     if (!token) {
       setVerificationStatus('error');
-      setMessage('Verification token is missing. Please check the link in your email.');
+      setMessage(t('tokenMissingError'));
       return;
     }
 
@@ -30,11 +32,11 @@ export default function VerifyEmailPage() {
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || 'Verification failed.');
+          throw new Error(data.error || t('verificationFailed'));
         }
         
         setVerificationStatus('success');
-        setMessage('Your email has been successfully verified! You can now use all features.');
+        setMessage(t('verificationSuccess'));
       } catch (error) {
         setVerificationStatus('error');
         setMessage(error.message);
@@ -42,7 +44,7 @@ export default function VerifyEmailPage() {
     };
 
     verifyToken();
-  }, [token]);
+  }, [token, t]);
 
   // Effect 2: Update the user's session after successful verification.
   useEffect(() => {
@@ -55,7 +57,7 @@ export default function VerifyEmailPage() {
     <div className="flex items-center justify-center py-24 bg-white">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
-          <CardTitle className="text-2xl">Email Verification</CardTitle>
+          <CardTitle className="text-2xl">{t('title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center space-y-4">
@@ -65,12 +67,12 @@ export default function VerifyEmailPage() {
             <p className="text-lg">{message}</p>
             {verificationStatus === 'success' && (
                <Link href={callbackUrl || '/login'} className="text-blue-500 underline">
-                {callbackUrl ? 'Continue' : 'Go to Login'}
+                {callbackUrl ? t('continueButton') : t('goToLoginButton')}
               </Link>
             )}
             {verificationStatus === 'error' && (
               <Link href="/login" className="text-blue-500 underline">
-                Go to Login
+                {t('goToLoginButton')}
               </Link>
             )}
           </div>

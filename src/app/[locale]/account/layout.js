@@ -11,13 +11,15 @@ import { Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import {useTranslations} from 'next-intl';
 
 function SidebarNav({ className, ...props }) {
+  const t = useTranslations('UserSetting');
   const pathname = usePathname();
   const items = [
-    { href: "/account/profile", title: "Profile" },
-    { href: "/account/password", title: "Password" },
-    { href: "/account/social", title: "Social Links" },
+    { href: "/account/profile", title: t.rich("profile") },
+    { href: "/account/password", title: t.rich("password") },
+    { href: "/account/social", title: t.rich("social_links") },
   ];
 
   return (
@@ -42,6 +44,8 @@ function SidebarNav({ className, ...props }) {
 function NotActiveAlert() {
   const [isLoading, setIsLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+
+  const t = useTranslations('UserSetting');
 
   const handleResend = async () => {
     setIsLoading(true);
@@ -89,6 +93,7 @@ function NotActiveAlert() {
 }
 
 export default function AccountLayout({ children }) {
+  const t = useTranslations('UserSetting');
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -109,8 +114,8 @@ export default function AccountLayout({ children }) {
     <main className="max-w-screen-xl mx-auto px-6 py-12 md:py-24">
       <div className="space-y-6">
         <div className="space-y-0.5">
-          <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
-          <p className="text-muted-foreground">Manage your account settings and profile information.</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t.rich("account_settings")}</h1>
+          <p className="text-muted-foreground">{t.rich("account_settings_description")}</p>
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">

@@ -16,6 +16,7 @@ import { getMetaValue } from "@/lib/utils";
 import logger from "@/lib/logger";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import debounce from "lodash.debounce";
+import {useTranslations} from 'next-intl';
 
 // Debounced username check function
 const checkUsernameAvailability = debounce(async (username, originalUsername, resolve) => {
@@ -34,12 +35,12 @@ const checkUsernameAvailability = debounce(async (username, originalUsername, re
   }
 }, 500);
 
-const createProfileSchema = (originalUsername) => z.object({
-  name: z.string().min(1, "Display name is required.").max(50, "Display name must be at most 50 characters."),
+const createProfileSchema = (originalUsername, t) => z.object({
+  name: z.string().min(1, t('displayNameRequired')).max(50, t('displayNameMaxLength')),
   username: z.string()
-    .min(3, "Username must be at least 3 characters.")
-    .max(20, "Username must be at most 20 characters.")
-    .regex(/^[a-z0-9_.]+$/, "Username can only contain lowercase letters, numbers, underscores, and dots.")
+    .min(3, t('usernameMinLength'))
+    .max(20, t('usernameMaxLength'))
+    .regex(/^[a-z0-9_.]+$/, t('usernamePattern'))
     .superRefine(async (username, ctx) => {
       const isAvailable = await new Promise((resolve) => {
         checkUsernameAvailability(username, originalUsername, resolve);
@@ -47,15 +48,17 @@ const createProfileSchema = (originalUsername) => z.object({
       if (!isAvailable) {
         ctx.addIssue({
           code: "custom",
-          message: "This username is already taken.",
+          message: t('usernameTaken'),
           path: ["username"],
         });
       }
     }),
-  bio: z.string().max(160, "Bio must be at most 160 characters.").optional(),
+  bio: z.string().max(160, t('bioMaxLength')).optional(),
 });
 
 export default function ProfilePage() {
+  const t = useTranslations('UserProfile');
+
   const { data: session, update: updateSession } = useSession();
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [hostname, setHostname] = useState("");
@@ -67,7 +70,7 @@ export default function ProfilePage() {
   const originalUsername = getMetaValue(userMeta, "username") || "";
 
   const form = useForm({
-    resolver: zodResolver(createProfileSchema(originalUsername)),
+    resolver: zodResolver(createProfileSchema(originalUsername, t)),
     defaultValues: {
       name: getMetaValue(userMeta, "name") || "",
       username: originalUsername,
@@ -84,7 +87,7 @@ export default function ProfilePage() {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("File is too large. Please select an image smaller than 5MB.");
+        toast.error(t('imageTooLargeError'));
         return;
       }
       const reader = new FileReader();
@@ -104,7 +107,7 @@ export default function ProfilePage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ contentType: avatarFile.type }),
         });
-        if (!signedUrlRes.ok) throw new Error("Failed to get upload URL.");
+        if (!signedUrlRes.ok) throw new Error(t('getUploadUrlError'));
         const resData = await signedUrlRes.json();
         finalAvatarUrl = resData.finalAvatarUrl;
 
@@ -113,7 +116,7 @@ export default function ProfilePage() {
           body: avatarFile,
           headers: { 'Content-Type': avatarFile.type },
         });
-        if (!uploadRes.ok) throw new Error("Failed to upload avatar.");
+        if (!uploadRes.ok) throw new Error(t('uploadAvatarError'));
       }
 
       const userMetaPayload = Object.entries(values).map(([key, value]) => ({ metaKey: key, metaValue: value }));
@@ -133,17 +136,17 @@ export default function ProfilePage() {
       });
 
       const result = await res.json();
-      if (!res.ok || result.error) throw new Error(result.error || "An error occurred.");
+      if (!res.ok || result.error) throw new Error(result.error || t('unknownError'));
 
       const updatedUserMeta = result.user.userMeta;
       await updateSession({ user: { userMeta: updatedUserMeta } });
 
-      toast.success("Profile updated successfully!");
+      toast.success(t('updateSuccess'));
       setAvatarPreview(null);
       form.reset(values);
 
     } catch (error) {
-      toast.error(error.message || "Failed to update profile.");
+      toast.error(error.message || t('updateError'));
     }
   };
   
@@ -154,21 +157,21 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">This is how others will see you on the site.</p>
+        <h3 className="text-lg font-medium">{t('title')}</h3>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-2">
-            <Label>Avatar</Label>
+            <Label>{t('avatarLabel')}</Label>
             <div className="flex items-center space-x-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage src={avatarPreview || avatarUrl || ""} alt="User avatar" className="object-cover" />
                 <AvatarFallback>{name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
               </Avatar>
               <input type="file" accept="image/jpeg,image/png,image/webp" ref={avatarFileRef} onChange={handleAvatarChange} className="hidden" />
-              <Button type="button" variant="outline" onClick={() => avatarFileRef.current?.click()} disabled={isSubmitting}>Change Avatar</Button>
+              <Button type="button" variant="outline" onClick={() => avatarFileRef.current?.click()} disabled={isSubmitting}>{t('changeAvatarButton')}</Button>
             </div>
           </div>
 
@@ -177,7 +180,7 @@ export default function ProfilePage() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <Label>Username</Label>
+                <Label>{t('usernameLabel')}</Label>
                 <FormControl>
                   <div className="flex rounded-md shadow-sm">
                     <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-background text-sm text-muted-foreground">
@@ -185,14 +188,14 @@ export default function ProfilePage() {
                     </span>
                     <Input 
                       className="flex-1 min-w-0 block rounded-none rounded-r-md focus-visible:ring-0 focus-visible:ring-offset-0" 
-                      placeholder="your-username" 
+                      placeholder={t('usernamePlaceholder')} 
                       {...field} 
                       disabled={isSubmitting || hasChangedUsername} 
                     />
                   </div>
                 </FormControl>
                 {hasChangedUsername ? (
-                  <p className="text-sm text-muted-foreground mt-2">Username can only be changed once.</p>
+                  <p className="text-sm text-muted-foreground mt-2">{t('usernameChangeWarning')}</p>
                 ) : (
                   <FormMessage className="mt-2" />
                 )}
@@ -205,9 +208,9 @@ export default function ProfilePage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <Label>Display Name</Label>
+                <Label>{t('displayNameLabel')}</Label>
                 <FormControl><Input {...field} disabled={isSubmitting} /></FormControl>
-                <p className="text-sm text-muted-foreground">Please enter your full name, or a display name you are comfortable with.</p>
+                <p className="text-sm text-muted-foreground">{t('displayNameDescription')}</p>
                 <FormMessage />
               </FormItem>
             )}
@@ -218,8 +221,8 @@ export default function ProfilePage() {
             name="bio"
             render={({ field }) => (
               <FormItem>
-                <Label>Bio</Label>
-                <FormControl><Textarea placeholder="I'm a developer who loves..." {...field} disabled={isSubmitting} /></FormControl>
+                <Label>{t('bioLabel')}</Label>
+                <FormControl><Textarea placeholder={t('bioPlaceholder')} {...field} disabled={isSubmitting} /></FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -227,7 +230,7 @@ export default function ProfilePage() {
 
           <div className="flex justify-end">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Changes"}
+              {isSubmitting ? t('savingButton') : t('saveButton')}
             </Button>
           </div>
         </form>

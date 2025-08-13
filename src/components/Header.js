@@ -37,6 +37,7 @@ export default function Header() {
   // @ts-ignore
   const userMeta = session?.user?.userMeta;
   const name = getMetaValue(userMeta, "name");
+  const username = getMetaValue(userMeta, "username");
   const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL
 
   return (
@@ -153,8 +154,11 @@ export default function Header() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push('/account/profile')}>
+                <DropdownMenuItem onClick={() => router.push(`/u/${username}`)}>
                   {t.rich('profile')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/account/profile')}>
+                  {t.rich('setting')}
                 </DropdownMenuItem>
                 {process.env.NODE_ENV === 'development' && (
                   <DropdownMenuItem onClick={() => router.push('/debug/session')}>

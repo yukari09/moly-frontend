@@ -19,12 +19,14 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const t = useTranslations('LoginPage');
   const {
     register,
     handleSubmit,
@@ -48,13 +50,13 @@ export default function LoginPage() {
       });
 
       if (result.error) {
-        toast.error("Login Failed: Invalid credentials");
+        toast.error(t("loginFailed"));
       } else {
-        toast.success("Login Successful!");
+        toast.success(t("loginSuccess"));
         router.push("/");
       }
     } catch (error) {
-       toast.error("An unexpected error occurred.");
+       toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -64,6 +66,7 @@ export default function LoginPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader2 className="h-12 w-12 animate-spin" />
+        <p>{t("loading")}</p>
       </div>
     );
   }
@@ -72,38 +75,38 @@ export default function LoginPage() {
     <div className="flex items-center justify-center py-24 bg-white">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account.
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("emailLabel")}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
-                  {...register("email", { required: "Email is required" })}
+                  placeholder={t("emailPlaceholder")}
+                  {...register("email", { required: t("emailRequired") })}
                 />
                 {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t("passwordLabel")}</Label>
                   <Link
                     href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
+                    {t("forgotPassword")}
                   </Link>
                 </div>
                 <Input
                   id="password"
                   type="password"
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", { required: t("passwordRequired") })}
                 />
                  {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
               </div>
@@ -113,16 +116,16 @@ export default function LoginPage() {
               />
               <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Login
+                {t("loginButton")}
               </Button>
             </div>
           </form>
         </CardContent>
         <CardFooter>
            <div className="text-center text-sm w-full">
-            Don&apos;t have an account?{" "}
+            {t("noAccountPrompt")}{" "}
             <Link href="/register" className="underline">
-              Sign up
+              {t("signUpLink")}
             </Link>
           </div>
         </CardFooter>

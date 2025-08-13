@@ -25,15 +25,17 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
-
-const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email." }),
-});
+import { useTranslations } from "next-intl";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const t = useTranslations('ForgotPasswordPage');
+
+  const formSchema = z.object({
+    email: z.string().email({ message: t("emailValidation") }),
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,14 +59,14 @@ export default function ForgotPasswordPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Something went wrong.");
+        throw new Error(data.error || t("somethingWentWrong"));
       }
 
-      toast.success("If an account with that email exists, a password reset link has been sent.");
+      toast.success(t("resetLinkSentSuccess"));
       router.push("/login");
 
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -74,9 +76,9 @@ export default function ForgotPasswordPage() {
     <div className="flex items-center justify-center py-24 bg-white">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Forgot Password</CardTitle>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>
-            Enter your email and we'll send you a link to reset your password.
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -87,9 +89,9 @@ export default function ForgotPasswordPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("emailLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="m@example.com" {...field} />
+                      <Input type="email" placeholder={t("emailPlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,7 +103,7 @@ export default function ForgotPasswordPage() {
               />
               <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Send Reset Link
+                {t("sendResetLinkButton")}
               </Button>
             </form>
           </Form>
