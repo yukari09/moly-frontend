@@ -1,0 +1,14 @@
+{
+  "HomePage": {
+    "title": "Website Gallery",
+    "about": "Go to the about page"
+  },
+  "Header": {
+    "profile": "Profile",
+    "debug_session": "Debug Session",
+    "log_out": "Log Out",
+    "sign_up": "Sign Up",
+    "log_in": "Log In",
+    "pricing": "Pricing"
+  }
+}

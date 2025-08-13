@@ -24,12 +24,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { getMetaValue } from "@/lib/utils";
+import {useTranslations} from 'next-intl';
+
 
 const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
 
 export default function Header() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const t = useTranslations('Header');
 
   // @ts-ignore
   const userMeta = session?.user?.userMeta;
@@ -98,7 +101,7 @@ export default function Header() {
               <NavigationMenuItem>
                 <Link href="/pricing" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
-                    Pricing
+                    {t.rich("pricing")}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -117,10 +120,10 @@ export default function Header() {
           {status === "unauthenticated" && (
             <>
               <Button variant="ghost" size="sm" className="text-gray-600 hover:text-black hover:bg-gray-100" onClick={() => signIn()}>
-                Log In
+                {t.rich('log_in')}
               </Button>
               <Button asChild variant="default" size="sm" className="h-8 bg-black text-white">
-                <Link href="/register">Sign Up</Link>
+                <Link href="/register">{t.rich('sign_up')}</Link>
               </Button>
             </>
           )}
@@ -151,16 +154,16 @@ export default function Header() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/account/profile')}>
-                  Profile
+                  {t.rich('profile')}
                 </DropdownMenuItem>
                 {process.env.NODE_ENV === 'development' && (
                   <DropdownMenuItem onClick={() => router.push('/debug/session')}>
-                    Debug Session
+                    {t.rich('debug_session')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/auth/signout')}>
-                  Log out
+                  {t.rich('log_out')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
