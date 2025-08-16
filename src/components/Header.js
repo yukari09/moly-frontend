@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronDown, Triangle, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronDown, LucideGlobe, Triangle, User } from "lucide-react";
+import { Button,ListItem } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,13 +21,57 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { getMetaValue } from "@/lib/utils";
 import {useTranslations} from 'next-intl';
+import {useParams} from 'next/navigation';
+import { routing } from '@/i18n/routing';
+
 
 
 const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
+
+const languageNames = {
+  en: 'English',
+  ko: '한국어',
+  zh: '中文',
+  ja: '日本語',
+  fr: 'Français',
+  es: 'Español',
+  pt: 'Português',
+  de: 'Deutsch',
+};
+
+function LanguageSwitcher() {
+  const params = useParams();
+  const locale = params.locale;
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleLocaleChange = (newLocale) => {
+    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+    router.push(newPath);
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" >
+          <LucideGlobe className="h-4 w-4" />
+          <span className="hidden sm:inline">{languageNames[locale]}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {routing.locales.map((l) => (
+          <DropdownMenuItem key={l} onClick={() => handleLocaleChange(l)}>
+            {languageNames[l]}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -41,108 +85,72 @@ export default function Header() {
   const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL
 
   return (
-    <header className="border-b border-gray-200">
-      <div className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-[65px]">
-        <div className="flex items-center gap-6">
+    <header>
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 flex justify-between items-center h-[65px]">
+        <div className="flex items-center gap-3 sm:gap-6 sticky">
           <VercelLogo />
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-600">Products</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/"
-                        >
-                          <VercelLogo />
-                          <div className="mb-2 mt-4 text-lg font-medium">
-                            Vercel
-                          </div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Develop, Preview, Ship.
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="/docs" title="Pro">
-                      For individual developers and small teams.
-                    </ListItem>
-                    <ListItem href="/docs/installation" title="Teams">
-                      For collaborative teams with advanced needs.
-                    </ListItem>
-                    <ListItem href="/docs/primitives/typography" title="Enterprise">
-                      For organizations with complex security and compliance requirements.
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-600">Solutions</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    <ListItem title="Vercel for Frontend" href="/docs/primitives/alert-dialog">
-                      The developer experience platform for frontend teams.
-                    </ListItem>
-                    <ListItem title="Vercel for AI" href="/docs/primitives/hover-card">
-                      Build, scale, and secure AI apps with Vercel.
-                    </ListItem>
-                   </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/docs" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
-                    Docs
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/pricing" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
-                    {t.rich("pricing")}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-            </NavigationMenuList>
-          </NavigationMenu>
+          <div className="hidden md:block">
+            <NavigationMenu>
+              <NavigationMenuList>
+ 
+                <NavigationMenuItem>
+                  <Link href="/docs" >
+                    <NavigationMenuLink >
+                      Docs
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/pricing" >
+                    <NavigationMenuLink >
+                      {t.rich("pricing")}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
         </div>
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           {status === "loading" && (
             <div className="flex items-center gap-2">
-              <div className="h-8 w-20 rounded-md bg-gray-200 animate-pulse" />
-              <div className="h-8 w-20 rounded-md bg-gray-200 animate-pulse" />
+              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
+              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
               <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse" />
             </div>
           )}
           {status === "unauthenticated" && (
             <>
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-black hover:bg-gray-100" onClick={() => signIn()}>
-                {t.rich('log_in')}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => signIn()}
+              >
+                <span className="hidden sm:inline">{t.rich('log_in')}</span>
+                <span className="sm:hidden">Login</span>
               </Button>
-              <Button asChild variant="default" size="sm" className="h-8 bg-black text-white">
-                <Link href="/register">{t.rich('sign_up')}</Link>
+              <Button asChild variant="default" size="sm" >
+                <Link href="/register">
+                  <span className="hidden sm:inline">{t.rich('sign_up')}</span>
+                  <span className="sm:hidden">Sign Up</span>
+                </Link>
               </Button>
             </>
           )}
           {status === "authenticated" && (
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={avatarUrl || ""} alt={name || ""} className="object-cover" />
-                    <AvatarFallback>
-                      {name ? (
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src={avatarUrl || ""} alt={name || ""} />
+                  <AvatarFallback>                      {name ? (
                         name.charAt(0).toUpperCase()
                       ) : (
                         <User className="h-4 w-4" />
                       )}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
+                  </AvatarFallback>
+                </Avatar>
+                 
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
@@ -178,22 +186,4 @@ export default function Header() {
   );
 }
 
-const ListItem = (({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
+
