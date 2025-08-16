@@ -11,6 +11,92 @@ import { Input } from "@/components/ui/input";
 import { SiteCard } from "@/components/SiteCard";
 
 import {useTranslations} from 'next-intl';
+import { getBaseUrl } from '@/lib/seo';
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  const baseUrl = getBaseUrl();
+  
+  const titles = {
+    en: 'AI Prompt Generators - Free AI Prompt Optimization Tools',
+    zh: 'AI提示词生成器 - 免费AI提示词优化工具',
+    ja: 'AIプロンプトジェネレーター - 無料AIプロンプト最適化ツール',
+    ko: 'AI 프롬프트 생성기 - 무료 AI 프롬프트 최적화 도구',
+    fr: 'Générateurs de Prompts IA - Outils d\'Optimisation de Prompts IA Gratuits',
+    es: 'Generadores de Prompts IA - Herramientas de Optimización de Prompts IA Gratuitas',
+    pt: 'Geradores de Prompts IA - Ferramentas de Otimização de Prompts IA Gratuitas',
+    de: 'KI-Prompt-Generatoren - Kostenlose KI-Prompt-Optimierungstools'
+  };
+
+  const descriptions = {
+    en: 'Transform your ideas into powerful AI prompts with Kari\'s 4-D optimization methodology. Free tools for ChatGPT, Midjourney, writing, art, and more.',
+    zh: '使用Kari的4-D优化方法论将您的想法转化为强大的AI提示词。免费工具适用于ChatGPT、Midjourney、写作、艺术等。',
+    ja: 'Kariの4-D最適化方法論でアイデアを強力なAIプロンプトに変換。ChatGPT、Midjourney、ライティング、アートなどの無料ツール。',
+    ko: 'Kari의 4-D 최적화 방법론으로 아이디어를 강력한 AI 프롬프트로 변환하세요. ChatGPT, Midjourney, 글쓰기, 아트 등을 위한 무료 도구.',
+    fr: 'Transformez vos idées en prompts IA puissants avec la méthodologie d\'optimisation 4-D de Kari. Outils gratuits pour ChatGPT, Midjourney, écriture, art et plus.',
+    es: 'Transforma tus ideas en prompts IA poderosos con la metodología de optimización 4-D de Kari. Herramientas gratuitas para ChatGPT, Midjourney, escritura, arte y más.',
+    pt: 'Transforme suas ideias em prompts IA poderosos com a metodologia de otimização 4-D da Kari. Ferramentas gratuitas para ChatGPT, Midjourney, escrita, arte e mais.',
+    de: 'Verwandeln Sie Ihre Ideen in mächtige KI-Prompts mit Karis 4-D-Optimierungsmethodik. Kostenlose Tools für ChatGPT, Midjourney, Schreiben, Kunst und mehr.'
+  };
+
+  const canonicalUrl = `${baseUrl}/${locale}`;
+  
+  return {
+    title: titles[locale] || titles.en,
+    description: descriptions[locale] || descriptions.en,
+    keywords: 'AI prompt generator, prompt optimizer, ChatGPT prompts, Midjourney prompts, AI tools, prompt engineering, Kari AI',
+    authors: [{ name: 'Kari AI' }],
+    creator: 'Kari AI',
+    publisher: 'Kari AI',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${baseUrl}/en`,
+        zh: `${baseUrl}/zh`,
+        ja: `${baseUrl}/ja`,
+        ko: `${baseUrl}/ko`,
+        fr: `${baseUrl}/fr`,
+        es: `${baseUrl}/es`,
+        pt: `${baseUrl}/pt`,
+        de: `${baseUrl}/de`,
+      }
+    },
+    openGraph: {
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
+      url: canonicalUrl,
+      siteName: 'Kari AI Prompt Generators',
+      locale: locale,
+      type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/og-image-home.jpg`,
+          width: 1200,
+          height: 630,
+          alt: titles[locale] || titles.en,
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
+      creator: '@KariAI',
+      images: [`${baseUrl}/og-image-home.jpg`],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
+}
 
 const FilterSection = ({ title, options }) => (
   <AccordionItem value={title} className="border-b border-gray-200">
@@ -35,62 +121,91 @@ const FilterSection = ({ title, options }) => (
   </AccordionItem>
 );
 
-export default function Home() {
+export default async function Home({ params }) {
+  const { locale } = await params;
   const t = useTranslations('HomePage');
-  const sites = [
+  
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Kari AI Prompt Generators',
+    description: 'Free AI prompt optimization tools for ChatGPT, Midjourney, writing, art, and more.',
+    url: `${getBaseUrl()}/${locale}`,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${getBaseUrl()}/${locale}?search={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    },
+    inLanguage: locale,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Kari AI',
+      url: getBaseUrl()
+    }
+  };
+  const generators = [
       { 
-        name: "Stripe", 
-        slug: "stripe", 
-        description: "Online payment processing for internet businesses.", 
-        author: "Stripe", 
-        authorImage: "https://avatars.githubusercontent.com/u/139536?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=2832&auto=format&fit=crop",
-        tags: ["SaaS", "Payments", "Fintech"]
+        name: "Writing Prompt Generator", 
+        slug: "writing-prompt-generator", 
+        description: "Generate creative writing prompts with Kari AI optimization.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Writing", "Creative", "AI"]
       },
       { 
-        name: "Linear", 
-        slug: "linear", 
-        description: "The issue tracking tool you'll enjoy using.", 
-        author: "Linear", 
-        authorImage: "https://avatars.githubusercontent.com/u/35640035?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop",
-        tags: ["SaaS", "Developer Tools"]
+        name: "Art Prompt Generator", 
+        slug: "art-prompt-generator", 
+        description: "Create stunning art prompts for AI image generation.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Art", "Visual", "AI"]
       },
       { 
-        name: "Vercel", 
-        slug: "vercel", 
-        description: "Develop, Preview, Ship. For the best frontend teams.", 
-        author: "Vercel", 
-        authorImage: "https://avatars.githubusercontent.com/u/14985020?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2831&auto=format&fit=crop",
-        tags: ["Hosting", "PaaS", "Next.js"]
+        name: "AI Prompt Generator", 
+        slug: "ai-prompt-generator", 
+        description: "Universal AI prompt optimizer for any platform.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2940&auto=format&fit=crop",
+        tags: ["AI", "Universal", "Optimization"]
       },
       { 
-        name: "Loom", 
-        slug: "loom", 
-        description: "Video messaging for work.", 
-        author: "Loom", 
-        authorImage: "https://avatars.githubusercontent.com/u/11398433?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2940&auto=format&fit=crop",
-        tags: ["Video", "Productivity"]
+        name: "ChatGPT Prompt Generator", 
+        slug: "chatgpt-prompt-generator", 
+        description: "Optimize your prompts specifically for ChatGPT.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2940&auto=format&fit=crop",
+        tags: ["ChatGPT", "Optimization", "AI"]
       },
       { 
-        name: "Figma", 
-        slug: "figma", 
-        description: "The collaborative interface design tool.", 
-        author: "Figma", 
-        authorImage: "https://avatars.githubusercontent.com/u/5153879?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1599658880436-c61792e70672?q=80&w=2940&auto=format&fit=crop",
-        tags: ["Design", "SaaS", "Collaboration"]
+        name: "Midjourney Prompt Generator", 
+        slug: "midjourney-prompt-generator", 
+        description: "Generate perfect prompts for Midjourney image creation.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Midjourney", "Image", "AI"]
       },
       { 
-        name: "Notion", 
-        slug: "notion", 
-        description: "The all-in-one workspace for your notes, tasks, wikis, and databases.", 
-        author: "Notion", 
-        authorImage: "https://avatars.githubusercontent.com/u/1 Notion?s=200&v=4",
-        imageSrc: "https://images.unsplash.com/photo-1600195077909-46e573870d99?q=80&w=2875&auto=format&fit=crop",
-        tags: ["Productivity", "Notes", "Docs"]
+        name: "Drawing Prompt Generator", 
+        slug: "drawing-prompt-generator", 
+        description: "Inspire your creativity with drawing prompt suggestions.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Drawing", "Creative", "Art"]
+      },
+      { 
+        name: "AI Video Prompt Generator", 
+        slug: "ai-video-prompt-generator", 
+        description: "Create optimized prompts for AI video generation tools.", 
+        author: "Kari AI", 
+        authorImage: "/kari-avatar.png",
+        imageSrc: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2940&auto=format&fit=crop",
+        tags: ["Video", "AI", "Creative"]
       },
   ];
 
@@ -101,14 +216,19 @@ export default function Home() {
   };
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     <div className="min-h-screen bg-white">
       <main className="max-w-screen-xl mx-auto px-6">
         <div className="py-24 text-center">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight text-black">
-            {t.rich('title')}
+            AI Prompt Generators
           </h1>
           <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover the best websites on the internet. A curated gallery of inspiration and creativity.
+            Transform your ideas into powerful AI prompts with Kari's 4-D optimization methodology. Get better results from ChatGPT, Midjourney, and more.
           </p>
         </div>
 
@@ -132,13 +252,14 @@ export default function Home() {
           
           <section className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sites.map((site) => (
-                <SiteCard key={site.name} {...site} />
+              {generators.map((generator) => (
+                <SiteCard key={generator.name} {...generator} />
               ))}
             </div>
           </section>
         </div>
       </main>
     </div>
+    </>
   );
 }

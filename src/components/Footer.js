@@ -11,32 +11,32 @@ const footerLinks = {
 
 export default function Footer() {
     return (
-        <footer className="mt-20 border-t border-gray-200">
-        <div className="max-w-screen-2xl mx-auto px-6">
-          <div className="py-16 grid grid-cols-2 md:grid-cols-5 gap-8">
+        <footer className="mt-16 sm:mt-20 border-t border-gray-200">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6">
+          <div className="py-12 sm:py-16 grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8">
             <div className="col-span-2 md:col-span-1">
               <VercelLogo />
             </div>
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
                 <h4 className="font-semibold text-sm text-black">{title}</h4>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
                   {links.map(link => (
                     <li key={link}>
-                      <a href="#" className="text-sm text-gray-600 hover:text-black">{link}</a>
+                      <a href="#" className="text-sm text-gray-600 hover:text-black touch-target">{link}</a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-200">
+          <div className="py-4 sm:py-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-200">
             <p className="text-sm text-gray-500">© 2024 Vercel, Inc.</p>
-            <div className="flex items-center gap-4">
-                <a href="#" aria-label="Github">
+            <div className="flex items-center gap-6">
+                <a href="#" aria-label="Github" className="touch-target">
                     <Github className="w-5 h-5 text-gray-500 hover:text-black" />
                 </a>
-                <a href="#" aria-label="Twitter">
+                <a href="#" aria-label="Twitter" className="touch-target">
                     <Twitter className="w-5 h-5 text-gray-500 hover:text-black" />
                 </a>
             </div>

@@ -1,0 +1,1040 @@
+{
+  "HomePage": {
+    "title": "Generador de Prompts",
+    "about": "Página Acerca de"
+  },
+  "Header": {
+    "profile": "Perfil",
+    "debug_session": "Sesión de depuración",
+    "log_out": "Cerrar sesión",
+    "sign_up": "Registrarse",
+    "log_in": "Iniciar sesión",
+    "pricing": "Precios",
+    "setting": "Configuración"
+  },
+  "KariOptimizer": {
+    "welcome": {
+      "title": "Bienvenido al Optimizador de Prompts Kari AI",
+      "message": "Soy Kari, tu experto en optimización de prompts de IA. Uso la metodología 4-D para transformar tus ideas en prompts de IA efectivos.",
+      "basicMode": "Optimización rápida, aplica técnicas básicas y obtén prompts mejorados inmediatamente.",
+      "detailMode": "Optimización profunda, incluye preguntas de clarificación y técnicas avanzadas para prompts de nivel profesional."
+    },
+    "input": {
+      "title": "Ingresa tu prompt",
+      "placeholder": "Ingresa el prompt que quieres optimizar aquí...",
+      "platform": "Plataforma objetivo",
+      "mode": "Modo de optimización",
+      "optimize": "Optimizar prompt",
+      "optimizing": "Optimizando..."
+    },
+    "result": {
+      "optimizedPrompt": "Prompt optimizado",
+      "copy": "Copiar",
+      "improvements": "Mejoras clave",
+      "techniques": "Técnicas aplicadas",
+      "proTip": "Consejo profesional"
+    }
+  },
+  "WritingGenerator": {
+    "title": "Generador de Prompts de Escritura",
+    "description": "Usa Kari AI para crear prompts de escritura perfectos para varios proyectos de escritura creativa.",
+    "features": {
+      "types": {
+        "title": "Múltiples tipos",
+        "description": "Soporta novelas, poesía, guiones, blogs y varios tipos de escritura"
+      },
+      "difficulty": {
+        "title": "Niveles de dificultad",
+        "description": "Diferentes opciones de dificultad desde principiantes hasta escritores profesionales"
+      },
+      "themes": {
+        "title": "Etiquetas temáticas",
+        "description": "Rica selección de temas: ciencia ficción, romance, misterio, etc."
+      }
+    }
+  },
+  "ArtGenerator": {
+    "title": "Generador de Prompts de Arte",
+    "description": "Usa Kari AI para crear prompts de arte perfectos para varios proyectos de creación de arte visual y generación de imágenes IA.",
+    "features": {
+      "styles": {
+        "title": "Estilos Artísticos",
+        "description": "Soporte para varios estilos artísticos: realista, abstracto, impresionista, arte digital, y más"
+      },
+      "composition": {
+        "title": "Guía de Composición",
+        "description": "Sugerencias de composición profesionales incluyendo iluminación, paleta de colores y encuadre"
+      },
+      "techniques": {
+        "title": "Técnicas Artísticas",
+        "description": "Orientación técnica específica para diferentes medios y enfoques artísticos"
+      }
+    }
+  },
+  "AIGenerator": {
+    "title": "Generador de Prompts IA",
+    "description": "Usa Kari AI para crear prompts optimizados para cualquier plataforma IA con técnicas de optimización universales.",
+    "platformSupport": {
+      "title": "Soporte Universal de Plataformas",
+      "chatgpt": {
+        "title": "ChatGPT/GPT-4",
+        "description": "Conversaciones estructuradas e interacciones basadas en roles"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "Razonamiento de contexto largo y tareas analíticas"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "Tareas creativas y capacidades multimodales"
+      },
+      "other": {
+        "title": "Otras Plataformas",
+        "description": "Mejores prácticas universales para cualquier sistema IA"
+      }
+    },
+    "techniques": {
+      "title": "Técnicas de Optimización Avanzadas",
+      "roleAssignment": {
+        "title": "Asignación de Roles",
+        "description": "Definir personas IA específicas y áreas de experiencia"
+      },
+      "contextLayering": {
+        "title": "Estratificación de Contexto",
+        "description": "Construir comprensión contextual rica paso a paso"
+      },
+      "outputSpecs": {
+        "title": "Especificaciones de Salida",
+        "description": "Requisitos precisos de formato y estructura"
+      },
+      "chainOfThought": {
+        "title": "Cadena de Pensamiento",
+        "description": "Guiar la IA a través de procesos de razonamiento lógico"
+      },
+      "fewShot": {
+        "title": "Aprendizaje Few-Shot",
+        "description": "Proporcionar ejemplos para mejorar la calidad de respuesta"
+      },
+      "multiPerspective": {
+        "title": "Multi-Perspectiva",
+        "description": "Explorar temas desde múltiples puntos de vista"
+      }
+    },
+    "features": {
+      "universal": {
+        "title": "Compatibilidad Universal",
+        "description": "Funciona con cualquier plataforma y modelo IA"
+      },
+      "optimization": {
+        "title": "Optimización Inteligente",
+        "description": "Aplica automáticamente las mejores prácticas para tu caso de uso"
+      },
+      "advanced": {
+        "title": "Técnicas Avanzadas",
+        "description": "Métodos de ingeniería de prompts de nivel profesional"
+      }
+    }
+  },
+  "ChatGPTGenerator": {
+    "title": "Generador de Prompts ChatGPT",
+    "description": "Usa Kari AI para crear prompts optimizados específicamente diseñados para ChatGPT y GPT-4 con técnicas de conversación avanzadas.",
+    "chatgptFeatures": {
+      "title": "Características de Optimización Específicas para ChatGPT",
+      "roleAssignment": {
+        "title": "Asignación de Roles",
+        "description": "Definir personas expertas específicas y roles profesionales para que ChatGPT los encarne"
+      },
+      "contextBuilding": {
+        "title": "Construcción de Contexto",
+        "description": "Superponer información contextual para crear bases de conversación ricas y detalladas"
+      },
+      "outputFormat": {
+        "title": "Formato de Salida",
+        "description": "Especificar requisitos de formato exactos para respuestas estructuradas y profesionales"
+      },
+      "conversationFlow": {
+        "title": "Flujo de Conversación",
+        "description": "Diseñar conversaciones multi-turno con progresión lógica y preguntas de seguimiento"
+      },
+      "parameters": {
+        "title": "Control de Parámetros",
+        "description": "Optimizar creatividad, temperatura y preferencias de estilo de respuesta"
+      },
+      "chainOfThought": {
+        "title": "Cadena de Pensamiento",
+        "description": "Guiar a ChatGPT a través de procesos de razonamiento y resolución de problemas paso a paso"
+      }
+    },
+    "roleTemplates": {
+      "title": "Plantillas de Asignación de Roles Profesionales",
+      "expert": {
+        "title": "Experto en la Materia",
+        "template": "Eres un experto en [CAMPO] con [X] años de experiencia en [ESPECIALIZACIÓN]. Tu experiencia incluye [ÁREAS CLAVE]. Por favor proporciona orientación detallada y autorizada sobre [TEMA].",
+        "description": "Perfecto para consejos técnicos, consultoría profesional y compartir conocimiento especializado"
+      },
+      "assistant": {
+        "title": "Asistente Personal",
+        "template": "Eres mi asistente profesional especializado en [ÁREA]. Ayúdame con [TAREA ESPECÍFICA] proporcionando recomendaciones organizadas y accionables con pasos siguientes claros.",
+        "description": "Ideal para gestión de tareas, planificación y soporte organizacional"
+      },
+      "teacher": {
+        "title": "Instructor Educativo",
+        "template": "Eres un profesor experimentado de [MATERIA]. Explica [CONCEPTO] a un estudiante de [NIVEL] usando ejemplos claros, analogías y desgloses paso a paso.",
+        "description": "Excelente para aprendizaje, explicaciones y creación de contenido educativo"
+      },
+      "analyst": {
+        "title": "Analista Estratégico",
+        "template": "Eres un analista estratégico especializado en [DOMINIO]. Analiza [SITUACIÓN/DATOS] y proporciona insights, tendencias y recomendaciones accionables.",
+        "description": "Perfecto para análisis de negocio, interpretación de datos y planificación estratégica"
+      }
+    },
+    "contextExamples": {
+      "title": "Ejemplos de Construcción de Contexto de Conversación",
+      "businessAnalysis": {
+        "title": "Análisis de Estrategia Empresarial",
+        "context": "Configuración de Contexto:",
+        "contextText": "Estás analizando la posición en el mercado de una empresa SaaS. La empresa tiene 50,000 usuarios, $2M ARR, y enfrenta competencia creciente.",
+        "prompt": "Prompt Optimizado:",
+        "promptText": "Como estratega empresarial senior con experiencia en mercados SaaS, analiza la posición de nuestra empresa. Contexto: Somos un SaaS de gestión de proyectos con 50,000 usuarios, $2M ARR, 15% churn mensual, y enfrentamos 3 competidores principales que han recaudado financiación significativa. Proporciona: 1) Análisis de posicionamiento competitivo, 2) Recomendaciones de estrategia de crecimiento, 3) Prioridades de mitigación de riesgos. Formatea como resumen ejecutivo con viñetas.",
+        "explanation": "Este ejemplo muestra cómo superponer contexto empresarial, definir el rol de experto y especificar requisitos de salida exactos para análisis estratégico."
+      },
+      "creativeWriting": {
+        "title": "Colaboración de Escritura Creativa",
+        "context": "Configuración de Contexto:",
+        "contextText": "Estás co-escribiendo una historia de ciencia ficción ambientada en 2150 donde los humanos han colonizado Marte pero enfrentan conflictos de recursos.",
+        "prompt": "Prompt Optimizado:",
+        "promptText": "Eres mi compañero de escritura creativa, un autor de ciencia ficción galardonado conocido por la construcción de mundos realista. Estamos desarrollando una historia ambientada en 2150 en Marte. Trama actual: La colonia enfrenta crisis de escasez de agua mientras la Tierra demanda aumento de exportaciones minerales. Personaje: Dra. Sarah Chen, hidrogeóloga dividida entre lealtad a la colonia y contratos terrestres. Continúa la historia desde su perspectiva, enfocándote en: 1) Conflicto interno, 2) Detalles técnicos sobre extracción de agua, 3) Tensiones políticas. Escribe 500 palabras, mantén realismo de ciencia ficción dura.",
+        "explanation": "Demuestra cómo establecer asociación creativa, proporcionar contexto de historia, detalles de personaje y requisitos de escritura específicos."
+      },
+      "technicalSupport": {
+        "title": "Resolución de Problemas Técnicos",
+        "context": "Configuración de Contexto:",
+        "contextText": "Necesitas ayuda depurando una aplicación React con problemas de rendimiento y gestión de estado compleja.",
+        "prompt": "Prompt Optimizado:",
+        "promptText": "Eres un desarrollador React senior y experto en optimización de rendimiento. Estoy experimentando problemas de rendimiento en una app React con: 1) 50+ componentes, 2) Estado Redux complejo (datos de usuario, notificaciones en tiempo real, métricas de dashboard), 3) Re-renders frecuentes causando lag. Configuración actual: React 18, Redux Toolkit, 10,000+ elementos de lista. Ayúdame: 1) Identificar cuellos de botella de rendimiento probables, 2) Proporcionar estrategias de optimización específicas, 3) Mostrar ejemplos de código para implementación. Prioriza soluciones por impacto vs esfuerzo.",
+        "explanation": "Muestra cómo proporcionar contexto técnico, especificar el alcance del problema y solicitar soluciones estructuradas y accionables con ejemplos."
+      }
+    },
+    "bestPractices": {
+      "title": "Mejores Prácticas de ChatGPT",
+      "do": {
+        "title": "Qué Hacer",
+        "item1": "Ser específico sobre el rol y nivel de experiencia que quieres que ChatGPT encarne",
+        "item2": "Proporcionar contexto relevante e información de fondo por adelantado",
+        "item3": "Especificar el formato exacto y estructura que quieres en la respuesta",
+        "item4": "Usar ejemplos para clarificar tus expectativas y estilo de salida deseado",
+        "item5": "Dividir solicitudes complejas en pasos numerados o secciones claras"
+      },
+      "dont": {
+        "title": "Errores a Evitar",
+        "item1": "No usar lenguaje vago o ambiguo que podría interpretarse de múltiples maneras",
+        "item2": "No sobrecargar un solo prompt con demasiadas solicitudes no relacionadas",
+        "item3": "No olvidar especificar restricciones, limitaciones o consideraciones importantes",
+        "item4": "No asumir que ChatGPT conoce tu contexto específico o conversaciones previas",
+        "item5": "No usar estructuras de oraciones excesivamente complejas que podrían confundir a la IA"
+      }
+    }
+  },
+  "DrawingGenerator": {
+    "title": "Generador de Prompts de Dibujo",
+    "description": "Usa Kari AI para crear prompts de dibujo inspiradores que despiertan la creatividad y te ayudan a practicar varias técnicas artísticas y temas.",
+    "features": {
+      "difficulty": {
+        "title": "Niveles de Dificultad",
+        "description": "Elige entre niveles de dificultad de principiante a avanzado para coincidir con tu nivel de habilidad y objetivos de aprendizaje"
+      },
+      "techniques": {
+        "title": "Técnicas Artísticas",
+        "description": "Explora varias técnicas de dibujo incluyendo lápiz, carboncillo, tinta y métodos de arte digital"
+      },
+      "inspiration": {
+        "title": "Inspiración Creativa",
+        "description": "Inspírate con temas diversos, estados de ánimo y desafíos artísticos para expandir tu creatividad"
+      }
+    },
+    "techniques": {
+      "title": "Guía de Técnicas de Dibujo",
+      "pencil": {
+        "title": "Dibujo a Lápiz",
+        "description": "Técnicas clásicas de grafito para sombreado y trabajo de detalle"
+      },
+      "charcoal": {
+        "title": "Dibujo a Carboncillo",
+        "description": "Trazos audaces y expresivos con negros ricos y contrastes dramáticos"
+      },
+      "ink": {
+        "title": "Dibujo a Tinta",
+        "description": "Trabajo de línea preciso y técnicas de sombreado cruzado"
+      },
+      "digital": {
+        "title": "Arte Digital",
+        "description": "Herramientas y técnicas modernas de dibujo digital"
+      }
+    },
+    "difficulty": {
+      "title": "Guía de Niveles de Habilidad",
+      "beginner": {
+        "title": "Principiante",
+        "description": "Perfecto para aquellos que apenas comienzan su viaje de dibujo",
+        "skill1": "Formas básicas y proporciones",
+        "skill2": "Técnicas simples de sombreado",
+        "skill3": "Reglas fundamentales de composición"
+      },
+      "intermediate": {
+        "title": "Intermedio",
+        "description": "Para artistas listos para abordar temas más complejos",
+        "skill1": "Sombreado y texturas avanzadas",
+        "skill2": "Perspectiva y profundidad",
+        "skill3": "Trabajo de personajes y retratos"
+      },
+      "advanced": {
+        "title": "Avanzado",
+        "description": "Proyectos desafiantes para artistas experimentados",
+        "skill1": "Composiciones complejas",
+        "skill2": "Técnicas fotorrealistas",
+        "skill3": "Enfoques de medios mixtos"
+      }
+    },
+    "inspiration": {
+      "title": "Categorías de Inspiración Creativa",
+      "subjects": {
+        "title": "Temas Populares",
+        "nature": "Naturaleza y Paisajes",
+        "portraits": "Retratos y Figuras",
+        "architecture": "Arquitectura y Edificios",
+        "fantasy": "Fantasía e Imaginación",
+        "animals": "Animales y Vida Silvestre",
+        "abstract": "Abstracto y Conceptual"
+      },
+      "moods": {
+        "title": "Estados de Ánimo Artísticos",
+        "peaceful": "Pacífico y Sereno",
+        "dramatic": "Dramático y Audaz",
+        "mysterious": "Misterioso y Oscuro",
+        "joyful": "Alegre y Brillante",
+        "melancholic": "Melancólico y Temperamental",
+        "energetic": "Enérgico y Dinámico"
+      }
+    }
+  },
+  "MidjourneyGenerator": {
+    "title": "Generador de Prompts Midjourney",
+    "description": "Usa Kari AI para crear prompts optimizados específicamente diseñados para Midjourney con guías de parámetros avanzados y técnicas de composición.",
+    "midjourneyFeatures": {
+      "title": "Características de Optimización Específicas de Midjourney",
+      "parameters": {
+        "title": "Dominio de Parámetros",
+        "description": "Domina las proporciones de aspecto, configuraciones de calidad, valores de estilización y controles de versión para resultados perfectos"
+      },
+      "styles": {
+        "title": "Guía de Estilos",
+        "description": "Referencias de estilo completas desde fotorrealista hasta artístico, con recomendaciones de técnicas específicas"
+      },
+      "composition": {
+        "title": "Reglas de Composición",
+        "description": "Técnicas de composición profesionales incluyendo regla de tercios, líneas guía y equilibrio visual"
+      },
+      "lighting": {
+        "title": "Control de Iluminación",
+        "description": "Domina las técnicas de iluminación desde la hora dorada hasta sombras dramáticas y estética neón"
+      },
+      "quality": {
+        "title": "Optimización de Calidad",
+        "description": "Optimiza la calidad de renderizado, niveles de detalle y tiempo de procesamiento con selección inteligente de parámetros"
+      },
+      "aspectRatio": {
+        "title": "Guía de Proporciones",
+        "description": "Proporciones perfectas para diferentes casos de uso: redes sociales, impresión, web y móvil"
+      }
+    },
+    "parameterGuide": {
+      "title": "Guía de Parámetros Esenciales",
+      "aspectRatio": {
+        "title": "Proporción de Aspecto (--ar)",
+        "landscape": "Horizontal/Pantalla Ancha",
+        "portrait": "Vertical/Móvil",
+        "square": "Cuadrado/Redes Sociales",
+        "description": "Controla la relación ancho-alto de tu imagen generada. Esencial para diferentes plataformas y casos de uso."
+      },
+      "quality": {
+        "title": "Calidad (--q)",
+        "high": "Alta Calidad (más lento)",
+        "standard": "Calidad Estándar",
+        "draft": "Calidad Borrador (más rápido)",
+        "description": "Equilibra la calidad de renderizado con la velocidad de generación. Valores más altos producen resultados más detallados pero toman más tiempo."
+      },
+      "stylize": {
+        "title": "Estilizar (--s)",
+        "high": "Altamente Estilizado",
+        "default": "Estilización Por Defecto",
+        "low": "Baja Estilización",
+        "description": "Controla cuánto se aplica el estilo estético por defecto de Midjourney a tu imagen."
+      },
+      "version": {
+        "title": "Versión (--v)",
+        "latest": "Última Versión",
+        "stable": "Versión Estable",
+        "classic": "Versión Clásica",
+        "description": "Selecciona qué versión del modelo Midjourney usar. Cada versión tiene diferentes fortalezas y características."
+      }
+    },
+    "styleGuide": {
+      "title": "Dominio de Estilo y Composición",
+      "artistic": {
+        "title": "Estilos Artísticos",
+        "photorealistic": {
+          "title": "Fotorrealista",
+          "description": "Estilo fotográfico ultra-realista",
+          "example": "fotorrealista, ultra detallado, resolución 8k, fotografía profesional"
+        },
+        "painterly": {
+          "title": "Pictórico",
+          "description": "Técnicas de pintura tradicionales",
+          "example": "pintura al óleo, estilo impresionista, pinceladas visibles, artístico"
+        },
+        "digital": {
+          "title": "Arte Digital",
+          "description": "Estética de arte digital moderno",
+          "example": "arte digital, concept art, matte painting, tendencia en artstation"
+        }
+      },
+      "composition": {
+        "title": "Técnicas de Composición",
+        "lighting": {
+          "title": "Estilos de Iluminación",
+          "golden": "Hora Dorada",
+          "goldenDesc": "Iluminación cálida y suave durante el amanecer/atardecer",
+          "dramatic": "Iluminación Dramática",
+          "dramaticDesc": "Alto contraste con sombras fuertes",
+          "soft": "Iluminación Suave",
+          "softDesc": "Iluminación uniforme y difusa para retratos",
+          "neon": "Iluminación Neón",
+          "neonDesc": "Iluminación artificial vibrante y colorida"
+        },
+        "camera": {
+          "title": "Ángulos de Cámara",
+          "closeup": "Primer Plano",
+          "closeupDesc": "Vista íntima y detallada del sujeto",
+          "wide": "Plano General",
+          "wideDesc": "Vista expansiva mostrando el entorno",
+          "aerial": "Vista Aérea",
+          "aerialDesc": "Perspectiva a vista de pájaro desde arriba",
+          "macro": "Plano Macro",
+          "macroDesc": "Primer plano extremo mostrando detalles finos"
+        }
+      }
+    },
+    "bestPractices": {
+      "title": "Mejores Prácticas de Midjourney",
+      "do": {
+        "title": "Mejores Prácticas",
+        "item1": {
+          "title": "Usa lenguaje específico y descriptivo",
+          "description": "Sé preciso sobre colores, materiales, iluminación y detalles de composición"
+        },
+        "item2": {
+          "title": "Incluye referencias de estilo",
+          "description": "Menciona estilos de arte específicos, artistas o referencias visuales para mejores resultados"
+        },
+        "item3": {
+          "title": "Optimiza parámetros para tu caso de uso",
+          "description": "Elige proporciones de aspecto, configuraciones de calidad y niveles de estilización apropiados"
+        },
+        "item4": {
+          "title": "Estructura tu prompt lógicamente",
+          "description": "Comienza con el sujeto, luego estilo, luego detalles técnicos y parámetros"
+        },
+        "item5": {
+          "title": "Usa prompts negativos cuando sea necesario",
+          "description": "Añade el parámetro --no para excluir elementos no deseados de tu imagen"
+        }
+      },
+      "dont": {
+        "title": "Errores Comunes a Evitar",
+        "item1": {
+          "title": "No uses prompts demasiado complejos",
+          "description": "Mantén los prompts enfocados y evita demasiadas direcciones estilísticas conflictivas"
+        },
+        "item2": {
+          "title": "No ignores las proporciones de aspecto",
+          "description": "Siempre especifica proporciones de aspecto apropiadas para tu caso de uso previsto"
+        },
+        "item3": {
+          "title": "No uses nombres de personajes con derechos de autor",
+          "description": "Evita nombres de personajes específicos; usa términos descriptivos en su lugar"
+        },
+        "item4": {
+          "title": "No abuses de la estilización",
+          "description": "Valores altos de estilización pueden a veces producir resultados demasiado abstractos"
+        },
+        "item5": {
+          "title": "No olvides las descripciones de iluminación",
+          "description": "La iluminación es crucial para el ambiente y calidad; siempre incluye detalles de iluminación"
+        }
+      }
+    },
+    "examples": {
+      "title": "Ejemplos de Prompts Profesionales",
+      "portrait": {
+        "title": "Fotografía de Retrato",
+        "prompt": "Retrato profesional de un ejecutivo empresarial confiado, iluminación suave de estudio, poca profundidad de campo, fondo neutro, tomado con lente 85mm, fotorrealista, alto detalle --ar 4:5 --q 2 --s 50",
+        "explanation": "Este ejemplo combina descripción del sujeto, iluminación, detalles técnicos de cámara y parámetros optimizados para resultados de retrato profesional."
+      },
+      "landscape": {
+        "title": "Escena de Paisaje",
+        "prompt": "Paisaje montañoso majestuoso en hora dorada, nubes dramáticas, reflejo de lago alpino, pinos en primer plano, composición cinematográfica, fotografía de paisaje, ultra gran angular --ar 16:9 --q 2 --s 100",
+        "explanation": "Demuestra cómo superponer elementos ambientales, condiciones de iluminación y técnicas de composición para imágenes de paisaje impresionantes."
+      },
+      "conceptArt": {
+        "title": "Arte Conceptual",
+        "prompt": "Paisaje urbano cyberpunk futurista, luces neón reflejándose en calles mojadas, autos voladores, rascacielos imponentes, niebla atmosférica, estilo concept art, matte painting, tendencia en artstation --ar 21:9 --q 2 --s 250",
+        "explanation": "Muestra cómo combinar elementos de género, detalles atmosféricos y referencias de estilo artístico para generación de arte conceptual cautivadora."
+      }
+    }
+  },
+  "AIVideoGenerator": {
+    "title": "Generador de Prompts de Video IA",
+    "description": "Usa Kari AI para crear prompts optimizados para plataformas de generación de video IA como Runway, Pika y Stable Video Diffusion con herramientas avanzadas de descripción de escenas.",
+    "platformSupport": {
+      "title": "Soporte de Plataformas de Video",
+      "runway": {
+        "title": "Runway ML",
+        "description": "Generación de video avanzada con control de movimiento y capacidades de transferencia de estilo"
+      },
+      "pika": {
+        "title": "Pika Labs",
+        "description": "Generación de video creativa con estilos artísticos únicos y efectos"
+      },
+      "stable": {
+        "title": "Stable Video",
+        "description": "Modelos de difusión de video de código abierto con parámetros personalizables"
+      },
+      "other": {
+        "title": "Otras Plataformas",
+        "description": "Mejores prácticas universales de generación de video para plataformas emergentes"
+      }
+    },
+    "sceneBuilder": {
+      "title": "Herramientas de Construcción de Descripción de Escenas",
+      "composition": {
+        "title": "Composición de Cámara",
+        "description": "Define ángulos de cámara y encuadre para tus escenas de video",
+        "closeup": "Primer plano",
+        "wide": "Plano general",
+        "aerial": "Vista aérea",
+        "tracking": "Plano de seguimiento"
+      },
+      "lighting": {
+        "title": "Configuración de Iluminación",
+        "description": "Especifica condiciones de iluminación y ambiente para tus escenas",
+        "golden": "Hora dorada",
+        "dramatic": "Iluminación dramática",
+        "soft": "Iluminación suave",
+        "neon": "Iluminación de neón"
+      },
+      "movement": {
+        "title": "Movimiento de Cámara",
+        "description": "Controla el movimiento de cámara y la dinámica de escena",
+        "smooth": "Paneo suave",
+        "dynamic": "Movimiento dinámico",
+        "static": "Plano estático",
+        "zoom": "Efecto de zoom"
+      }
+    },
+    "videoFeatures": {
+      "title": "Características de Optimización Específicas para Video",
+      "duration": {
+        "title": "Control de Duración",
+        "description": "Optimiza prompts para diferentes longitudes de video y requisitos de ritmo"
+      },
+      "style": {
+        "title": "Estilo Visual",
+        "description": "Define estilos artísticos, paletas de colores y estéticas visuales"
+      },
+      "narrative": {
+        "title": "Estructura Narrativa",
+        "description": "Construye líneas argumentales convincentes y progresiones de escena"
+      },
+      "technical": {
+        "title": "Parámetros Técnicos",
+        "description": "Especifica resolución, velocidad de fotogramas y configuraciones de calidad"
+      },
+      "mood": {
+        "title": "Estado de Ánimo y Atmósfera",
+        "description": "Crea tono emocional y elementos atmosféricos"
+      },
+      "effects": {
+        "title": "Efectos Visuales",
+        "description": "Añade efectos especiales, transiciones y elementos de postprocesamiento"
+      }
+    },
+    "platformGuidance": {
+      "title": "Mejores Prácticas Específicas de Plataforma",
+      "runway": {
+        "title": "Consejos de Runway ML",
+        "tip1": "Usa descripciones de movimiento detalladas para mejor calidad de animación",
+        "tip2": "Especifica claramente los movimientos de cámara (paneo, inclinación, zoom, travelling)",
+        "tip3": "Incluye descriptores de iluminación y ambiente para resultados cinematográficos",
+        "tip4": "Menciona relaciones de aspecto específicas y preferencias de duración"
+      },
+      "pika": {
+        "title": "Consejos de Pika Labs",
+        "tip1": "Enfócate en descripciones de estilo creativo y artístico",
+        "tip2": "Usa descripciones vívidas de color y textura",
+        "tip3": "Especifica efectos visuales únicos y transformaciones",
+        "tip4": "Incluye descripciones de movimiento y flujo artísticos"
+      },
+      "stable": {
+        "title": "Consejos de Stable Video",
+        "tip1": "Proporciona composición de escena detallada y encuadre",
+        "tip2": "Usa terminología técnica de cámara para precisión",
+        "tip3": "Especifica vectores de movimiento y parámetros de animación",
+        "tip4": "Incluye requisitos de calidad y resolución"
+      },
+      "general": {
+        "title": "Mejores Prácticas Universales",
+        "tip1": "Comienza con descripciones claras del sujeto y la acción",
+        "tip2": "Superpone detalles ambientales y atmosféricos",
+        "tip3": "Especifica tiempo y ritmo para transiciones de escena",
+        "tip4": "Incluye referencias de estilo e indicadores de calidad"
+      }
+    },
+    "bestPractices": {
+      "title": "Mejores Prácticas de Generación de Video",
+      "clarity": {
+        "title": "Descripciones Claras",
+        "description": "Usa lenguaje preciso y descriptivo para escenas, acciones y elementos visuales"
+      },
+      "specificity": {
+        "title": "Especificidad Técnica",
+        "description": "Incluye ángulos de cámara, iluminación, movimiento y detalles de tiempo"
+      },
+      "creativity": {
+        "title": "Visión Creativa",
+        "description": "Equilibra requisitos técnicos con elementos artísticos y narrativos"
+      }
+    },
+    "platformSupport": {
+      "title": "Soporte de Plataformas de Video",
+      "runway": {
+        "title": "Runway ML",
+        "description": "Generación de video avanzada con control de movimiento y capacidades de transferencia de estilo"
+      },
+      "pika": {
+        "title": "Pika Labs",
+        "description": "Generación de video creativa con estilos artísticos únicos y efectos"
+      },
+      "stable": {
+        "title": "Stable Video",
+        "description": "Modelos de difusión de video de código abierto con parámetros personalizables"
+      },
+      "other": {
+        "title": "Otras Plataformas",
+        "description": "Mejores prácticas universales de generación de video para plataformas emergentes"
+      }
+    },
+    "sceneBuilder": {
+      "title": "Herramientas de Construcción de Descripción de Escenas",
+      "composition": {
+        "title": "Composición de Cámara",
+        "description": "Define ángulos de cámara y encuadre para tus escenas de video",
+        "closeup": "Primer plano",
+        "wide": "Plano general",
+        "aerial": "Vista aérea",
+        "tracking": "Plano de seguimiento"
+      },
+      "lighting": {
+        "title": "Configuración de Iluminación",
+        "description": "Especifica condiciones de iluminación y ambiente para tus escenas",
+        "golden": "Hora dorada",
+        "dramatic": "Iluminación dramática",
+        "soft": "Iluminación suave",
+        "neon": "Iluminación neón"
+      },
+      "movement": {
+        "title": "Movimiento de Cámara",
+        "description": "Controla el movimiento de cámara y la dinámica de escena",
+        "smooth": "Paneo suave",
+        "dynamic": "Movimiento dinámico",
+        "static": "Plano estático",
+        "zoom": "Efecto de zoom"
+      }
+    },
+    "videoFeatures": {
+      "title": "Características de Optimización Específicas de Video",
+      "duration": {
+        "title": "Control de Duración",
+        "description": "Optimiza prompts para diferentes longitudes de video y requisitos de ritmo"
+      },
+      "style": {
+        "title": "Estilo Visual",
+        "description": "Define estilos artísticos, paletas de colores y estéticas visuales"
+      },
+      "narrative": {
+        "title": "Estructura Narrativa",
+        "description": "Construye líneas argumentales cautivadoras y progresiones de escena"
+      },
+      "technical": {
+        "title": "Parámetros Técnicos",
+        "description": "Especifica resolución, velocidad de fotogramas y configuraciones de calidad"
+      },
+      "mood": {
+        "title": "Estado de Ánimo y Atmósfera",
+        "description": "Crea tono emocional y elementos atmosféricos"
+      },
+      "effects": {
+        "title": "Efectos Visuales",
+        "description": "Añade efectos especiales, transiciones y elementos de postprocesamiento"
+      }
+    },
+    "platformGuidance": {
+      "title": "Mejores Prácticas Específicas de Plataforma",
+      "runway": {
+        "title": "Consejos de Runway ML",
+        "tip1": "Usa descripciones de movimiento detalladas para mejor calidad de animación",
+        "tip2": "Especifica claramente movimientos de cámara (paneo, inclinación, zoom, travelling)",
+        "tip3": "Incluye descriptores de iluminación y ambiente para resultados cinematográficos",
+        "tip4": "Menciona relaciones de aspecto específicas y preferencias de duración"
+      },
+      "pika": {
+        "title": "Consejos de Pika Labs",
+        "tip1": "Enfócate en descripciones de estilo creativo y artístico",
+        "tip2": "Usa descripciones vívidas de color y textura",
+        "tip3": "Especifica efectos visuales únicos y transformaciones",
+        "tip4": "Incluye descripciones de movimiento y flujo artísticos"
+      },
+      "stable": {
+        "title": "Consejos de Stable Video",
+        "tip1": "Proporciona composición de escena detallada y encuadre",
+        "tip2": "Usa terminología técnica de cámara para precisión",
+        "tip3": "Especifica vectores de movimiento y parámetros de animación",
+        "tip4": "Incluye requisitos de calidad y resolución"
+      },
+      "general": {
+        "title": "Mejores Prácticas Universales",
+        "tip1": "Comienza con descripciones claras de sujeto y acción",
+        "tip2": "Superpone detalles ambientales y atmosféricos",
+        "tip3": "Especifica tiempo y ritmo para transiciones de escena",
+        "tip4": "Incluye referencias de estilo e indicadores de calidad"
+      }
+    },
+    "bestPractices": {
+      "title": "Mejores Prácticas de Generación de Video",
+      "clarity": {
+        "title": "Descripciones Claras",
+        "description": "Usa lenguaje preciso y descriptivo para escenas, acciones y elementos visuales"
+      },
+      "specificity": {
+        "title": "Especificidad Técnica",
+        "description": "Incluye ángulos de cámara, iluminación, movimiento y detalles de tiempo"
+      },
+      "creativity": {
+        "title": "Visión Creativa",
+        "description": "Equilibra requisitos técnicos con elementos artísticos y narrativos"
+      }
+    }
+  },
+  "KariOptimizer": {
+    "welcome": {
+      "title": "Conoce a Kari - Tu Experto en Optimización de Prompts IA",
+      "message": "Transformaré tu prompt usando metodología 4-D avanzada para desbloquear el máximo potencial de la IA. Elige tu modo de optimización:",
+      "basicMode": "Optimización rápida con mejoras esenciales y resultados instantáneos",
+      "detailMode": "Análisis profundo con preguntas aclaratorias y técnicas avanzadas"
+    },
+    "input": {
+      "title": "Ingresa Tu Prompt",
+      "placeholder": "Describe lo que quieres crear o lograr...",
+      "platform": "Plataforma Objetivo",
+      "mode": "Modo de Optimización",
+      "optimize": "Optimizar con Kari",
+      "optimizing": "Optimizando..."
+    },
+    "result": {
+      "optimizedPrompt": "Tu Prompt Optimizado",
+      "copy": "Copiar",
+      "save": "Guardar",
+      "share": "Compartir",
+      "regenerate": "Regenerar",
+      "newPrompt": "Nuevo Prompt",
+      "improvements": "Mejoras Clave",
+      "techniques": "Técnicas Aplicadas",
+      "proTip": "Consejo Pro"
+    },
+    "errors": {
+      "optimizationFailed": "Optimización fallida. Por favor, inténtalo de nuevo.",
+      "networkError": "Error de red. Por favor, verifica tu conexión.",
+      "emptyPrompt": "Por favor, ingresa un prompt para optimizar.",
+      "promptTooShort": "El prompt debe tener al menos 10 caracteres.",
+      "promptTooLong": "El prompt debe tener menos de 2000 caracteres.",
+      "timeout": "Tiempo de espera agotado. Por favor, inténtalo de nuevo.",
+      "rateLimited": "Demasiadas solicitudes. Por favor, espera un momento.",
+      "serverError": "Error del servidor. Por favor, inténtalo más tarde.",
+      "saveFailed": "Error al guardar el resultado.",
+      "shareFailed": "Error al compartir el resultado."
+    },
+    "success": {
+      "copied": "¡Copiado al portapapeles!",
+      "optimized": "¡Prompt optimizado exitosamente!",
+      "saved": "¡Resultado guardado exitosamente!",
+      "deleted": "¡Resultado eliminado exitosamente!",
+      "loaded": "¡Resultado cargado exitosamente!",
+      "shared": "¡Compartido exitosamente!",
+      "shareLink": "¡Enlace de compartir copiado al portapapeles!",
+      "historyCleared": "¡Historial de optimización limpiado!"
+    },
+    "loading": {
+      "optimizing": "Kari está optimizando tu prompt...",
+      "analyzing": "Analizando tu prompt...",
+      "generating": "Generando versión optimizada..."
+    },
+    "platforms": {
+      "chatgpt": "ChatGPT - IA conversacional con capacidades de diálogo estructurado",
+      "claude": "Claude - Razonamiento avanzado y comprensión de contexto largo",
+      "gemini": "Gemini - Tareas creativas y capacidades multimodales",
+      "midjourney": "Midjourney - Generación de imágenes IA con estilos artísticos",
+      "dalle": "DALL-E - Generación de imágenes de OpenAI con control preciso",
+      "other": "Otras plataformas - Técnicas de optimización universales"
+    },
+    "modes": {
+      "basic": {
+        "title": "Modo BÁSICO",
+        "description": "Optimización rápida con mejoras esenciales y resultados instantáneos",
+        "features": ["Procesamiento rápido", "Técnicas esenciales", "Prompts listos para usar"]
+      },
+      "detail": {
+        "title": "Modo DETALLE", 
+        "description": "Análisis profundo con preguntas aclaratorias y técnicas avanzadas",
+        "features": ["Análisis integral", "Preguntas aclaratorias", "Optimización avanzada"]
+      }
+    },
+    "saved": {
+      "title": "Resultados Guardados",
+      "empty": "Aún no hay resultados guardados. ¡Guarda tus prompts optimizados para acceder a ellos más tarde!",
+      "load": "Cargar este resultado",
+      "delete": "Eliminar este resultado"
+    },
+    "clarifying": {
+      "title": "Ayuda a Kari a Entender Mejor",
+      "description": "Responde estas preguntas para obtener una optimización más personalizada. Kari usará tus respuestas para aplicar las técnicas más relevantes.",
+      "selectOption": "Seleccionar una opción...",
+      "optimize": "Optimizar con Respuestas",
+      "useDefaults": "Usar Valores Predeterminados"
+    },
+    "history": {
+      "title": "Historial de Optimización",
+      "empty": "Aún no hay historial de optimización. Tus optimizaciones recientes aparecerán aquí.",
+      "load": "Cargar esta optimización",
+      "clear": "Limpiar Historial"
+    }
+  },
+  "KariAI": {
+    "title": "Kari AI - Optimización Avanzada de Prompts",
+    "description": "Descubre la metodología revolucionaria 4-D de Kari AI para optimización de prompts. Transforma tus interacciones IA con ingeniería de prompts de nivel profesional.",
+    "hero": {
+      "title": "Conoce Kari AI",
+      "subtitle": "El Sistema de Optimización de Prompts Más Avanzado del Mundo",
+      "description": "Kari AI utiliza una metodología revolucionaria 4-D para transformar tus prompts básicos en instrucciones de nivel profesional que obtienen mejores resultados de cualquier plataforma IA.",
+      "cta": "Prueba Kari AI Ahora"
+    },
+    "methodology": {
+      "title": "La Metodología 4-D",
+      "subtitle": "Cuatro Etapas hacia la Perfección de Prompts",
+      "description": "El enfoque sistemático de Kari AI asegura que cada prompt esté optimizado para máxima efectividad.",
+      "deconstruct": {
+        "title": "1. DECONSTRUIR",
+        "description": "Extraer Intención Central y Contexto",
+        "details": "Kari analiza tu prompt para identificar la intención central, entidades clave, requisitos de contexto y elementos faltantes que podrían mejorar los resultados."
+      },
+      "diagnose": {
+        "title": "2. DIAGNOSTICAR",
+        "description": "Identificar Brechas de Claridad y Problemas",
+        "details": "El análisis avanzado identifica problemas de ambigüedad, brechas de claridad, niveles de especificidad y necesidades estructurales para localizar exactamente qué necesita mejora."
+      },
+      "develop": {
+        "title": "3. DESARROLLAR",
+        "description": "Seleccionar Técnicas y Roles IA",
+        "details": "Kari selecciona la combinación óptima de técnicas de ingeniería de prompts y asigna roles IA apropiados basados en tu caso de uso específico y plataforma."
+      },
+      "deliver": {
+        "title": "4. ENTREGAR",
+        "description": "Construir Prompts Optimizados",
+        "details": "La etapa final construye tu prompt optimizado con estructura apropiada, instrucciones claras y ajustes específicos de plataforma para máxima efectividad."
+      }
+    },
+    "techniques": {
+      "title": "Técnicas de Optimización Avanzadas",
+      "subtitle": "Métodos de Ingeniería de Prompts Profesionales",
+      "roleAssignment": {
+        "title": "Asignación de Roles",
+        "description": "Definir personas IA específicas y áreas de expertise para respuestas más dirigidas"
+      },
+      "contextLayering": {
+        "title": "Estratificación de Contexto",
+        "description": "Construir comprensión contextual rica a través de estratificación de información estratégica"
+      },
+      "outputSpecs": {
+        "title": "Especificaciones de Salida",
+        "description": "Requisitos de formato y estructura precisos para resultados consistentes"
+      },
+      "chainOfThought": {
+        "title": "Cadena de Pensamiento",
+        "description": "Guiar IA a través de procesos de razonamiento lógico paso a paso"
+      },
+      "fewShot": {
+        "title": "Aprendizaje Few-Shot",
+        "description": "Proporcionar ejemplos estratégicos para mejorar calidad y consistencia de respuestas"
+      },
+      "multiPerspective": {
+        "title": "Análisis Multi-Perspectiva",
+        "description": "Explorar temas desde múltiples puntos de vista para insights comprehensivos"
+      }
+    },
+    "platforms": {
+      "title": "Soporte Universal de Plataformas",
+      "subtitle": "Optimizado para Todos los Sistemas IA",
+      "chatgpt": {
+        "title": "ChatGPT y GPT-4",
+        "description": "Conversaciones estructuradas, interacciones basadas en roles y cadenas de razonamiento avanzadas"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "Razonamiento de contexto largo, tareas analíticas y explicaciones detalladas"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "Tareas creativas, capacidades multimodales y resolución de problemas innovadora"
+      },
+      "midjourney": {
+        "title": "Midjourney",
+        "description": "Generación de imágenes con estilos artísticos, reglas de composición y optimización de parámetros"
+      },
+      "other": {
+        "title": "Compatibilidad Universal",
+        "description": "Mejores prácticas y técnicas que funcionan en cualquier plataforma o modelo IA"
+      }
+    },
+    "comparison": {
+      "title": "¿Por Qué Elegir Kari AI?",
+      "subtitle": "La Optimización de Prompts Más Avanzada Disponible",
+      "kari": {
+        "title": "Kari AI",
+        "features": [
+          "Metodología sistemática 4-D",
+          "Optimización específica de plataforma",
+          "Selección de técnicas avanzadas",
+          "Mejoras conscientes del contexto",
+          "Resultados de nivel profesional",
+          "Optimización en tiempo real",
+          "Soporte multiidioma",
+          "Gratis para usar"
+        ]
+      },
+      "others": {
+        "title": "Otras Herramientas",
+        "features": [
+          "Plantillas de prompts básicas",
+          "Sugerencias genéricas",
+          "Variedad de técnicas limitada",
+          "Enfoque de talla única",
+          "Resultados inconsistentes",
+          "Optimización manual",
+          "Solo inglés",
+          "Suscripciones pagadas"
+        ]
+      }
+    },
+    "examples": {
+      "title": "Ejemplos de Optimización Reales",
+      "subtitle": "Ver Kari AI en Acción",
+      "before": "Antes (Prompt Original)",
+      "after": "Después (Optimizado por Kari)",
+      "improvements": "Mejoras Clave",
+      "example1": {
+        "title": "Análisis de Negocio",
+        "before": "Analiza mi negocio",
+        "after": "Como estratega de negocios senior con más de 15 años de experiencia en mercados SaaS y tecnológicos, realiza un análisis integral de mi negocio de software de gestión de proyectos. Contexto: Servimos a 50,000+ usuarios, generamos $2M ARR, enfrentamos 15% de tasa de cancelación mensual y competimos contra 3 rivales bien financiados. Proporciona: 1) Evaluación de posicionamiento competitivo, 2) Recomendaciones de estrategia de crecimiento con tácticas específicas, 3) Prioridades de mitigación de riesgos con cronogramas. Formatea como resumen ejecutivo con puntos de acción y métricas de éxito.",
+        "improvements": [
+          "Asignación de rol experto añadida",
+          "Contexto de negocio específico proporcionado",
+          "Entregables claros estructurados",
+          "Formato de salida especificado",
+          "Métricas de éxito incluidas"
+        ]
+      },
+      "example2": {
+        "title": "Escritura Creativa",
+        "before": "Escribe una historia sobre el espacio",
+        "after": "Eres un autor de ciencia ficción galardonado conocido por el realismo de ciencia ficción dura. Escribe un cuento de 1,000 palabras ambientado en 2157 a bordo de la estación de investigación marciana Olympus-7. Protagonista: Dra. Elena Vasquez, una xenobióloga que descubre vida microbiana inusual en muestras de hielo subterráneo. Tono: Thriller científico tenso con detalles técnicos realistas. Incluye: 1) Proceso de descubrimiento científico, 2) Dilema ético sobre divulgación, 3) Intereses personales para el personaje. Estilo: Perspectiva limitada en tercera persona, tiempo presente, con terminología científica auténtica.",
+        "improvements": [
+          "Experiencia de autor establecida",
+          "Configuración y marco temporal específicos",
+          "Trasfondo detallado del personaje",
+          "Género y tono claros",
+          "Elementos de historia estructurados",
+          "Requisitos de autenticidad técnica"
+        ]
+      }
+    },
+    "caseStudies": {
+      "title": "Historias de Éxito",
+      "subtitle": "Resultados Reales de Usuarios de Kari AI",
+      "study1": {
+        "title": "Agencia de Marketing",
+        "challenge": "Necesitaba briefs de contenido consistentes y de alta calidad para clientes diversos en diferentes industrias.",
+        "solution": "Usó Kari AI para optimizar sus plantillas de prompts para creación de contenido, resultando en briefs más específicos y accionables.",
+        "result": "300% de mejora en puntuaciones de satisfacción del cliente y 50% de reducción en solicitudes de revisión."
+      },
+      "study2": {
+        "title": "Equipo de Desarrollo de Software",
+        "challenge": "Luchaba con documentación técnica poco clara y retroalimentación inconsistente en revisiones de código.",
+        "solution": "Implementó optimización Kari AI para prompts de escritura técnica y pautas de revisión de código.",
+        "result": "40% más rápido onboarding para nuevos desarrolladores y 60% de reducción en tickets de soporte relacionados con documentación."
+      },
+      "study3": {
+        "title": "Institución Educativa",
+        "challenge": "Los maestros necesitaban mejores prompts para crear materiales de aprendizaje personalizados y evaluaciones.",
+        "solution": "Adoptó Kari AI para creación de contenido educativo, permitiendo experiencias de aprendizaje más dirigidas y efectivas.",
+        "result": "25% de mejora en compromiso estudiantil y 35% de mejora en evaluaciones de resultados de aprendizaje."
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": {
+        "question": "¿Qué hace diferente a Kari AI de otras herramientas de prompts?",
+        "answer": "Kari AI usa una metodología sistemática 4-D (Deconstruir, Diagnosticar, Desarrollar, Entregar) que analiza tus necesidades específicas y aplica técnicas de ingeniería de prompts profesionales. A diferencia de herramientas de plantillas simples, Kari proporciona optimización consciente del contexto y específica de plataforma."
+      },
+      "q2": {
+        "question": "¿Es Kari AI realmente gratis de usar?",
+        "answer": "Sí, Kari AI es completamente gratis de usar sin costos ocultos, suscripciones o límites de uso. Creemos que todos deberían tener acceso a optimización de prompts de nivel profesional."
+      },
+      "q3": {
+        "question": "¿Qué plataformas IA soporta Kari AI?",
+        "answer": "Kari AI optimiza prompts para todas las principales plataformas IA incluyendo ChatGPT, Claude, Gemini, Midjourney, DALL-E, y proporciona técnicas universales que funcionan con cualquier sistema IA."
+      },
+      "q4": {
+        "question": "¿Cómo funciona la metodología 4-D?",
+        "answer": "La metodología 4-D mejora sistemáticamente tus prompts: Deconstruir (analizar intención), Diagnosticar (identificar problemas), Desarrollar (seleccionar técnicas), y Entregar (construir prompt optimizado). Esto asegura optimización integral cada vez."
+      },
+      "q5": {
+        "question": "¿Puedo usar Kari AI para diferentes tipos de contenido?",
+        "answer": "¡Absolutamente! Kari AI funciona para cualquier tipo de contenido - escritura, arte, análisis de negocio, documentación técnica, proyectos creativos, y más. La optimización se adapta a tu caso de uso específico."
+      },
+      "q6": {
+        "question": "¿Necesito experiencia en ingeniería de prompts para usar Kari AI?",
+        "answer": "¡No se requiere experiencia! Kari AI maneja toda la ingeniería de prompts técnica por ti. Solo describe lo que quieres, y Kari aplicará automáticamente técnicas profesionales."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para Transformar tus Interacciones IA?",
+      "subtitle": "Experimenta el poder de la optimización de prompts profesional",
+      "description": "Únete a miles de usuarios que han mejorado sus resultados IA con la metodología 4-D avanzada de Kari AI.",
+      "button": "Comenzar Optimización Ahora",
+      "features": [
+        "Gratis para siempre",
+        "No requiere registro",
+        "Resultados instantáneos",
+        "Todas las plataformas soportadas"
+      ]
+    }
+  }
+}

@@ -1,6 +1,1017 @@
 {
   "HomePage": {
-    "title": "웹사이트 갤러리",
+    "title": "프롬프트 생성기",
     "about": "정보 페이지로 이동"
+  },
+  "Header": {
+    "profile": "프로필",
+    "debug_session": "디버그 세션",
+    "log_out": "로그아웃",
+    "sign_up": "회원가입",
+    "log_in": "로그인",
+    "pricing": "가격",
+    "setting": "설정"
+  },
+  "WritingGenerator": {
+    "title": "글쓰기 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 다양한 창작 글쓰기 프로젝트를 위한 완벽한 글쓰기 프롬프트를 만드세요.",
+    "features": {
+      "types": {
+        "title": "다양한 유형",
+        "description": "소설, 시, 대본, 블로그 등 다양한 글쓰기 유형 지원"
+      },
+      "difficulty": {
+        "title": "난이도 레벨",
+        "description": "초보자부터 전문 작가까지 다양한 난이도 선택"
+      },
+      "themes": {
+        "title": "테마 태그",
+        "description": "SF, 로맨스, 미스터리 등 풍부한 테마 선택"
+      }
+    }
+  },
+  "ArtGenerator": {
+    "title": "아트 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 다양한 시각 예술 창작 프로젝트와 AI 이미지 생성을 위한 완벽한 아트 프롬프트를 만드세요.",
+    "features": {
+      "styles": {
+        "title": "아트 스타일",
+        "description": "사실주의, 추상, 인상파, 디지털 아트 등 다양한 아트 스타일 지원"
+      },
+      "composition": {
+        "title": "구도 가이드",
+        "description": "조명, 색상 팔레트, 프레이밍을 포함한 전문적인 구도 제안"
+      },
+      "techniques": {
+        "title": "아트 기법",
+        "description": "다양한 매체와 예술적 접근법을 위한 구체적인 기법 안내"
+      }
+    }
+  },
+  "AIGenerator": {
+    "title": "AI 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 범용 최적화 기술로 모든 AI 플랫폼에 최적화된 프롬프트를 만드세요.",
+    "platformSupport": {
+      "title": "범용 플랫폼 지원",
+      "chatgpt": {
+        "title": "ChatGPT/GPT-4",
+        "description": "구조화된 대화 및 역할 기반 상호작용"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "긴 컨텍스트 추론 및 분석 작업"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "창의적 작업 및 멀티모달 기능"
+      },
+      "other": {
+        "title": "기타 플랫폼",
+        "description": "모든 AI 시스템을 위한 범용 모범 사례"
+      }
+    },
+    "techniques": {
+      "title": "고급 최적화 기술",
+      "roleAssignment": {
+        "title": "역할 할당",
+        "description": "특정 AI 페르소나 및 전문 영역 정의"
+      },
+      "contextLayering": {
+        "title": "컨텍스트 계층화",
+        "description": "단계별로 풍부한 컨텍스트 이해 구축"
+      },
+      "outputSpecs": {
+        "title": "출력 사양",
+        "description": "정확한 형식 및 구조 요구사항"
+      },
+      "chainOfThought": {
+        "title": "사고의 연쇄",
+        "description": "논리적 추론 과정을 통해 AI 가이드"
+      },
+      "fewShot": {
+        "title": "퓨샷 학습",
+        "description": "응답 품질 향상을 위한 예시 제공"
+      },
+      "multiPerspective": {
+        "title": "다중 관점",
+        "description": "여러 관점에서 주제 탐색"
+      }
+    },
+    "features": {
+      "universal": {
+        "title": "범용 호환성",
+        "description": "모든 AI 플랫폼 및 모델과 호환"
+      },
+      "optimization": {
+        "title": "스마트 최적화",
+        "description": "사용 사례에 맞는 모범 사례 자동 적용"
+      },
+      "advanced": {
+        "title": "고급 기술",
+        "description": "전문가급 프롬프트 엔지니어링 방법"
+      }
+    }
+  },
+  "ChatGPTGenerator": {
+    "title": "ChatGPT 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 고급 대화 기술로 ChatGPT와 GPT-4에 특별히 설계된 최적화된 프롬프트를 만드세요.",
+    "chatgptFeatures": {
+      "title": "ChatGPT 전용 최적화 기능",
+      "roleAssignment": {
+        "title": "역할 할당",
+        "description": "ChatGPT가 구현할 특정 전문가 페르소나와 전문 역할 정의"
+      },
+      "contextBuilding": {
+        "title": "컨텍스트 구축",
+        "description": "풍부하고 상세한 대화 기반을 만들기 위한 컨텍스트 정보 계층화"
+      },
+      "outputFormat": {
+        "title": "출력 형식",
+        "description": "구조화되고 전문적인 응답을 위한 정확한 형식 요구사항 지정"
+      },
+      "conversationFlow": {
+        "title": "대화 흐름",
+        "description": "논리적 진행과 후속 질문이 있는 다중 턴 대화 설계"
+      },
+      "parameters": {
+        "title": "매개변수 제어",
+        "description": "창의성, 온도 및 응답 스타일 선호도 최적화"
+      },
+      "chainOfThought": {
+        "title": "사고의 연쇄",
+        "description": "단계별 추론 및 문제 해결 과정을 통해 ChatGPT 가이드"
+      }
+    },
+    "roleTemplates": {
+      "title": "전문 역할 할당 템플릿",
+      "expert": {
+        "title": "주제 전문가",
+        "template": "당신은 [전문분야]에서 [X]년의 경험을 가진 [전문화] 전문가입니다. 당신의 전문 지식은 [핵심 영역]을 포함합니다. [주제]에 대해 상세하고 권위 있는 지침을 제공해 주세요.",
+        "description": "기술 조언, 전문 상담 및 전문 지식 공유에 완벽"
+      },
+      "assistant": {
+        "title": "개인 비서",
+        "template": "당신은 [영역]을 전문으로 하는 나의 전문 비서입니다. 명확한 다음 단계와 함께 체계적이고 실행 가능한 권장사항을 제공하여 [특정 작업]을 도와주세요.",
+        "description": "작업 관리, 계획 및 조직적 지원에 이상적"
+      },
+      "teacher": {
+        "title": "교육 강사",
+        "template": "당신은 경험이 풍부한 [과목] 교사입니다. [레벨] 학생에게 명확한 예시, 비유 및 단계별 분석을 사용하여 [개념]을 설명해 주세요.",
+        "description": "학습, 설명 및 교육 콘텐츠 제작에 훌륭함"
+      },
+      "analyst": {
+        "title": "전략 분석가",
+        "template": "당신은 [도메인]을 전문으로 하는 전략 분석가입니다. [상황/데이터]를 분석하고 통찰력, 트렌드 및 실행 가능한 권장사항을 제공해 주세요.",
+        "description": "비즈니스 분석, 데이터 해석 및 전략 계획에 완벽"
+      }
+    },
+    "contextExamples": {
+      "title": "대화 컨텍스트 구축 예시",
+      "businessAnalysis": {
+        "title": "비즈니스 전략 분석",
+        "context": "컨텍스트 설정:",
+        "contextText": "SaaS 회사의 시장 위치를 분석하고 있습니다. 회사는 50,000명의 사용자, 200만 달러 ARR을 보유하고 있으며 경쟁이 심화되고 있습니다.",
+        "prompt": "최적화된 프롬프트:",
+        "promptText": "SaaS 시장 전문 지식을 가진 수석 비즈니스 전략가로서 우리 회사의 위치를 분석해 주세요. 컨텍스트: 우리는 50,000명의 사용자, 200만 달러 ARR, 15% 월간 이탈률을 가진 프로젝트 관리 SaaS이며, 상당한 자금을 조달한 3개의 주요 경쟁업체에 직면하고 있습니다. 제공 사항: 1) 경쟁 포지셔닝 분석, 2) 성장 전략 권장사항, 3) 위험 완화 우선순위. 글머리 기호가 있는 경영진 요약으로 형식화해 주세요.",
+        "explanation": "이 예시는 비즈니스 컨텍스트를 계층화하고, 전문가 역할을 정의하며, 전략 분석을 위한 정확한 출력 요구사항을 지정하는 방법을 보여줍니다."
+      },
+      "creativeWriting": {
+        "title": "창의적 글쓰기 협업",
+        "context": "컨텍스트 설정:",
+        "contextText": "인간이 화성을 식민지화했지만 자원 갈등에 직면한 2150년을 배경으로 한 SF 소설을 공동 집필하고 있습니다.",
+        "prompt": "최적화된 프롬프트:",
+        "promptText": "당신은 현실적인 세계관 구축으로 유명한 수상 경력이 있는 SF 작가인 나의 창작 파트너입니다. 우리는 2150년 화성을 배경으로 한 이야기를 개발하고 있습니다. 현재 플롯: 식민지가 물 부족 위기에 직면하는 동안 지구는 광물 수출 증가를 요구합니다. 캐릭터: 식민지 충성심과 지구 계약 사이에서 갈등하는 수문지질학자 사라 첸 박사. 그녀의 관점에서 이야기를 계속하되 다음에 집중해 주세요: 1) 내적 갈등, 2) 물 추출에 대한 기술적 세부사항, 3) 정치적 긴장. 500단어로 작성하고 하드 SF 현실주의를 유지해 주세요.",
+        "explanation": "창의적 파트너십을 구축하고, 스토리 컨텍스트, 캐릭터 세부사항 및 구체적인 글쓰기 요구사항을 제공하는 방법을 보여줍니다."
+      },
+      "technicalSupport": {
+        "title": "기술적 문제 해결",
+        "context": "컨텍스트 설정:",
+        "contextText": "성능 문제와 복잡한 상태 관리 문제가 있는 React 애플리케이션 디버깅에 도움이 필요합니다.",
+        "prompt": "최적화된 프롬프트:",
+        "promptText": "당신은 수석 React 개발자이자 성능 최적화 전문가입니다. 다음과 같은 React 앱에서 성능 문제를 겪고 있습니다: 1) 50개 이상의 컴포넌트, 2) 복잡한 Redux 상태(사용자 데이터, 실시간 알림, 대시보드 메트릭), 3) 지연을 유발하는 빈번한 재렌더링. 현재 설정: React 18, Redux Toolkit, 10,000개 이상의 목록 항목. 도움 요청: 1) 가능한 성능 병목 현상 식별, 2) 구체적인 최적화 전략 제공, 3) 구현을 위한 코드 예시 표시. 영향 대 노력으로 솔루션 우선순위를 매겨 주세요.",
+        "explanation": "기술적 컨텍스트를 제공하고, 문제 범위를 지정하며, 예시와 함께 구조화되고 실행 가능한 솔루션을 요청하는 방법을 보여줍니다."
+      }
+    },
+    "bestPractices": {
+      "title": "ChatGPT 모범 사례",
+      "do": {
+        "title": "해야 할 것들",
+        "item1": "ChatGPT가 구현하기를 원하는 역할과 전문 지식 수준에 대해 구체적으로 명시하세요",
+        "item2": "관련 컨텍스트와 배경 정보를 미리 제공하세요",
+        "item3": "응답에서 원하는 정확한 형식과 구조를 지정하세요",
+        "item4": "기대사항과 원하는 출력 스타일을 명확히 하기 위해 예시를 사용하세요",
+        "item5": "복잡한 요청을 번호가 매겨진 단계나 명확한 섹션으로 나누세요"
+      },
+      "dont": {
+        "title": "피해야 할 실수들",
+        "item1": "여러 방식으로 해석될 수 있는 모호하거나 애매한 언어를 사용하지 마세요",
+        "item2": "관련 없는 너무 많은 요청으로 단일 프롬프트를 과부하시키지 마세요",
+        "item3": "제약사항, 한계 또는 중요한 고려사항을 지정하는 것을 잊지 마세요",
+        "item4": "ChatGPT가 당신의 특정 컨텍스트나 이전 대화를 안다고 가정하지 마세요",
+        "item5": "AI를 혼란스럽게 할 수 있는 지나치게 복잡한 문장 구조를 사용하지 마세요"
+      }
+    }
+  },
+  "DrawingGenerator": {
+    "title": "드로잉 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 창의성을 자극하는 드로잉 프롬프트를 만들고 다양한 아트 기법과 주제 연습을 도와드립니다.",
+    "features": {
+      "difficulty": {
+        "title": "난이도 레벨",
+        "description": "기술 수준과 학습 목표에 맞춰 초보자부터 고급자까지 난이도 레벨 선택"
+      },
+      "techniques": {
+        "title": "아트 기법",
+        "description": "연필, 목탄, 잉크, 디지털 아트 방법을 포함한 다양한 드로잉 기법 탐색"
+      },
+      "inspiration": {
+        "title": "창의적 영감",
+        "description": "다양한 주제, 분위기, 예술적 도전을 통해 영감을 얻고 창의성을 확장"
+      }
+    },
+    "techniques": {
+      "title": "드로잉 기법 가이드",
+      "pencil": {
+        "title": "연필 드로잉",
+        "description": "음영과 세부 작업을 위한 클래식 흑연 기법"
+      },
+      "charcoal": {
+        "title": "목탄 드로잉",
+        "description": "풍부한 검은색과 극적인 대비를 가진 대담하고 표현력 있는 마크"
+      },
+      "ink": {
+        "title": "잉크 드로잉",
+        "description": "정밀한 선 작업과 크로스 해칭 기법"
+      },
+      "digital": {
+        "title": "디지털 아트",
+        "description": "현대적인 디지털 드로잉 도구와 기법"
+      }
+    },
+    "difficulty": {
+      "title": "기술 수준 가이드",
+      "beginner": {
+        "title": "초보자",
+        "description": "드로잉 여정을 막 시작한 분들에게 완벽",
+        "skill1": "기본 도형과 비례",
+        "skill2": "간단한 음영 기법",
+        "skill3": "기본 구성 규칙"
+      },
+      "intermediate": {
+        "title": "중급자",
+        "description": "더 복잡한 주제를 다룰 준비가 된 아티스트를 위해",
+        "skill1": "고급 음영과 텍스처",
+        "skill2": "원근법과 깊이",
+        "skill3": "캐릭터와 인물 작업"
+      },
+      "advanced": {
+        "title": "고급자",
+        "description": "경험 있는 아티스트를 위한 도전적인 프로젝트",
+        "skill1": "복잡한 구성",
+        "skill2": "사실적 기법",
+        "skill3": "혼합 매체 접근법"
+      }
+    },
+    "inspiration": {
+      "title": "창의적 영감 카테고리",
+      "subjects": {
+        "title": "인기 주제",
+        "nature": "자연과 풍경",
+        "portraits": "인물과 피규어",
+        "architecture": "건축과 건물",
+        "fantasy": "판타지와 상상",
+        "animals": "동물과 야생동물",
+        "abstract": "추상과 개념"
+      },
+      "moods": {
+        "title": "예술적 분위기",
+        "peaceful": "평화롭고 고요한",
+        "dramatic": "극적이고 대담한",
+        "mysterious": "신비롭고 어두운",
+        "joyful": "즐겁고 밝은",
+        "melancholic": "우울하고 감성적인",
+        "energetic": "활기차고 역동적인"
+      }
+    }
+  },
+  "MidjourneyGenerator": {
+    "title": "Midjourney 프롬프트 생성기",
+    "description": "고급 매개변수 가이드와 구성 기법을 갖춘 Midjourney 전용 최적화 프롬프트를 Kari AI로 생성하세요.",
+    "midjourneyFeatures": {
+      "title": "Midjourney 전용 최적화 기능",
+      "parameters": {
+        "title": "매개변수 마스터리",
+        "description": "완벽한 결과를 위한 종횡비, 품질 설정, 스타일화 값, 버전 제어 마스터"
+      },
+      "styles": {
+        "title": "스타일 가이드",
+        "description": "사실적부터 예술적까지 포괄적인 스타일 참조와 구체적인 기법 권장사항"
+      },
+      "composition": {
+        "title": "구성 규칙",
+        "description": "삼분할 법칙, 리딩 라인, 시각적 균형을 포함한 전문 구성 기법"
+      },
+      "lighting": {
+        "title": "조명 제어",
+        "description": "골든 아워부터 극적인 그림자와 네온 미학까지 조명 기법 마스터"
+      },
+      "quality": {
+        "title": "품질 최적화",
+        "description": "스마트 매개변수 선택으로 렌더링 품질, 세부 수준, 처리 시간 최적화"
+      },
+      "aspectRatio": {
+        "title": "종횡비 가이드",
+        "description": "다양한 용도에 완벽한 종횡비: 소셜 미디어, 인쇄, 웹, 모바일"
+      }
+    },
+    "parameterGuide": {
+      "title": "필수 매개변수 가이드",
+      "aspectRatio": {
+        "title": "종횡비 (--ar)",
+        "landscape": "가로/와이드스크린",
+        "portrait": "세로/모바일",
+        "square": "정사각형/소셜 미디어",
+        "description": "생성된 이미지의 너비 대 높이 비율을 제어합니다. 다양한 플랫폼과 용도에 필수적입니다."
+      },
+      "quality": {
+        "title": "품질 (--q)",
+        "high": "고품질 (느림)",
+        "standard": "표준 품질",
+        "draft": "초안 품질 (빠름)",
+        "description": "렌더링 품질과 생성 속도의 균형을 맞춥니다. 높은 값은 더 자세한 결과를 생성하지만 시간이 더 걸립니다."
+      },
+      "stylize": {
+        "title": "스타일화 (--s)",
+        "high": "고도로 스타일화",
+        "default": "기본 스타일화",
+        "low": "낮은 스타일화",
+        "description": "Midjourney의 기본 미적 스타일이 이미지에 얼마나 적용되는지 제어합니다."
+      },
+      "version": {
+        "title": "버전 (--v)",
+        "latest": "최신 버전",
+        "stable": "안정 버전",
+        "classic": "클래식 버전",
+        "description": "사용할 Midjourney 모델 버전을 선택합니다. 각 버전마다 다른 강점과 특성이 있습니다."
+      }
+    },
+    "styleGuide": {
+      "title": "스타일과 구성 마스터리",
+      "artistic": {
+        "title": "예술 스타일",
+        "photorealistic": {
+          "title": "사실적",
+          "description": "초현실적 사진 스타일",
+          "example": "사실적, 초상세, 8k 해상도, 전문 사진"
+        },
+        "painterly": {
+          "title": "회화적",
+          "description": "전통적인 회화 기법",
+          "example": "유화, 인상파 스타일, 보이는 붓터치, 예술적"
+        },
+        "digital": {
+          "title": "디지털 아트",
+          "description": "현대 디지털 아트 미학",
+          "example": "디지털 아트, 컨셉 아트, 매트 페인팅, artstation 트렌드"
+        }
+      },
+      "composition": {
+        "title": "구성 기법",
+        "lighting": {
+          "title": "조명 스타일",
+          "golden": "골든 아워",
+          "goldenDesc": "일출/일몰 시 따뜻하고 부드러운 조명",
+          "dramatic": "극적인 조명",
+          "dramaticDesc": "강한 그림자가 있는 고대비",
+          "soft": "부드러운 조명",
+          "softDesc": "인물 사진에 적합한 균등하고 확산된 조명",
+          "neon": "네온 조명",
+          "neonDesc": "생생하고 다채로운 인공 조명"
+        },
+        "camera": {
+          "title": "카메라 앵글",
+          "closeup": "클로즈업 샷",
+          "closeupDesc": "피사체의 친밀하고 상세한 시점",
+          "wide": "와이드 샷",
+          "wideDesc": "환경을 보여주는 광범위한 시점",
+          "aerial": "항공 뷰",
+          "aerialDesc": "위에서 내려다보는 조감도 시점",
+          "macro": "매크로 샷",
+          "macroDesc": "세밀한 디테일을 보여주는 극단적인 클로즈업"
+        }
+      }
+    },
+    "bestPractices": {
+      "title": "Midjourney 모범 사례",
+      "do": {
+        "title": "모범 사례",
+        "item1": {
+          "title": "구체적이고 설명적인 언어 사용",
+          "description": "색상, 재료, 조명, 구성 세부사항에 대해 정확하게 기술"
+        },
+        "item2": {
+          "title": "스타일 참조 포함",
+          "description": "더 나은 결과를 위해 특정 아트 스타일, 아티스트, 시각적 참조 언급"
+        },
+        "item3": {
+          "title": "용도에 맞게 매개변수 최적화",
+          "description": "적절한 종횡비, 품질 설정, 스타일화 수준 선택"
+        },
+        "item4": {
+          "title": "프롬프트를 논리적으로 계층화",
+          "description": "주제부터 시작해서 스타일, 기술적 세부사항과 매개변수 순으로 구성"
+        },
+        "item5": {
+          "title": "필요시 네거티브 프롬프트 사용",
+          "description": "이미지에서 원하지 않는 요소를 제외하기 위해 --no 매개변수 추가"
+        }
+      },
+      "dont": {
+        "title": "피해야 할 일반적인 실수",
+        "item1": {
+          "title": "지나치게 복잡한 프롬프트 사용 금지",
+          "description": "프롬프트를 집중시키고 너무 많은 상충하는 스타일 방향 피하기"
+        },
+        "item2": {
+          "title": "종횡비 무시 금지",
+          "description": "의도한 용도에 적절한 종횡비를 항상 지정"
+        },
+        "item3": {
+          "title": "저작권 보호 캐릭터 이름 사용 금지",
+          "description": "특정 캐릭터 이름 피하고 대신 설명적 용어 사용"
+        },
+        "item4": {
+          "title": "스타일화 과도 사용 금지",
+          "description": "높은 스타일화 값은 때때로 지나치게 추상적인 결과를 생성할 수 있음"
+        },
+        "item5": {
+          "title": "조명 설명 누락 금지",
+          "description": "조명은 분위기와 품질에 중요; 항상 조명 세부사항 포함"
+        }
+      }
+    },
+    "examples": {
+      "title": "전문 예시 프롬프트",
+      "portrait": {
+        "title": "인물 사진",
+        "prompt": "자신감 있는 비즈니스 임원의 전문 헤드샷, 부드러운 스튜디오 조명, 얕은 피사계 심도, 중성 배경, 85mm 렌즈로 촬영, 사실적, 고세밀 --ar 4:5 --q 2 --s 50",
+        "explanation": "이 예시는 전문 인물 사진 결과를 위한 피사체 설명, 조명, 기술적 카메라 세부사항, 최적화된 매개변수를 결합합니다."
+      },
+      "landscape": {
+        "title": "풍경 장면",
+        "prompt": "골든 아워의 장엄한 산 풍경, 극적인 구름, 고산 호수 반사, 전경의 소나무, 영화적 구성, 풍경 사진, 초광각 --ar 16:9 --q 2 --s 100",
+        "explanation": "환경 요소, 조명 조건, 구성 기법을 계층화하여 멋진 풍경 이미지를 만드는 방법을 보여줍니다."
+      },
+      "conceptArt": {
+        "title": "컨셉 아트",
+        "prompt": "미래적 사이버펑크 도시 풍경, 젖은 거리에 반사되는 네온 불빛, 날아다니는 자동차, 우뚝 솟은 고층 빌딩, 대기 안개, 컨셉 아트 스타일, 매트 페인팅, artstation 트렌드 --ar 21:9 --q 2 --s 250",
+        "explanation": "장르 요소, 대기 세부사항, 아트 스타일 참조를 결합하여 매력적인 컨셉 아트 생성을 보여줍니다."
+      }
+    }
+  },
+  "AIVideoGenerator": {
+    "title": "AI 비디오 프롬프트 생성기",
+    "description": "Kari AI를 사용하여 Runway, Pika, Stable Video Diffusion과 같은 AI 비디오 생성 플랫폼을 위한 최적화된 프롬프트를 고급 장면 설명 도구와 함께 만드세요.",
+    "platformSupport": {
+      "title": "비디오 플랫폼 지원",
+      "runway": {
+        "title": "Runway ML",
+        "description": "모션 제어 및 스타일 전송 기능을 갖춘 고급 비디오 생성"
+      },
+      "pika": {
+        "title": "Pika Labs",
+        "description": "독특한 예술적 스타일과 효과를 가진 창의적 비디오 생성"
+      },
+      "stable": {
+        "title": "Stable Video",
+        "description": "사용자 정의 가능한 매개변수를 가진 오픈소스 비디오 확산 모델"
+      },
+      "other": {
+        "title": "기타 플랫폼",
+        "description": "신흥 플랫폼을 위한 범용 비디오 생성 모범 사례"
+      }
+    },
+    "sceneBuilder": {
+      "title": "장면 설명 구축 도구",
+      "composition": {
+        "title": "카메라 구성",
+        "description": "비디오 장면의 카메라 각도와 프레이밍 정의",
+        "closeup": "클로즈업",
+        "wide": "와이드 샷",
+        "aerial": "항공 뷰",
+        "tracking": "트래킹 샷"
+      },
+      "lighting": {
+        "title": "조명 설정",
+        "description": "장면의 조명 조건과 분위기 지정",
+        "golden": "골든 아워",
+        "dramatic": "드라마틱 조명",
+        "soft": "소프트 조명",
+        "neon": "네온 조명"
+      },
+      "movement": {
+        "title": "카메라 움직임",
+        "description": "카메라 모션과 장면 역학 제어",
+        "smooth": "부드러운 팬",
+        "dynamic": "다이나믹 모션",
+        "static": "정적 샷",
+        "zoom": "줌 효과"
+      }
+    },
+    "videoFeatures": {
+      "title": "비디오 전용 최적화 기능",
+      "duration": {
+        "title": "지속 시간 제어",
+        "description": "다양한 비디오 길이와 페이싱 요구사항에 맞게 프롬프트 최적화"
+      },
+      "style": {
+        "title": "시각적 스타일",
+        "description": "예술적 스타일, 색상 팔레트, 시각적 미학 정의"
+      },
+      "narrative": {
+        "title": "내러티브 구조",
+        "description": "매력적인 스토리라인과 장면 진행 구축"
+      },
+      "technical": {
+        "title": "기술적 매개변수",
+        "description": "해상도, 프레임 레이트, 품질 설정 지정"
+      },
+      "mood": {
+        "title": "분위기와 대기",
+        "description": "감정적 톤과 대기적 요소 생성"
+      },
+      "effects": {
+        "title": "시각 효과",
+        "description": "특수 효과, 전환, 후처리 요소 추가"
+      }
+    },
+    "platformGuidance": {
+      "title": "플랫폼별 모범 사례",
+      "runway": {
+        "title": "Runway ML 팁",
+        "tip1": "더 나은 애니메이션 품질을 위해 상세한 모션 설명 사용",
+        "tip2": "카메라 움직임을 명확히 지정 (팬, 틸트, 줌, 돌리)",
+        "tip3": "영화적 결과를 위해 조명과 분위기 설명자 포함",
+        "tip4": "특정 종횡비와 지속 시간 선호도 언급"
+      },
+      "pika": {
+        "title": "Pika Labs 팁",
+        "tip1": "창의적이고 예술적인 스타일 설명에 집중",
+        "tip2": "생생한 색상과 텍스처 설명 사용",
+        "tip3": "독특한 시각 효과와 변환 지정",
+        "tip4": "예술적 움직임과 흐름 설명 포함"
+      },
+      "stable": {
+        "title": "Stable Video 팁",
+        "tip1": "상세한 장면 구성과 프레이밍 제공",
+        "tip2": "정밀도를 위해 기술적 카메라 용어 사용",
+        "tip3": "모션 벡터와 애니메이션 매개변수 지정",
+        "tip4": "품질과 해상도 요구사항 포함"
+      },
+      "general": {
+        "title": "범용 모범 사례",
+        "tip1": "명확한 주제와 액션 설명으로 시작",
+        "tip2": "환경과 대기 세부사항을 레이어링",
+        "tip3": "장면 전환의 타이밍과 페이싱 지정",
+        "tip4": "스타일 참조와 품질 지표 포함"
+      }
+    },
+    "bestPractices": {
+      "title": "비디오 생성 모범 사례",
+      "clarity": {
+        "title": "명확한 설명",
+        "description": "장면, 액션, 시각적 요소에 대해 정확하고 설명적인 언어 사용"
+      },
+      "specificity": {
+        "title": "기술적 특이성",
+        "description": "카메라 각도, 조명, 움직임, 타이밍 세부사항 포함"
+      },
+      "creativity": {
+        "title": "창의적 비전",
+        "description": "기술적 요구사항과 예술적 및 내러티브 요소의 균형"
+      }
+    },
+    "platformSupport": {
+      "title": "비디오 플랫폼 지원",
+      "runway": {
+        "title": "Runway ML",
+        "description": "모션 제어 및 스타일 전송 기능을 갖춘 고급 비디오 생성"
+      },
+      "pika": {
+        "title": "Pika Labs",
+        "description": "독특한 예술적 스타일과 효과를 가진 창의적 비디오 생성"
+      },
+      "stable": {
+        "title": "Stable Video",
+        "description": "사용자 정의 가능한 매개변수를 가진 오픈소스 비디오 확산 모델"
+      },
+      "other": {
+        "title": "기타 플랫폼",
+        "description": "신흥 플랫폼을 위한 범용 비디오 생성 모범 사례"
+      }
+    },
+    "sceneBuilder": {
+      "title": "장면 설명 구축 도구",
+      "composition": {
+        "title": "카메라 구도",
+        "description": "비디오 장면의 카메라 각도와 프레이밍 정의",
+        "closeup": "클로즈업",
+        "wide": "와이드 샷",
+        "aerial": "항공 뷰",
+        "tracking": "트래킹 샷"
+      },
+      "lighting": {
+        "title": "조명 설정",
+        "description": "장면의 조명 조건과 분위기 지정",
+        "golden": "골든 아워",
+        "dramatic": "드라마틱 조명",
+        "soft": "소프트 조명",
+        "neon": "네온 조명"
+      },
+      "movement": {
+        "title": "카메라 움직임",
+        "description": "카메라 모션과 장면 역학 제어",
+        "smooth": "부드러운 팬",
+        "dynamic": "다이나믹 모션",
+        "static": "정적 샷",
+        "zoom": "줌 효과"
+      }
+    },
+    "videoFeatures": {
+      "title": "비디오 전용 최적화 기능",
+      "duration": {
+        "title": "지속 시간 제어",
+        "description": "다양한 비디오 길이와 페이싱 요구사항에 맞게 프롬프트 최적화"
+      },
+      "style": {
+        "title": "비주얼 스타일",
+        "description": "예술적 스타일, 색상 팔레트, 시각적 미학 정의"
+      },
+      "narrative": {
+        "title": "내러티브 구조",
+        "description": "매력적인 스토리라인과 장면 진행 구축"
+      },
+      "technical": {
+        "title": "기술적 매개변수",
+        "description": "해상도, 프레임 레이트, 품질 설정 지정"
+      },
+      "mood": {
+        "title": "분위기와 대기",
+        "description": "감정적 톤과 대기적 요소 생성"
+      },
+      "effects": {
+        "title": "시각 효과",
+        "description": "특수 효과, 전환, 후처리 요소 추가"
+      }
+    },
+    "platformGuidance": {
+      "title": "플랫폼별 모범 사례",
+      "runway": {
+        "title": "Runway ML 팁",
+        "tip1": "더 나은 애니메이션 품질을 위해 상세한 모션 설명 사용",
+        "tip2": "카메라 움직임을 명확히 지정 (팬, 틸트, 줌, 돌리)",
+        "tip3": "영화적 결과를 위해 조명과 분위기 설명자 포함",
+        "tip4": "특정 종횡비와 지속 시간 선호도 언급"
+      },
+      "pika": {
+        "title": "Pika Labs 팁",
+        "tip1": "창의적이고 예술적인 스타일 설명에 집중",
+        "tip2": "생생한 색상과 텍스처 설명 사용",
+        "tip3": "독특한 시각 효과와 변환 지정",
+        "tip4": "예술적 움직임과 흐름 설명 포함"
+      },
+      "stable": {
+        "title": "Stable Video 팁",
+        "tip1": "상세한 장면 구성과 프레이밍 제공",
+        "tip2": "정확성을 위해 기술적 카메라 용어 사용",
+        "tip3": "모션 벡터와 애니메이션 매개변수 지정",
+        "tip4": "품질과 해상도 요구사항 포함"
+      },
+      "general": {
+        "title": "범용 모범 사례",
+        "tip1": "명확한 주제와 액션 설명으로 시작",
+        "tip2": "환경과 대기 세부사항을 레이어링",
+        "tip3": "장면 전환의 타이밍과 페이싱 지정",
+        "tip4": "스타일 참조와 품질 지표 포함"
+      }
+    },
+    "bestPractices": {
+      "title": "비디오 생성 모범 사례",
+      "clarity": {
+        "title": "명확한 설명",
+        "description": "장면, 액션, 시각적 요소에 대해 정확하고 설명적인 언어 사용"
+      },
+      "specificity": {
+        "title": "기술적 특이성",
+        "description": "카메라 각도, 조명, 움직임, 타이밍 세부사항 포함"
+      },
+      "creativity": {
+        "title": "창의적 비전",
+        "description": "기술적 요구사항과 예술적, 내러티브 요소의 균형"
+      }
+    }
+  },
+  "KariOptimizer": {
+    "welcome": {
+      "title": "Kari를 만나보세요 - AI 프롬프트 최적화 전문가",
+      "message": "고급 4-D 방법론을 사용하여 프롬프트를 변환하고 AI의 최대 잠재력을 발휘합니다. 최적화 모드를 선택하세요:",
+      "basicMode": "핵심 개선과 즉시 결과를 제공하는 빠른 최적화",
+      "detailMode": "명확화 질문과 고급 기술을 통한 심층 분석"
+    },
+    "input": {
+      "title": "프롬프트 입력",
+      "placeholder": "만들거나 달성하고 싶은 것을 설명해주세요...",
+      "platform": "대상 플랫폼",
+      "mode": "최적화 모드",
+      "optimize": "Kari로 최적화",
+      "optimizing": "최적화 중..."
+    },
+    "result": {
+      "optimizedPrompt": "최적화된 프롬프트",
+      "copy": "복사",
+      "save": "저장",
+      "share": "공유",
+      "regenerate": "재생성",
+      "newPrompt": "새 프롬프트",
+      "improvements": "주요 개선사항",
+      "techniques": "적용된 기술",
+      "proTip": "전문가 팁"
+    },
+    "errors": {
+      "optimizationFailed": "최적화에 실패했습니다. 다시 시도해주세요.",
+      "networkError": "네트워크 오류입니다. 연결을 확인해주세요.",
+      "emptyPrompt": "최적화할 프롬프트를 입력해주세요.",
+      "promptTooShort": "프롬프트는 최소 10자 이상이어야 합니다.",
+      "promptTooLong": "프롬프트는 2000자 이하여야 합니다.",
+      "timeout": "요청 시간이 초과되었습니다. 다시 시도해주세요.",
+      "rateLimited": "요청이 너무 많습니다. 잠시 기다려주세요.",
+      "serverError": "서버 오류입니다. 나중에 다시 시도해주세요.",
+      "saveFailed": "결과 저장에 실패했습니다.",
+      "shareFailed": "결과 공유에 실패했습니다."
+    },
+    "success": {
+      "copied": "클립보드에 복사되었습니다!",
+      "optimized": "프롬프트 최적화가 성공했습니다!",
+      "saved": "결과가 성공적으로 저장되었습니다!",
+      "deleted": "결과가 성공적으로 삭제되었습니다!",
+      "loaded": "결과가 성공적으로 로드되었습니다!",
+      "shared": "성공적으로 공유되었습니다!",
+      "shareLink": "공유 링크가 클립보드에 복사되었습니다!",
+      "historyCleared": "최적화 기록이 지워졌습니다!"
+    },
+    "loading": {
+      "optimizing": "Kari가 프롬프트를 최적화하고 있습니다...",
+      "analyzing": "프롬프트를 분석하고 있습니다...",
+      "generating": "최적화된 버전을 생성하고 있습니다..."
+    },
+    "platforms": {
+      "chatgpt": "ChatGPT - 구조화된 대화 기능을 가진 대화형 AI",
+      "claude": "Claude - 고급 추론 및 긴 맥락 이해",
+      "gemini": "Gemini - 창의적 작업 및 멀티모달 기능",
+      "midjourney": "Midjourney - 예술적 스타일의 AI 이미지 생성",
+      "dalle": "DALL-E - OpenAI의 정밀 제어 이미지 생성",
+      "other": "기타 플랫폼 - 범용 최적화 기술"
+    },
+    "modes": {
+      "basic": {
+        "title": "기본 모드",
+        "description": "핵심 개선과 즉시 결과를 제공하는 빠른 최적화",
+        "features": ["빠른 처리", "필수 기술", "바로 사용 가능한 프롬프트"]
+      },
+      "detail": {
+        "title": "상세 모드", 
+        "description": "명확화 질문과 고급 기술을 통한 심층 분석",
+        "features": ["포괄적 분석", "명확화 질문", "고급 최적화"]
+      }
+    },
+    "saved": {
+      "title": "저장된 결과",
+      "empty": "아직 저장된 결과가 없습니다. 최적화된 프롬프트를 저장하여 나중에 접근하세요!",
+      "load": "이 결과 로드",
+      "delete": "이 결과 삭제"
+    },
+    "clarifying": {
+      "title": "Kari가 더 잘 이해할 수 있도록 도와주세요",
+      "description": "이 질문들에 답하여 더 개인화된 최적화를 받으세요. Kari는 당신의 답변을 사용하여 가장 관련성 높은 기술을 적용합니다.",
+      "selectOption": "옵션 선택...",
+      "optimize": "답변으로 최적화",
+      "useDefaults": "스마트 기본값 사용"
+    },
+    "history": {
+      "title": "최적화 기록",
+      "empty": "아직 최적화 기록이 없습니다. 최근 최적화가 여기에 표시됩니다.",
+      "load": "이 최적화 로드",
+      "clear": "기록 지우기"
+    }
+  },
+  "KariAI": {
+    "title": "Kari AI - 고급 프롬프트 최적화",
+    "description": "Kari AI의 혁신적인 4-D 방법론으로 프롬프트 최적화를 발견하세요. 전문가급 프롬프트 엔지니어링으로 AI 상호작용을 변화시키세요.",
+    "hero": {
+      "title": "Kari AI를 만나보세요",
+      "subtitle": "세계에서 가장 진보된 프롬프트 최적화 시스템",
+      "description": "Kari AI는 혁신적인 4-D 방법론을 사용하여 기본 프롬프트를 전문가급 지침으로 변환하여 모든 AI 플랫폼에서 더 나은 결과를 얻습니다.",
+      "cta": "지금 Kari AI 사용해보기"
+    },
+    "methodology": {
+      "title": "4-D 방법론",
+      "subtitle": "프롬프트 완성을 위한 4단계",
+      "description": "Kari AI의 체계적 접근법은 모든 프롬프트가 최대 효과를 위해 최적화되도록 보장합니다.",
+      "deconstruct": {
+        "title": "1. 분해 (DECONSTRUCT)",
+        "description": "핵심 의도와 맥락 추출",
+        "details": "Kari는 프롬프트를 분석하여 핵심 의도, 주요 엔티티, 맥락 요구사항, 결과를 개선할 수 있는 누락된 요소를 식별합니다."
+      },
+      "diagnose": {
+        "title": "2. 진단 (DIAGNOSE)", 
+        "description": "명확성 격차와 문제 식별",
+        "details": "고급 분석을 통해 모호성 문제, 명확성 격차, 구체성 수준, 구조적 필요를 식별하여 개선이 필요한 정확한 부분을 찾아냅니다."
+      },
+      "develop": {
+        "title": "3. 개발 (DEVELOP)",
+        "description": "기술과 AI 역할 선택",
+        "details": "Kari는 특정 사용 사례와 플랫폼을 기반으로 프롬프트 엔지니어링 기술의 최적 조합을 선택하고 적절한 AI 역할을 할당합니다."
+      },
+      "deliver": {
+        "title": "4. 전달 (DELIVER)",
+        "description": "최적화된 프롬프트 구축",
+        "details": "최종 단계에서는 적절한 구조, 명확한 지침, 플랫폼별 조정을 통해 최적화된 프롬프트를 구축하여 최대 효과를 달성합니다."
+      }
+    },
+    "techniques": {
+      "title": "고급 최적화 기술",
+      "subtitle": "전문 프롬프트 엔지니어링 방법",
+      "roleAssignment": {
+        "title": "역할 할당",
+        "description": "더 정확한 응답을 위해 특정 AI 페르소나와 전문 분야 정의"
+      },
+      "contextLayering": {
+        "title": "맥락 계층화", 
+        "description": "전략적 정보 계층화를 통해 풍부한 맥락적 이해 구축"
+      },
+      "outputSpecs": {
+        "title": "출력 사양",
+        "description": "일관된 결과를 위한 정확한 형식 및 구조 요구사항"
+      },
+      "chainOfThought": {
+        "title": "사고의 연쇄",
+        "description": "논리적 추론 과정을 단계별로 AI 가이드"
+      },
+      "fewShot": {
+        "title": "퓨샷 학습",
+        "description": "응답 품질과 일관성 향상을 위한 전략적 예시 제공"
+      },
+      "multiPerspective": {
+        "title": "다각적 분석",
+        "description": "포괄적인 통찰을 위해 여러 관점에서 주제 탐색"
+      }
+    },
+    "platforms": {
+      "title": "범용 플랫폼 지원",
+      "subtitle": "모든 AI 시스템에 최적화",
+      "chatgpt": {
+        "title": "ChatGPT와 GPT-4",
+        "description": "구조화된 대화, 역할 기반 상호작용, 고급 추론 체인"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "긴 맥락 추론, 분석 작업, 상세한 설명"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "창의적 작업, 멀티모달 기능, 혁신적 문제 해결"
+      },
+      "midjourney": {
+        "title": "Midjourney",
+        "description": "예술적 스타일, 구성 규칙, 매개변수 최적화를 통한 이미지 생성"
+      },
+      "other": {
+        "title": "범용 호환성",
+        "description": "모든 AI 플랫폼이나 모델에서 작동하는 모범 사례와 기술"
+      }
+    },
+    "comparison": {
+      "title": "왜 Kari AI를 선택해야 할까요?",
+      "subtitle": "가장 진보된 프롬프트 최적화",
+      "kari": {
+        "title": "Kari AI",
+        "features": [
+          "4-D 체계적 방법론",
+          "플랫폼별 최적화",
+          "고급 기술 선택",
+          "맥락 인식 개선",
+          "전문가급 결과",
+          "실시간 최적화",
+          "다국어 지원",
+          "무료 사용"
+        ]
+      },
+      "others": {
+        "title": "다른 도구들",
+        "features": [
+          "기본 프롬프트 템플릿",
+          "일반적인 제안",
+          "제한된 기술 다양성",
+          "획일적 접근법",
+          "일관성 없는 결과",
+          "수동 최적화",
+          "영어만 지원",
+          "유료 구독"
+        ]
+      }
+    },
+    "examples": {
+      "title": "실제 최적화 예시",
+      "subtitle": "Kari AI의 실제 작동 모습 보기",
+      "before": "이전 (원본 프롬프트)",
+      "after": "이후 (Kari 최적화)",
+      "improvements": "주요 개선사항",
+      "example1": {
+        "title": "비즈니스 분석",
+        "before": "내 비즈니스를 분석해줘",
+        "after": "SaaS와 기술 시장에서 15년 이상의 경험을 가진 수석 비즈니스 전략가로서, 제 프로젝트 관리 소프트웨어 비즈니스에 대한 포괄적인 분석을 수행해 주세요. 맥락: 50,000명 이상의 사용자에게 서비스를 제공하고, 200만 달러의 ARR을 생성하며, 15%의 월간 이탈률에 직면하고, 충분한 자금을 확보한 3개의 경쟁업체와 경쟁하고 있습니다. 제공해 주세요: 1) 경쟁 포지셔닝 평가, 2) 구체적인 전술을 포함한 성장 전략 권장사항, 3) 타임라인을 포함한 위험 완화 우선순위. 실행 가능한 글머리 기호와 성공 지표를 포함한 경영진 요약으로 형식을 맞춰 주세요.",
+        "improvements": [
+          "전문가 역할 할당 추가",
+          "구체적인 비즈니스 맥락 제공",
+          "명확한 결과물 구조화",
+          "출력 형식 지정",
+          "성공 지표 포함"
+        ]
+      },
+      "example2": {
+        "title": "창작 글쓰기",
+        "before": "우주에 관한 이야기를 써줘",
+        "after": "당신은 하드 SF 리얼리즘으로 유명한 수상 경력이 있는 SF 작가입니다. 2157년 화성 연구 기지 Olympus-7을 배경으로 한 1,000단어 단편소설을 써주세요. 주인공: 지하 얼음 샘플에서 비정상적인 미생물 생명체를 발견하는 외생물학자 엘레나 바스케스 박사. 톤: 현실적인 기술적 세부사항을 포함한 긴장감 넘치는 과학 스릴러. 포함 사항: 1) 과학적 발견 과정, 2) 공개에 대한 윤리적 딜레마, 3) 캐릭터의 개인적 이해관계. 스타일: 3인칭 제한 시점, 현재 시제, 진정한 과학 용어 사용.",
+        "improvements": [
+          "작가 전문성 확립",
+          "구체적인 설정과 시간대",
+          "상세한 캐릭터 배경",
+          "명확한 장르와 톤",
+          "구조화된 스토리 요소",
+          "기술적 진정성 요구사항"
+        ]
+      }
+    },
+    "caseStudies": {
+      "title": "성공 사례",
+      "subtitle": "Kari AI 사용자들의 실제 결과",
+      "study1": {
+        "title": "마케팅 에이전시",
+        "challenge": "다양한 산업의 다양한 클라이언트를 위한 일관되고 고품질의 콘텐츠 브리프가 필요했습니다.",
+        "solution": "콘텐츠 제작을 위한 프롬프트 템플릿을 Kari AI로 최적화하여 더 구체적이고 실행 가능한 브리프를 만들었습니다.",
+        "result": "클라이언트 만족도 점수가 300% 향상되고 수정 요청이 50% 감소했습니다."
+      },
+      "study2": {
+        "title": "소프트웨어 개발팀",
+        "challenge": "불명확한 기술 문서와 일관성 없는 코드 리뷰 피드백으로 어려움을 겪었습니다.",
+        "solution": "기술 문서 작성 프롬프트와 코드 리뷰 가이드라인에 Kari AI 최적화를 구현했습니다.",
+        "result": "새로운 개발자 온보딩이 40% 빨라지고 문서 관련 지원 티켓이 60% 감소했습니다."
+      },
+      "study3": {
+        "title": "교육 기관",
+        "challenge": "교사들이 개인화된 학습 자료와 평가를 만들기 위한 더 나은 프롬프트가 필요했습니다.",
+        "solution": "교육 콘텐츠 제작에 Kari AI를 도입하여 더 타겟팅되고 효과적인 학습 경험을 가능하게 했습니다.",
+        "result": "학생 참여도가 25% 향상되고 학습 성과 평가가 35% 개선되었습니다."
+      }
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "q1": {
+        "question": "Kari AI가 다른 프롬프트 도구와 다른 점은 무엇인가요?",
+        "answer": "Kari AI는 체계적인 4-D 방법론(분해, 진단, 개발, 전달)을 사용하여 특정 요구사항을 분석하고 전문적인 프롬프트 엔지니어링 기술을 적용합니다. 단순한 템플릿 도구와 달리 Kari는 맥락 인식, 플랫폼별 최적화를 제공합니다."
+      },
+      "q2": {
+        "question": "Kari AI는 정말 무료로 사용할 수 있나요?",
+        "answer": "네, Kari AI는 숨겨진 비용, 구독료, 사용 제한 없이 완전히 무료로 사용할 수 있습니다. 모든 사람이 전문가급 프롬프트 최적화에 접근할 수 있어야 한다고 믿습니다."
+      },
+      "q3": {
+        "question": "Kari AI는 어떤 AI 플랫폼을 지원하나요?",
+        "answer": "Kari AI는 ChatGPT, Claude, Gemini, Midjourney, DALL-E를 포함한 모든 주요 AI 플랫폼용 프롬프트를 최적화하며, 모든 AI 시스템에서 작동하는 범용 기술을 제공합니다."
+      },
+      "q4": {
+        "question": "4-D 방법론은 어떻게 작동하나요?",
+        "answer": "4-D 방법론은 프롬프트를 체계적으로 개선합니다: 분해(의도 분석), 진단(문제 식별), 개발(기술 선택), 전달(최적화된 프롬프트 구축). 이를 통해 매번 포괄적인 최적화가 보장됩니다."
+      },
+      "q5": {
+        "question": "Kari AI를 다양한 유형의 콘텐츠에 사용할 수 있나요?",
+        "answer": "물론입니다! Kari AI는 모든 유형의 콘텐츠 - 글쓰기, 아트, 비즈니스 분석, 기술 문서, 창작 프로젝트 등 - 에 대응합니다. 최적화는 특정 사용 사례에 맞춰 조정됩니다."
+      },
+      "q6": {
+        "question": "Kari AI를 사용하려면 프롬프트 엔지니어링 경험이 필요한가요?",
+        "answer": "경험이 필요하지 않습니다! Kari AI가 모든 기술적 프롬프트 엔지니어링을 처리합니다. 원하는 것을 설명하기만 하면 Kari가 자동으로 전문 기술을 적용합니다."
+      }
+    },
+    "cta": {
+      "title": "AI 상호작용을 변화시킬 준비가 되셨나요?",
+      "subtitle": "전문 프롬프트 최적화의 힘을 경험하세요",
+      "description": "Kari AI의 진보된 4-D 방법론으로 AI 결과를 개선한 수천 명의 사용자와 함께하세요.",
+      "button": "지금 최적화 시작하기",
+      "features": [
+        "영구 무료",
+        "등록 불필요", 
+        "즉시 결과",
+        "모든 플랫폼 지원"
+      ]
+    }
   }
 }

@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { GoogleAnalytics } from "@/components/Analytics";
 import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
@@ -34,6 +35,7 @@ export default async function RootLayout({ children, params }) {
       <body>
           <AuthProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
+            <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
             <Header />
             {children}
             <Footer />

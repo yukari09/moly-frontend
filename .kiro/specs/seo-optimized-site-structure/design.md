@@ -2,80 +2,123 @@
 
 ## Overview
 
-基于关键词研究数据，我们将设计一个多层级的SEO优化网站架构，采用Next.js框架实现服务端渲染和静态生成，确保最佳的SEO性能。网站将采用模块化设计，支持动态路由和多语言，同时针对不同竞争度的关键词实施差异化的内容策略。
+基于现有的Next.js项目基础，我们将扩展为一个多语言的AI提示生成器平台，集成Kari AI优化系统。项目已有完整的shadcn/ui组件库、next-intl国际化支持和基础架构，现在需要添加提示生成器功能和SEO优化。
 
 ## Architecture
 
-### Promptify AI系统集成策略
+## 现有项目基础
 
-Promptify AI系统基于Google Gemini 2.5 Flash Lite模型，通过专门的系统提示词让AI扮演master-level提示优化专家"Kari"角色，成为所有生成器的核心引擎：
+### 技术栈
+- **框架**: Next.js 15.4.5 with App Router
+- **UI组件**: shadcn/ui + Radix UI + Tailwind CSS
+- **国际化**: next-intl (当前支持 en, ko)
+- **认证**: NextAuth.js
+- **数据库**: Elasticsearch + Redis
+- **部署**: 支持Cloudflare Workers
 
-1. **Gemini驱动的架构**: 
-   - 使用Google Gemini 2.5 Flash Lite作为核心AI模型
-   - 通过精心设计的系统提示词让Gemini扮演"Kari"提示优化专家
-   - API负责构建完整的prompt（系统提示词 + 用户输入）并调用Gemini
-2. **Kari系统提示词核心**: 
-   - **4-D方法论**: DECONSTRUCT → DIAGNOSE → DEVELOP → DELIVER
-   - **智能模式**: DETAIL模式（深度优化）和BASIC模式（快速优化）
-   - **平台特化**: 针对ChatGPT、Claude、Gemini等不同AI平台的优化策略
-   - **响应格式**: 结构化的优化结果输出格式
-3. **API集成流程**:
-   - 接收用户输入（原始prompt、平台、生成器类型、语言等）
-   - 构建发送给Gemini的完整prompt（Kari系统提示词 + 用户请求）
-   - 调用Gemini API获取Kari的优化结果
-   - 解析和格式化Gemini响应返回给用户
-4. **多语言和多平台支持**: 
-   - Kari系统提示词支持8种语言的本地化优化
-   - 针对不同AI平台（ChatGPT、Claude、Midjourney等）的特定优化策略
-   - 根据生成器类型（writing、art、video等）应用专门的优化技术
+### 现有功能
+- 用户认证系统 (登录/注册/密码重置)
+- 多语言支持 (英语/韩语)
+- 响应式UI组件库
+- 邮件系统
+- 速率限制
+- 用户账户管理
+
+## Kari AI系统集成策略
+
+基于现有架构，集成Kari AI提示优化系统：
+
+1. **Kari核心引擎**: 
+   - 使用Google Gemini 2.5 Flash Lite作为AI后端
+   - 集成完整的4-D方法论系统提示词
+   - API端点: `/api/kari/optimize`
+   
+2. **4-D方法论实现**: 
+   - **DECONSTRUCT**: 提取核心意图和上下文
+   - **DIAGNOSE**: 识别清晰度和完整性问题
+   - **DEVELOP**: 选择优化技术和AI角色
+   - **DELIVER**: 构建优化提示和指导
+
+3. **多模式支持**:
+   - **BASIC模式**: 快速优化，核心技术应用
+   - **DETAIL模式**: 深度优化，包含澄清问题
+
+4. **平台特化**:
+   - ChatGPT/GPT-4: 结构化对话
+   - Claude: 长上下文推理
+   - Gemini: 创意任务
+   - Midjourney/DALL-E: 图像生成
+   - 其他平台: 通用最佳实践
 
 ### 网站结构层级
 
 ```
 主域名/
-├── / (主页 - "prompt generator" + Promptify核心展示)
-├── /writing-prompt-generator (写作提示生成器 + Promptify写作优化)
-├── /art-prompt-generator (艺术提示生成器 + Promptify视觉优化) 
-├── /ai-prompt-generator (AI提示生成器 + Promptify通用优化)
-├── /chatgpt-prompt-generator (ChatGPT提示生成器 + Promptify ChatGPT特化)
-├── /midjourney-prompt-generator (Midjourney提示生成器 + Promptify图像生成特化)
-├── /image-to-prompt-generator (图像转提示生成器 + Promptify逆向工程)
-├── /drawing-prompt-generator (绘画提示生成器 + Promptify创意激发)
-├── /ai-video-prompt-generator (AI视频提示生成器 + Promptify视频优化)
-├── /promptify-ai (Promptify AI专门介绍页面)
-├── /tools/ (工具集合页面)
-│   ├── /free (免费工具 + Promptify基础版)
-│   ├── /best (最佳工具推荐 + Promptify Pro功能)
-│   └── /online (在线工具 + Promptify云端处理)
-└── /[locale]/ (多语言版本 - en, zh, ja, ko, fr, es, pt, de)
-    ├── 每种语言的本地化关键词优化页面
-    ├── 语言特定的SEO策略实施
-    └── 本地化的Promptify功能展示
+├── / (语言检测页面，重定向到用户首选语言版本)
+└── /[locale]/ (en, zh, ja, ko, fr, es, pt, de)
+    ├── / (本地化主页 - "prompt generator" + Kari核心展示)
+    ├── /writing-prompt-generator (写作提示生成器 + Kari写作优化)
+    ├── /art-prompt-generator (艺术提示生成器 + Kari视觉优化) 
+    ├── /ai-prompt-generator (AI提示生成器 + Kari通用优化)
+    ├── /chatgpt-prompt-generator (ChatGPT提示生成器 + Kari ChatGPT特化)
+    ├── /midjourney-prompt-generator (Midjourney提示生成器 + Kari图像生成特化)
+    ├── /drawing-prompt-generator (绘画提示生成器 + Kari创意激发)
+    ├── /ai-video-prompt-generator (AI视频提示生成器 + Kari视频优化)
+    └── /kari-ai (Kari AI专门介绍页面)
+
+全局页面（不需要本地化）:
+├── /privacy (隐私政策)
+├── /terms (服务条款)
+├── /contact (联系我们)
+└── /api/ (API端点)
 ```
 
-### 技术架构
+## 扩展计划
 
-- **前端框架**: Next.js 14 with App Router
-- **AI核心**: Google Gemini 2.5 Flash Lite + Kari系统提示词
-- **样式系统**: Tailwind CSS + shadcn/ui (zinc色彩方案)
-- **国际化**: next-intl
-- **SEO优化**: next-sitemap + 结构化数据
-- **图像处理**: 客户端Canvas API + 服务端图像分析
-- **状态管理**: React Context + localStorage
-- **API架构**: `/api/generate-prompt` 端点集成Gemini API调用
-- **AI模型**: Google Gemini 2.5 Flash Lite (通过Google AI API)
-- **部署**: 自托管服务器 (Docker容器化部署)
+### 新增功能
+1. **提示生成器页面** (7个核心生成器)
+2. **Kari AI优化组件** (KariOptimizer.js)
+3. **多语言扩展** (增加6种新语言)
+4. **SEO优化** (元数据、结构化数据、sitemap)
+5. **API端点** (Kari优化、生成器配置)
 
-### Promptify AI系统架构集成
+### 技术架构更新
+- **AI集成**: Google Gemini 2.5 Flash Lite API
+- **新组件**: KariOptimizer, GeneratorCard, SEO组件
+- **API扩展**: `/api/kari/optimize`, `/api/generators/[type]`
+- **国际化**: 扩展到8种语言 (en, ko, zh, ja, fr, es, pt, de)
+- **SEO工具**: next-sitemap, 结构化数据, meta标签优化
 
-基于Gemini的Promptify系统架构：
+## 实现状态
+
+### ✅ 已完成
+1. **多语言路由扩展** - 从2种语言扩展到8种
+2. **主页更新** - 展示提示生成器而非网站画廊
+3. **KariOptimizer组件** - 完整的UI组件和交互逻辑
+4. **Kari API端点** - `/api/kari/optimize` 包含完整系统提示词
+5. **第一个生成器页面** - 写作提示生成器
+
+### 🔄 进行中
+1. **其他生成器页面** - art, chatgpt, midjourney等
+2. **Gemini API集成** - 替换模拟数据
+3. **国际化翻译** - 为新语言添加翻译文件
+4. **SEO优化** - 元数据和结构化数据
+
+### 📋 待完成
+1. **缺失UI组件** - Textarea, Badge, Card等
+2. **用户体验优化** - 加载状态、错误处理、通知
+3. **性能优化** - 代码分割、图像优化
+4. **测试** - 单元测试、集成测试
+5. **部署配置** - 环境变量、Docker配置
+
+## Kari系统架构
 
 ```typescript
 // API请求接口
-interface PromptifyGeneratorRequest {
+interface KariGeneratorRequest {
   prompt: string
-  platform: 'chatgpt' | 'claude' | 'gemini' | 'midjourney' | 'dalle' | 'stable-diffusion' | 'other'
-  generatorType: 'writing' | 'art' | 'chatgpt' | 'midjourney' | 'image-to-prompt' | 'drawing' | 'ai-video'
+  platform: 'chatgpt' | 'claude' | 'gemini' | 'midjourney' | 'dalle' | 'stable-diffusion' | 'runway' | 'pika' | 'other'
+  generatorType: 'writing' | 'art' | 'ai' | 'chatgpt' | 'midjourney' | 'drawing' | 'ai-video'
   locale: 'en' | 'zh' | 'ja' | 'ko' | 'fr' | 'es' | 'pt' | 'de'
   mode: 'DETAIL' | 'BASIC'
   options?: GeneratorSpecificOptions
@@ -94,8 +137,8 @@ interface GeminiPromptRequest {
   }
 }
 
-// Promptify的4-D方法论核心实现
-interface Promptify4DMethodology {
+// Kari的4-D方法论核心实现
+interface Kari4DMethodology {
   // DECONSTRUCT: 提取核心意图、关键实体和上下文
   deconstruct: (prompt: string, type: GeneratorType, locale: string) => {
     coreIntent: string
@@ -155,15 +198,57 @@ interface MultiLanguageSEOStrategy {
 }
 ```
 
-## Components and Interfaces
+## 实际项目结构
 
-### 核心组件架构
+### 当前目录结构
+```
+src/
+├── app/
+│   ├── [locale]/
+│   │   ├── layout.js (已存在)
+│   │   ├── page.js (已更新 - 展示生成器)
+│   │   ├── writing-prompt-generator/
+│   │   │   └── page.js (✅ 已创建)
+│   │   ├── auth/ (已存在 - 认证相关)
+│   │   ├── account/ (已存在 - 用户账户)
+│   │   └── ... (其他现有页面)
+│   └── api/
+│       ├── kari/
+│       │   └── optimize/
+│       │       └── route.js (✅ 已创建)
+│       └── ... (其他现有API)
+├── components/
+│   ├── ui/ (已存在 - shadcn/ui组件)
+│   ├── generators/
+│   │   └── KariOptimizer.js (✅ 已创建)
+│   ├── Header.js (已存在)
+│   ├── Footer.js (已存在)
+│   └── SiteCard.js (已存在 - 复用为GeneratorCard)
+├── i18n/ (已存在)
+│   ├── routing.js (✅ 已更新 - 8种语言)
+│   └── ... (需要添加新语言翻译)
+└── lib/ (已存在 - 工具函数)
+```
 
-#### 1. 页面级组件
+### 需要创建的页面
+```
+src/app/[locale]/
+├── art-prompt-generator/page.js
+├── ai-prompt-generator/page.js  
+├── chatgpt-prompt-generator/page.js
+├── midjourney-prompt-generator/page.js
+├── drawing-prompt-generator/page.js
+├── ai-video-prompt-generator/page.js
+└── kari-ai/page.js
+```
+
+## 组件接口定义
+
+### 已实现的组件
 ```typescript
 // 通用页面模板
 interface GeneratorPageProps {
-  type: 'writing' | 'art' | 'chatgpt' | 'midjourney' | 'image-to-prompt' | 'drawing' | 'ai-video'
+  type: 'writing' | 'art' | 'ai' | 'chatgpt' | 'midjourney' | 'drawing' | 'ai-video'
   seoData: SEOMetadata
   locale: string
 }
@@ -179,25 +264,29 @@ interface SEOMetadata {
 }
 ```
 
-#### 2. Promptify核心组件
+#### 1. KariOptimizer组件 (已实现)
 ```typescript
-// Promptify主组件接口
-interface PromptifyPromptOptimizerProps {
-  generatorType: GeneratorType
-  locale: string
+// KariOptimizer - 已实现的核心组件
+interface KariOptimizerProps {
+  generatorType: 'writing' | 'art' | 'ai' | 'chatgpt' | 'midjourney' | 'drawing' | 'ai-video'
   defaultMode?: 'DETAIL' | 'BASIC'
-  onOptimized?: (result: OptimizedPromptResult) => void
 }
 
-// Promptify欢迎消息组件
-interface PromptifyWelcomeProps {
+// 实际实现特点:
+// - 使用shadcn/ui组件 (Button, Textarea, Select, Card等)
+// - 集成next-intl翻译
+// - 状态管理使用React hooks
+// - API调用 /api/kari/optimize
+
+// Kari欢迎消息组件
+interface KariWelcomeProps {
   onModeSelect: (mode: 'DETAIL' | 'BASIC', platform: Platform) => void
   supportedPlatforms: Platform[]
   locale: string
 }
 
-// Promptify结果显示组件
-interface PromptifyResultProps {
+// Kari结果显示组件
+interface KariResultProps {
   result: OptimizedPromptResult
   onCopy: () => void
   onSave: () => void
@@ -327,14 +416,23 @@ interface BreadcrumbProps {
   - 输出格式指定
   - 温度和创造性参数
 
-#### 5. 图像转提示生成器 (/image-to-prompt-generator)
-- **目标关键词**: image to prompt generator (Medium, >1000)
-- **设计策略**: 上传驱动的交互体验
+#### 5. 绘画提示生成器 (/drawing-prompt-generator)
+- **目标关键词**: drawing prompt generator (Easy, >100)
+- **设计策略**: 创意激发导向，适合艺术学习者
 - **特殊功能**:
-  - 拖拽上传界面
-  - 实时图像分析
-  - 多平台输出格式
-  - 批量处理选项
+  - 绘画技法选择器
+  - 主题和情绪标签
+  - 难度级别设置
+  - 参考图片建议
+
+#### 6. AI视频提示生成器 (/ai-video-prompt-generator)
+- **目标关键词**: ai video prompt generator (Medium, >1000)
+- **设计策略**: 视频创作专业工具
+- **特殊功能**:
+  - 视频风格选择
+  - 场景描述构建器
+  - 时长和节奏控制
+  - 平台特定优化（Runway、Pika等）
 
 ## Data Models
 
@@ -457,13 +555,35 @@ interface PromptifyLearningProfile {
 }
 ```
 
-## Promptify Processing Flow
+## 实际API实现
 
-### 1. 基于Gemini的Promptify处理流程
+### Kari优化API (已实现)
 
-```typescript
-// Promptify主处理流程
-class PromptifyProcessor {
+```javascript
+// 实际API端点: /api/kari/optimize
+// 请求格式:
+{
+  prompt: string,
+  platform: 'chatgpt' | 'claude' | 'gemini' | 'midjourney' | 'dalle' | 'other',
+  generatorType: 'writing' | 'art' | 'ai' | 'chatgpt' | 'midjourney' | 'drawing' | 'ai-video',
+  mode: 'DETAIL' | 'BASIC',
+  locale: string
+}
+
+// 响应格式:
+{
+  success: boolean,
+  data: {
+    optimizedPrompt: string,
+    keyImprovements: string[],
+    techniquesApplied: string[],
+    proTip?: string,
+    processingTime: number
+  }
+}
+
+// 当前状态: 使用模拟数据，需要集成真实Gemini API
+class KariProcessor {
   // 构建发送给Gemini的完整prompt
   async buildGeminiPrompt(userRequest: PromptifyGeneratorRequest): Promise<string> {
     const KariSystemPrompt = this.getKariSystemPrompt()

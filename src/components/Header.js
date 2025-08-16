@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Triangle, User } from "lucide-react";
+import { ChevronDown, LucideGlobe, Triangle, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -42,96 +42,106 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-200">
-      <div className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-[65px]">
-        <div className="flex items-center gap-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 flex justify-between items-center h-[65px]">
+        <div className="flex items-center gap-3 sm:gap-6">
           <VercelLogo />
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-600">Products</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/"
-                        >
-                          <VercelLogo />
-                          <div className="mb-2 mt-4 text-lg font-medium">
-                            Vercel
-                          </div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Develop, Preview, Ship.
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="/docs" title="Pro">
-                      For individual developers and small teams.
-                    </ListItem>
-                    <ListItem href="/docs/installation" title="Teams">
-                      For collaborative teams with advanced needs.
-                    </ListItem>
-                    <ListItem href="/docs/primitives/typography" title="Enterprise">
-                      For organizations with complex security and compliance requirements.
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-600">Solutions</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    <ListItem title="Vercel for Frontend" href="/docs/primitives/alert-dialog">
-                      The developer experience platform for frontend teams.
-                    </ListItem>
-                    <ListItem title="Vercel for AI" href="/docs/primitives/hover-card">
-                      Build, scale, and secure AI apps with Vercel.
-                    </ListItem>
-                   </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/docs" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
-                    Docs
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/pricing" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
-                    {t.rich("pricing")}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-            </NavigationMenuList>
-          </NavigationMenu>
+          <div className="hidden md:block">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-gray-600">Products</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <a
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                            href="/"
+                          >
+                            <VercelLogo />
+                            <div className="mb-2 mt-4 text-lg font-medium">
+                              Vercel
+                            </div>
+                            <p className="text-sm leading-tight text-muted-foreground">
+                              Develop, Preview, Ship.
+                            </p>
+                          </a>
+                        </NavigationMenuLink>
+                      </li>
+                      <ListItem href="/docs" title="Pro">
+                        For individual developers and small teams.
+                      </ListItem>
+                      <ListItem href="/docs/installation" title="Teams">
+                        For collaborative teams with advanced needs.
+                      </ListItem>
+                      <ListItem href="/docs/primitives/typography" title="Enterprise">
+                        For organizations with complex security and compliance requirements.
+                      </ListItem>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-gray-600">Solutions</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                      <ListItem title="Vercel for Frontend" href="/docs/primitives/alert-dialog">
+                        The developer experience platform for frontend teams.
+                      </ListItem>
+                      <ListItem title="Vercel for AI" href="/docs/primitives/hover-card">
+                        Build, scale, and secure AI apps with Vercel.
+                      </ListItem>
+                     </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/docs" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
+                      Docs
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/pricing" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle() + " text-gray-600"}>
+                      {t.rich("pricing")}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {status === "loading" && (
             <div className="flex items-center gap-2">
-              <div className="h-8 w-20 rounded-md bg-gray-200 animate-pulse" />
-              <div className="h-8 w-20 rounded-md bg-gray-200 animate-pulse" />
+              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
+              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
               <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse" />
             </div>
           )}
           {status === "unauthenticated" && (
             <>
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-black hover:bg-gray-100" onClick={() => signIn()}>
-                {t.rich('log_in')}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-gray-600 hover:text-black hover:bg-gray-100 min-h-[44px] px-2 sm:px-4" 
+                onClick={() => signIn()}
+              >
+                <span className="hidden sm:inline">{t.rich('log_in')}</span>
+                <span className="sm:hidden">Login</span>
               </Button>
-              <Button asChild variant="default" size="sm" className="h-8 bg-black text-white">
-                <Link href="/register">{t.rich('sign_up')}</Link>
+              <Button asChild variant="default" size="sm" className="min-h-[44px] bg-black text-white px-2 sm:px-4">
+                <Link href="/register">
+                  <span className="hidden sm:inline">{t.rich('sign_up')}</span>
+                  <span className="sm:hidden">Sign Up</span>
+                </Link>
               </Button>
             </>
           )}
           {status === "authenticated" && (
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full min-h-[44px] min-w-[44px]">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={avatarUrl || ""} alt={name || ""} className="object-cover" />
                     <AvatarFallback>

@@ -1,0 +1,899 @@
+{
+  "HomePage": {
+    "title": "提示词生成器",
+    "about": "关于页面"
+  },
+  "Header": {
+    "profile": "个人资料",
+    "debug_session": "调试会话",
+    "log_out": "退出登录",
+    "sign_up": "注册",
+    "log_in": "登录",
+    "pricing": "定价",
+    "setting": "设置"
+  },
+
+  "WritingGenerator": {
+    "title": "写作提示词生成器",
+    "description": "使用 Kari AI 创建完美的写作提示词，适用于各种创意写作项目。",
+    "features": {
+      "types": {
+        "title": "多种类型",
+        "description": "支持小说、诗歌、剧本、博客等各种写作类型"
+      },
+      "difficulty": {
+        "title": "难度级别",
+        "description": "从初学者到专业作家的不同难度选择"
+      },
+      "themes": {
+        "title": "主题标签",
+        "description": "科幻、爱情、悬疑等丰富主题选择"
+      }
+    }
+  },
+  "ArtGenerator": {
+    "title": "艺术提示词生成器",
+    "description": "使用 Kari AI 创建完美的艺术提示词，适用于各种视觉艺术创作项目和AI图像生成。",
+    "features": {
+      "styles": {
+        "title": "艺术风格",
+        "description": "支持各种艺术风格：写实、抽象、印象派、数字艺术等"
+      },
+      "composition": {
+        "title": "构图指导",
+        "description": "专业构图建议，包括光线、色彩搭配和画面构成"
+      },
+      "techniques": {
+        "title": "艺术技法",
+        "description": "针对不同媒介和艺术方法的具体技法指导"
+      }
+    }
+  },
+  "AIGenerator": {
+    "title": "AI提示词生成器",
+    "description": "使用 Kari AI 为任何AI平台创建优化的提示词，采用通用优化技术。",
+    "platformSupport": {
+      "title": "通用平台支持",
+      "chatgpt": {
+        "title": "ChatGPT/GPT-4",
+        "description": "结构化对话和基于角色的交互"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "长上下文推理和分析任务"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "创意任务和多模态功能"
+      },
+      "other": {
+        "title": "其他平台",
+        "description": "适用于任何AI系统的通用最佳实践"
+      }
+    },
+    "techniques": {
+      "title": "高级优化技术",
+      "roleAssignment": {
+        "title": "角色分配",
+        "description": "定义特定的AI角色和专业领域"
+      },
+      "contextLayering": {
+        "title": "上下文分层",
+        "description": "逐步构建丰富的上下文理解"
+      },
+      "outputSpecs": {
+        "title": "输出规范",
+        "description": "精确的格式和结构要求"
+      },
+      "chainOfThought": {
+        "title": "思维链",
+        "description": "引导AI进行逻辑推理过程"
+      },
+      "fewShot": {
+        "title": "少样本学习",
+        "description": "提供示例以提高响应质量"
+      },
+      "multiPerspective": {
+        "title": "多角度视角",
+        "description": "从多个角度探索主题"
+      }
+    },
+    "features": {
+      "universal": {
+        "title": "通用兼容性",
+        "description": "适用于任何AI平台和模型"
+      },
+      "optimization": {
+        "title": "智能优化",
+        "description": "自动应用适合您用例的最佳实践"
+      },
+      "advanced": {
+        "title": "高级技术",
+        "description": "专业级提示工程方法"
+      }
+    }
+  },
+  "ChatGPTGenerator": {
+    "title": "ChatGPT提示词生成器",
+    "description": "使用 Kari AI 创建专为 ChatGPT 和 GPT-4 设计的优化提示词，采用高级对话技术。",
+    "chatgptFeatures": {
+      "title": "ChatGPT专用优化功能",
+      "roleAssignment": {
+        "title": "角色分配",
+        "description": "为ChatGPT定义特定的专家角色和专业身份"
+      },
+      "contextBuilding": {
+        "title": "上下文构建",
+        "description": "分层构建上下文信息，创建丰富详细的对话基础"
+      },
+      "outputFormat": {
+        "title": "输出格式",
+        "description": "为结构化、专业的回复指定精确的格式要求"
+      },
+      "conversationFlow": {
+        "title": "对话流程",
+        "description": "设计具有逻辑进展和后续问题的多轮对话"
+      },
+      "parameters": {
+        "title": "参数控制",
+        "description": "优化创造性、温度和回复风格偏好"
+      },
+      "chainOfThought": {
+        "title": "思维链",
+        "description": "引导ChatGPT进行逐步推理和问题解决过程"
+      }
+    },
+    "roleTemplates": {
+      "title": "专业角色分配模板",
+      "expert": {
+        "title": "主题专家",
+        "template": "你是一位在[专业领域]拥有[X]年经验的[专业方向]专家。你的专业知识包括[核心领域]。请就[主题]提供详细、权威的指导。",
+        "description": "适用于技术建议、专业咨询和专业知识分享"
+      },
+      "assistant": {
+        "title": "个人助理",
+        "template": "你是我的专业助理，专门从事[领域]。通过提供有组织的、可操作的建议和明确的下一步来帮助我[具体任务]。",
+        "description": "适用于任务管理、规划和组织支持"
+      },
+      "teacher": {
+        "title": "教育导师",
+        "template": "你是一位经验丰富的[学科]教师。使用清晰的例子、类比和逐步分解向[水平]学生解释[概念]。",
+        "description": "适用于学习、解释和教育内容创作"
+      },
+      "analyst": {
+        "title": "战略分析师",
+        "template": "你是专门从事[领域]的战略分析师。分析[情况/数据]并提供见解、趋势和可操作的建议。",
+        "description": "适用于商业分析、数据解释和战略规划"
+      }
+    },
+    "contextExamples": {
+      "title": "对话上下文构建示例",
+      "businessAnalysis": {
+        "title": "商业战略分析",
+        "context": "上下文设置：",
+        "contextText": "你正在分析一家SaaS公司的市场地位。该公司拥有50,000用户，200万美元ARR，面临日益激烈的竞争。",
+        "prompt": "优化后的提示词：",
+        "promptText": "作为具有SaaS市场专业知识的高级商业战略师，分析我们公司的地位。背景：我们是一家项目管理SaaS，拥有50,000用户，200万美元ARR，15%月流失率，面临3个已获得大量资金的主要竞争对手。请提供：1）竞争定位分析，2）增长战略建议，3）风险缓解优先级。格式为带要点的执行摘要。",
+        "explanation": "此示例展示了如何分层构建商业背景，定义专家角色，并为战略分析指定精确的输出要求。"
+      },
+      "creativeWriting": {
+        "title": "创意写作协作",
+        "context": "上下文设置：",
+        "contextText": "你正在合作创作一个设定在2150年的科幻故事，人类已经殖民火星但面临资源冲突。",
+        "prompt": "优化后的提示词：",
+        "promptText": "你是我的创作伙伴，一位以现实世界构建著称的获奖科幻作家。我们正在开发一个设定在2150年火星的故事。当前情节：殖民地面临水资源短缺危机，而地球要求增加矿物出口。角色：陈莎拉博士，水文地质学家，在殖民地忠诚和地球合同之间左右为难。从她的角度继续故事，重点关注：1）内心冲突，2）水提取的技术细节，3）政治紧张局势。写500字，保持硬科幻现实主义。",
+        "explanation": "展示了如何建立创意伙伴关系，提供故事背景、角色细节和具体写作要求。"
+      },
+      "technicalSupport": {
+        "title": "技术问题解决",
+        "context": "上下文设置：",
+        "contextText": "你需要帮助调试一个有性能问题和复杂状态管理问题的React应用程序。",
+        "prompt": "优化后的提示词：",
+        "promptText": "你是一位高级React开发者和性能优化专家。我在一个React应用中遇到性能问题：1）50+组件，2）复杂的Redux状态（用户数据、实时通知、仪表板指标），3）频繁重渲染导致延迟。当前设置：React 18，Redux Toolkit，10,000+列表项。请帮助我：1）识别可能的性能瓶颈，2）提供具体的优化策略，3）展示实现的代码示例。按影响vs努力对解决方案进行优先级排序。",
+        "explanation": "展示了如何提供技术背景，指定问题范围，并请求带有示例的结构化、可操作的解决方案。"
+      }
+    },
+    "bestPractices": {
+      "title": "ChatGPT最佳实践",
+      "do": {
+        "title": "应该做的事情",
+        "item1": "明确指定你希望ChatGPT扮演的角色和专业水平",
+        "item2": "预先提供相关的背景和上下文信息",
+        "item3": "指定你希望回复中的确切格式和结构",
+        "item4": "使用示例来澄清你的期望和期望的输出风格",
+        "item5": "将复杂请求分解为编号步骤或清晰的部分"
+      },
+      "dont": {
+        "title": "避免这些错误",
+        "item1": "不要使用可能被多种方式解释的模糊或含糊的语言",
+        "item2": "不要在单个提示中包含太多不相关的请求",
+        "item3": "不要忘记指定约束、限制或重要考虑因素",
+        "item4": "不要假设ChatGPT知道你的特定背景或之前的对话",
+        "item5": "不要使用可能让AI困惑的过于复杂的句子结构"
+      }
+    }
+  },
+  "DrawingGenerator": {
+    "title": "绘画提示词生成器",
+    "description": "使用 Kari AI 创建激发创意的绘画提示词，帮助您练习各种艺术技法和主题。",
+    "features": {
+      "difficulty": {
+        "title": "难度级别",
+        "description": "从初学者到高级的难度级别选择，匹配您的技能水平和学习目标"
+      },
+      "techniques": {
+        "title": "艺术技法",
+        "description": "探索各种绘画技法，包括铅笔、炭笔、墨水和数字艺术方法"
+      },
+      "inspiration": {
+        "title": "创意灵感",
+        "description": "通过多样化的主题、情绪和艺术挑战获得灵感，拓展您的创造力"
+      }
+    },
+    "techniques": {
+      "title": "绘画技法指南",
+      "pencil": {
+        "title": "铅笔绘画",
+        "description": "经典石墨技法，用于阴影和细节工作"
+      },
+      "charcoal": {
+        "title": "炭笔绘画",
+        "description": "大胆表现性笔触，丰富的黑色和戏剧性对比"
+      },
+      "ink": {
+        "title": "墨水绘画",
+        "description": "精确线条工作和交叉阴影技法"
+      },
+      "digital": {
+        "title": "数字艺术",
+        "description": "现代数字绘画工具和技法"
+      }
+    },
+    "difficulty": {
+      "title": "技能水平指南",
+      "beginner": {
+        "title": "初学者",
+        "description": "适合刚开始绘画之旅的人",
+        "skill1": "基本形状和比例",
+        "skill2": "简单阴影技法",
+        "skill3": "基础构图规则"
+      },
+      "intermediate": {
+        "title": "中级",
+        "description": "适合准备处理更复杂主题的艺术家",
+        "skill1": "高级阴影和纹理",
+        "skill2": "透视和深度",
+        "skill3": "人物和肖像作品"
+      },
+      "advanced": {
+        "title": "高级",
+        "description": "为有经验的艺术家提供挑战性项目",
+        "skill1": "复杂构图",
+        "skill2": "写实技法",
+        "skill3": "混合媒介方法"
+      }
+    },
+    "inspiration": {
+      "title": "创意灵感分类",
+      "subjects": {
+        "title": "热门主题",
+        "nature": "自然与风景",
+        "portraits": "肖像与人物",
+        "architecture": "建筑与建筑物",
+        "fantasy": "幻想与想象",
+        "animals": "动物与野生动物",
+        "abstract": "抽象与概念"
+      },
+      "moods": {
+        "title": "艺术情绪",
+        "peaceful": "宁静与安详",
+        "dramatic": "戏剧性与大胆",
+        "mysterious": "神秘与黑暗",
+        "joyful": "欢乐与明亮",
+        "melancholic": "忧郁与情绪化",
+        "energetic": "充满活力与动感"
+      }
+    }
+  },
+  "MidjourneyGenerator": {
+    "title": "Midjourney提示词生成器",
+    "description": "使用Kari AI创建专为Midjourney优化的提示词，包含高级参数指导和构图技巧。",
+    "midjourneyFeatures": {
+      "title": "Midjourney专属优化功能",
+      "parameters": {
+        "title": "参数掌握",
+        "description": "掌握宽高比、质量设置、风格化数值和版本控制，获得完美结果"
+      },
+      "styles": {
+        "title": "风格指导",
+        "description": "从写实到艺术的全面风格参考，提供具体技法建议"
+      },
+      "composition": {
+        "title": "构图法则",
+        "description": "专业构图技巧，包括三分法则、引导线和视觉平衡"
+      },
+      "lighting": {
+        "title": "光线控制",
+        "description": "掌握从黄金时刻到戏剧性阴影和霓虹美学的光线技巧"
+      },
+      "quality": {
+        "title": "质量优化",
+        "description": "通过智能参数选择优化渲染质量、细节层次和处理时间"
+      },
+      "aspectRatio": {
+        "title": "宽高比指南",
+        "description": "针对不同用途的完美宽高比：社交媒体、印刷、网页和移动端"
+      }
+    },
+    "parameterGuide": {
+      "title": "核心参数指南",
+      "aspectRatio": {
+        "title": "宽高比 (--ar)",
+        "landscape": "横向/宽屏",
+        "portrait": "纵向/移动端",
+        "square": "正方形/社交媒体",
+        "description": "控制生成图像的宽高比例。对于不同平台和用途至关重要。"
+      },
+      "quality": {
+        "title": "质量 (--q)",
+        "high": "高质量（较慢）",
+        "standard": "标准质量",
+        "draft": "草图质量（较快）",
+        "description": "平衡渲染质量与生成速度。更高的值产生更详细的结果但需要更长时间。"
+      },
+      "stylize": {
+        "title": "风格化 (--s)",
+        "high": "高度风格化",
+        "default": "默认风格化",
+        "low": "低风格化",
+        "description": "控制Midjourney默认美学风格对图像的影响程度。"
+      },
+      "version": {
+        "title": "版本 (--v)",
+        "latest": "最新版本",
+        "stable": "稳定版本",
+        "classic": "经典版本",
+        "description": "选择使用哪个Midjourney模型版本。每个版本都有不同的优势和特点。"
+      }
+    },
+    "styleGuide": {
+      "title": "风格与构图精通",
+      "artistic": {
+        "title": "艺术风格",
+        "photorealistic": {
+          "title": "写实摄影",
+          "description": "超现实摄影风格",
+          "example": "写实, 超详细, 8k分辨率, 专业摄影"
+        },
+        "painterly": {
+          "title": "绘画风格",
+          "description": "传统绘画技法",
+          "example": "油画, 印象派风格, 可见笔触, 艺术性"
+        },
+        "digital": {
+          "title": "数字艺术",
+          "description": "现代数字艺术美学",
+          "example": "数字艺术, 概念艺术, 哑光绘画, artstation热门"
+        }
+      },
+      "composition": {
+        "title": "构图技巧",
+        "lighting": {
+          "title": "光线风格",
+          "golden": "黄金时刻",
+          "goldenDesc": "日出/日落时的温暖柔和光线",
+          "dramatic": "戏剧性光线",
+          "dramaticDesc": "高对比度强烈阴影",
+          "soft": "柔和光线",
+          "softDesc": "均匀漫射光线，适合肖像",
+          "neon": "霓虹光线",
+          "neonDesc": "鲜艳多彩的人工光线"
+        },
+        "camera": {
+          "title": "相机角度",
+          "closeup": "特写镜头",
+          "closeupDesc": "亲密详细的主体视角",
+          "wide": "广角镜头",
+          "wideDesc": "展示环境的广阔视角",
+          "aerial": "航拍视角",
+          "aerialDesc": "从上方的鸟瞰视角",
+          "macro": "微距镜头",
+          "macroDesc": "展示精细细节的极近距离"
+        }
+      }
+    },
+    "bestPractices": {
+      "title": "Midjourney最佳实践",
+      "do": {
+        "title": "最佳实践",
+        "item1": {
+          "title": "使用具体、描述性的语言",
+          "description": "对颜色、材质、光线和构图细节要精确"
+        },
+        "item2": {
+          "title": "包含风格参考",
+          "description": "提及具体的艺术风格、艺术家或视觉参考以获得更好结果"
+        },
+        "item3": {
+          "title": "为你的用例优化参数",
+          "description": "选择合适的宽高比、质量设置和风格化级别"
+        },
+        "item4": {
+          "title": "逻辑性地分层你的提示词",
+          "description": "从主体开始，然后是风格，最后是技术细节和参数"
+        },
+        "item5": {
+          "title": "必要时使用负面提示词",
+          "description": "添加--no参数来排除图像中不需要的元素"
+        }
+      },
+      "dont": {
+        "title": "常见错误避免",
+        "item1": {
+          "title": "不要使用过于复杂的提示词",
+          "description": "保持提示词专注，避免太多冲突的风格方向"
+        },
+        "item2": {
+          "title": "不要忽略宽高比",
+          "description": "始终为你的预期用途指定合适的宽高比"
+        },
+        "item3": {
+          "title": "不要使用受版权保护的角色名称",
+          "description": "避免具体的角色名称；使用描述性术语代替"
+        },
+        "item4": {
+          "title": "不要过度使用风格化",
+          "description": "高风格化值有时会产生过于抽象的结果"
+        },
+        "item5": {
+          "title": "不要忘记光线描述",
+          "description": "光线对情绪和质量至关重要；始终包含光线细节"
+        }
+      }
+    },
+    "examples": {
+      "title": "专业示例提示词",
+      "portrait": {
+        "title": "肖像摄影",
+        "prompt": "自信商业高管的专业头像，柔和工作室光线，浅景深，中性背景，85mm镜头拍摄，写实，高细节 --ar 4:5 --q 2 --s 50",
+        "explanation": "这个例子结合了主体描述、光线、技术相机细节和优化参数，获得专业肖像结果。"
+      },
+      "landscape": {
+        "title": "风景场景",
+        "prompt": "黄金时刻的雄伟山景，戏剧性云彩，高山湖泊倒影，前景松树，电影构图，风景摄影，超广角 --ar 16:9 --q 2 --s 100",
+        "explanation": "展示了如何分层环境元素、光线条件和构图技巧来创造令人惊叹的风景图像。"
+      },
+      "conceptArt": {
+        "title": "概念艺术",
+        "prompt": "未来主义赛博朋克城市景观，霓虹灯在湿润街道上的倒影，飞行汽车，高耸摩天大楼，大气雾霾，概念艺术风格，哑光绘画，artstation热门 --ar 21:9 --q 2 --s 250",
+        "explanation": "展示了如何结合类型元素、大气细节和艺术风格参考来生成引人注目的概念艺术。"
+      }
+    }
+  },
+  "AIVideoGenerator": {
+    "title": "AI视频提示词生成器",
+    "description": "使用 Kari AI 为 Runway、Pika 和 Stable Video Diffusion 等AI视频生成平台创建优化的提示词，配备高级场景描述工具。",
+    "platformSupport": {
+      "title": "视频平台支持",
+      "runway": {
+        "title": "Runway ML",
+        "description": "具有运动控制和风格转换功能的高级视频生成"
+      },
+      "pika": {
+        "title": "Pika Labs",
+        "description": "具有独特艺术风格和效果的创意视频生成"
+      },
+      "stable": {
+        "title": "Stable Video",
+        "description": "具有可定制参数的开源视频扩散模型"
+      },
+      "other": {
+        "title": "其他平台",
+        "description": "新兴平台的通用视频生成最佳实践"
+      }
+    },
+    "sceneBuilder": {
+      "title": "场景描述构建工具",
+      "composition": {
+        "title": "镜头构图",
+        "description": "为视频场景定义镜头角度和取景",
+        "closeup": "特写镜头",
+        "wide": "广角镜头",
+        "aerial": "航拍视角",
+        "tracking": "跟踪镜头"
+      },
+      "lighting": {
+        "title": "灯光设置",
+        "description": "为场景指定灯光条件和氛围",
+        "golden": "黄金时刻",
+        "dramatic": "戏剧性灯光",
+        "soft": "柔和灯光",
+        "neon": "霓虹灯光"
+      },
+      "movement": {
+        "title": "镜头运动",
+        "description": "控制镜头运动和场景动态",
+        "smooth": "平滑摇摄",
+        "dynamic": "动态运动",
+        "static": "静态镜头",
+        "zoom": "缩放效果"
+      }
+    },
+    "videoFeatures": {
+      "title": "视频专用优化功能",
+      "duration": {
+        "title": "时长控制",
+        "description": "为不同视频长度和节奏要求优化提示词"
+      },
+      "style": {
+        "title": "视觉风格",
+        "description": "定义艺术风格、色彩调色板和视觉美学"
+      },
+      "narrative": {
+        "title": "叙事结构",
+        "description": "构建引人入胜的故事情节和场景进展"
+      },
+      "technical": {
+        "title": "技术参数",
+        "description": "指定分辨率、帧率和质量设置"
+      },
+      "mood": {
+        "title": "情绪与氛围",
+        "description": "创造情感基调和大气元素"
+      },
+      "effects": {
+        "title": "视觉效果",
+        "description": "添加特效、转场和后期处理元素"
+      }
+    },
+    "platformGuidance": {
+      "title": "平台专用最佳实践",
+      "runway": {
+        "title": "Runway ML 技巧",
+        "tip1": "使用详细的运动描述以获得更好的动画质量",
+        "tip2": "清楚地指定镜头运动（摇摄、倾斜、缩放、推拉）",
+        "tip3": "包含灯光和氛围描述符以获得电影效果",
+        "tip4": "提及特定的宽高比和时长偏好"
+      },
+      "pika": {
+        "title": "Pika Labs 技巧",
+        "tip1": "专注于创意和艺术风格描述",
+        "tip2": "使用生动的色彩和纹理描述",
+        "tip3": "指定独特的视觉效果和变换",
+        "tip4": "包含艺术性的运动和流动描述"
+      },
+      "stable": {
+        "title": "Stable Video 技巧",
+        "tip1": "提供详细的场景构图和取景",
+        "tip2": "使用技术性镜头术语以获得精确度",
+        "tip3": "指定运动向量和动画参数",
+        "tip4": "包含质量和分辨率要求"
+      },
+      "general": {
+        "title": "通用最佳实践",
+        "tip1": "从清晰的主体和动作描述开始",
+        "tip2": "分层添加环境和大气细节",
+        "tip3": "为场景转换指定时机和节奏",
+        "tip4": "包含风格参考和质量指标"
+      }
+    },
+    "bestPractices": {
+      "title": "视频生成最佳实践",
+      "clarity": {
+        "title": "清晰描述",
+        "description": "对场景、动作和视觉元素使用精确、描述性的语言"
+      },
+      "specificity": {
+        "title": "技术特异性",
+        "description": "包含镜头角度、灯光、运动和时机细节"
+      },
+      "creativity": {
+        "title": "创意视野",
+        "description": "平衡技术要求与艺术和叙事元素"
+      }
+    }
+  },
+  "KariOptimizer": {
+    "welcome": {
+      "title": "认识 Kari - 您的 AI 提示词优化专家",
+      "message": "我将使用先进的 4-D 方法论转换您的提示词，释放 AI 的最大潜力。选择您的优化模式：",
+      "basicMode": "快速优化，核心改进和即时结果",
+      "detailMode": "深度分析，澄清问题和高级技术"
+    },
+    "input": {
+      "title": "输入您的提示词",
+      "placeholder": "描述您想要创建或实现的内容...",
+      "platform": "目标平台",
+      "mode": "优化模式",
+      "optimize": "使用 Kari 优化",
+      "optimizing": "优化中..."
+    },
+    "result": {
+      "optimizedPrompt": "您的优化提示词",
+      "copy": "复制",
+      "save": "保存",
+      "share": "分享",
+      "regenerate": "重新生成",
+      "newPrompt": "新提示词",
+      "improvements": "关键改进",
+      "techniques": "应用技术",
+      "proTip": "专业提示"
+    },
+    "errors": {
+      "optimizationFailed": "优化失败，请重试。",
+      "networkError": "网络错误，请检查您的连接。",
+      "emptyPrompt": "请输入要优化的提示词。",
+      "promptTooShort": "提示词至少需要10个字符。",
+      "promptTooLong": "提示词不能超过2000个字符。",
+      "timeout": "请求超时，请重试。",
+      "rateLimited": "请求过于频繁，请稍等片刻。",
+      "serverError": "服务器错误，请稍后重试。",
+      "saveFailed": "保存结果失败。",
+      "shareFailed": "分享结果失败。"
+    },
+    "success": {
+      "copied": "已复制到剪贴板！",
+      "optimized": "提示词优化成功！",
+      "saved": "结果保存成功！",
+      "deleted": "结果删除成功！",
+      "loaded": "结果加载成功！",
+      "shared": "分享成功！",
+      "shareLink": "分享链接已复制到剪贴板！",
+      "historyCleared": "优化历史已清除！"
+    },
+    "loading": {
+      "optimizing": "Kari 正在优化您的提示词...",
+      "analyzing": "正在分析您的提示词...",
+      "generating": "正在生成优化版本..."
+    },
+    "platforms": {
+      "chatgpt": "ChatGPT - 具有结构化对话能力的对话式AI",
+      "claude": "Claude - 高级推理和长上下文理解",
+      "gemini": "Gemini - 创意任务和多模态能力",
+      "midjourney": "Midjourney - 具有艺术风格的AI图像生成",
+      "dalle": "DALL-E - OpenAI的精确控制图像生成",
+      "other": "其他平台 - 通用优化技术"
+    },
+    "modes": {
+      "basic": {
+        "title": "基础模式",
+        "description": "快速优化，核心改进和即时结果",
+        "features": ["快速处理", "基本技术", "即用提示词"]
+      },
+      "detail": {
+        "title": "详细模式", 
+        "description": "深度分析，澄清问题和高级技术",
+        "features": ["全面分析", "澄清问题", "高级优化"]
+      }
+    },
+    "saved": {
+      "title": "保存的结果",
+      "empty": "还没有保存的结果。保存您的优化提示词以便稍后访问！",
+      "load": "加载此结果",
+      "delete": "删除此结果"
+    },
+    "clarifying": {
+      "title": "帮助 Kari 更好地理解",
+      "description": "回答这些问题以获得更个性化的优化。Kari 将使用您的答案应用最相关的技术。",
+      "selectOption": "选择一个选项...",
+      "optimize": "使用答案优化",
+      "useDefaults": "使用智能默认值"
+    },
+    "history": {
+      "title": "优化历史",
+      "empty": "还没有优化历史。您最近的优化将显示在这里。",
+      "load": "加载此优化",
+      "clear": "清除历史"
+    }
+  },
+  "KariAI": {
+    "title": "Kari AI - 高级提示词优化",
+    "description": "探索 Kari AI 革命性的 4-D 提示词优化方法论。通过专业级提示词工程改变您的 AI 交互体验。",
+    "hero": {
+      "title": "认识 Kari AI",
+      "subtitle": "世界上最先进的提示词优化系统",
+      "description": "Kari AI 使用革命性的 4-D 方法论，将您的基础提示词转换为专业级指令，从任何 AI 平台获得更好的结果。",
+      "cta": "立即试用 Kari AI"
+    },
+    "methodology": {
+      "title": "4-D 方法论",
+      "subtitle": "提示词完美的四个阶段",
+      "description": "Kari AI 的系统化方法确保每个提示词都经过优化以获得最大效果。",
+      "deconstruct": {
+        "title": "1. 解构 (DECONSTRUCT)",
+        "description": "提取核心意图和上下文",
+        "details": "Kari 分析您的提示词以识别核心意图、关键实体、上下文要求和可能改善结果的缺失元素。"
+      },
+      "diagnose": {
+        "title": "2. 诊断 (DIAGNOSE)", 
+        "description": "识别清晰度差距和问题",
+        "details": "高级分析识别模糊性问题、清晰度差距、特异性水平和结构需求，精确定位需要改进的地方。"
+      },
+      "develop": {
+        "title": "3. 开发 (DEVELOP)",
+        "description": "选择技术和 AI 角色",
+        "details": "Kari 根据您的特定用例和平台选择最佳的提示词工程技术组合并分配适当的 AI 角色。"
+      },
+      "deliver": {
+        "title": "4. 交付 (DELIVER)",
+        "description": "构建优化提示词",
+        "details": "最终阶段构建您的优化提示词，具有适当的结构、清晰的指令和平台特定的调整，以获得最大效果。"
+      }
+    },
+    "techniques": {
+      "title": "高级优化技术",
+      "subtitle": "专业提示词工程方法",
+      "roleAssignment": {
+        "title": "角色分配",
+        "description": "为更有针对性的回应定义特定的 AI 角色和专业领域"
+      },
+      "contextLayering": {
+        "title": "上下文分层", 
+        "description": "通过战略信息分层构建丰富的上下文理解"
+      },
+      "outputSpecs": {
+        "title": "输出规范",
+        "description": "精确的格式和结构要求以获得一致的结果"
+      },
+      "chainOfThought": {
+        "title": "思维链",
+        "description": "逐步引导 AI 进行逻辑推理过程"
+      },
+      "fewShot": {
+        "title": "少样本学习",
+        "description": "提供战略示例以提高回应质量和一致性"
+      },
+      "multiPerspective": {
+        "title": "多角度分析",
+        "description": "从多个角度探索主题以获得全面见解"
+      }
+    },
+    "platforms": {
+      "title": "通用平台支持",
+      "subtitle": "为每个 AI 系统优化",
+      "chatgpt": {
+        "title": "ChatGPT 和 GPT-4",
+        "description": "结构化对话、基于角色的交互和高级推理链"
+      },
+      "claude": {
+        "title": "Claude",
+        "description": "长上下文推理、分析任务和详细解释"
+      },
+      "gemini": {
+        "title": "Gemini",
+        "description": "创意任务、多模态能力和创新问题解决"
+      },
+      "midjourney": {
+        "title": "Midjourney",
+        "description": "具有艺术风格、构图规则和参数优化的图像生成"
+      },
+      "other": {
+        "title": "通用兼容性",
+        "description": "适用于任何 AI 平台或模型的最佳实践和技术"
+      }
+    },
+    "comparison": {
+      "title": "为什么选择 Kari AI？",
+      "subtitle": "最先进的提示词优化",
+      "kari": {
+        "title": "Kari AI",
+        "features": [
+          "4-D 系统化方法论",
+          "平台特定优化",
+          "高级技术选择",
+          "上下文感知改进",
+          "专业级结果",
+          "实时优化",
+          "多语言支持",
+          "免费使用"
+        ]
+      },
+      "others": {
+        "title": "其他工具",
+        "features": [
+          "基础提示词模板",
+          "通用建议",
+          "有限的技术种类",
+          "一刀切的方法",
+          "不一致的结果",
+          "手动优化",
+          "仅英语",
+          "付费订阅"
+        ]
+      }
+    },
+    "examples": {
+      "title": "真实优化示例",
+      "subtitle": "看 Kari AI 的实际效果",
+      "before": "之前（原始提示词）",
+      "after": "之后（Kari 优化）",
+      "improvements": "关键改进",
+      "example1": {
+        "title": "商业分析",
+        "before": "分析我的业务",
+        "after": "作为在 SaaS 和技术市场拥有 15 年以上经验的高级商业战略师，对我的项目管理软件业务进行全面分析。背景：我们服务 50,000+ 用户，产生 200 万美元 ARR，面临 15% 的月流失率，与 3 个资金充足的竞争对手竞争。请提供：1）竞争定位评估，2）具有具体策略的增长战略建议，3）带有时间表的风险缓解优先级。格式为带有可操作要点和成功指标的执行摘要。",
+        "improvements": [
+          "添加了专家角色分配",
+          "提供了具体的商业背景",
+          "结构化了清晰的交付成果",
+          "指定了输出格式",
+          "包含了成功指标"
+        ]
+      },
+      "example2": {
+        "title": "创意写作",
+        "before": "写一个关于太空的故事",
+        "after": "您是一位以硬科幻现实主义著称的获奖科幻作家。写一个 1,000 字的短篇故事，设定在 2157 年火星研究站 Olympus-7 上。主角：Elena Vasquez 博士，一位在地下冰样本中发现异常微生物生命的异生物学家。基调：紧张的科学惊悚片，具有现实的技术细节。包括：1）科学发现过程，2）关于披露的道德困境，3）角色的个人利害关系。风格：第三人称有限视角，现在时，使用真实的科学术语。",
+        "improvements": [
+          "建立了作者专业知识",
+          "具体的设定和时间框架",
+          "详细的角色背景",
+          "明确的类型和基调",
+          "结构化的故事元素",
+          "技术真实性要求"
+        ]
+      }
+    },
+    "caseStudies": {
+      "title": "成功案例",
+      "subtitle": "Kari AI 用户的真实结果",
+      "study1": {
+        "title": "营销代理公司",
+        "challenge": "需要为不同行业的多样化客户提供一致、高质量的内容简报。",
+        "solution": "使用 Kari AI 优化他们的内容创建提示词模板，产生更具体、可操作的简报。",
+        "result": "客户满意度评分提高 300%，修订请求减少 50%。"
+      },
+      "study2": {
+        "title": "软件开发团队",
+        "challenge": "技术文档不清晰，代码审查反馈不一致。",
+        "solution": "为技术写作提示词和代码审查指南实施 Kari AI 优化。",
+        "result": "新开发人员入职速度提高 40%，文档相关支持工单减少 60%。"
+      },
+      "study3": {
+        "title": "教育机构",
+        "challenge": "教师需要更好的提示词来创建个性化学习材料和评估。",
+        "solution": "采用 Kari AI 进行教育内容创建，实现更有针对性和有效的学习体验。",
+        "result": "学生参与度提高 25%，学习成果评估改善 35%。"
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "q1": {
+        "question": "Kari AI 与其他提示词工具有什么不同？",
+        "answer": "Kari AI 使用系统化的 4-D 方法论（解构、诊断、开发、交付）来分析您的特定需求并应用专业的提示词工程技术。与简单的模板工具不同，Kari 提供上下文感知、平台特定的优化。"
+      },
+      "q2": {
+        "question": "Kari AI 真的免费使用吗？",
+        "answer": "是的，Kari AI 完全免费使用，没有隐藏费用、订阅或使用限制。我们相信每个人都应该能够访问专业级的提示词优化。"
+      },
+      "q3": {
+        "question": "Kari AI 支持哪些 AI 平台？",
+        "answer": "Kari AI 为所有主要 AI 平台优化提示词，包括 ChatGPT、Claude、Gemini、Midjourney、DALL-E，并提供适用于任何 AI 系统的通用技术。"
+      },
+      "q4": {
+        "question": "4-D 方法论是如何工作的？",
+        "answer": "4-D 方法论系统性地改进您的提示词：解构（分析意图）、诊断（识别问题）、开发（选择技术）和交付（构建优化提示词）。这确保每次都能进行全面优化。"
+      },
+      "q5": {
+        "question": "我可以将 Kari AI 用于不同类型的内容吗？",
+        "answer": "绝对可以！Kari AI 适用于任何类型的内容 - 写作、艺术、商业分析、技术文档、创意项目等等。优化会适应您的特定用例。"
+      },
+      "q6": {
+        "question": "使用 Kari AI 需要提示词工程经验吗？",
+        "answer": "不需要经验！Kari AI 为您处理所有技术提示词工程。只需描述您想要的内容，Kari 将自动应用专业技术。"
+      }
+    },
+    "cta": {
+      "title": "准备好改变您的 AI 交互了吗？",
+      "subtitle": "体验专业提示词优化的力量",
+      "description": "加入数千名通过 Kari AI 先进的 4-D 方法论改善 AI 结果的用户。",
+      "button": "立即开始优化",
+      "features": [
+        "永久免费",
+        "无需注册", 
+        "即时结果",
+        "支持所有平台"
+      ]
+    }
+  }
+}
