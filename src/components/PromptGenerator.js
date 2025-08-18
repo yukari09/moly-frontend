@@ -89,7 +89,7 @@ export const PromptGenerator = () => {
       setMessages([
         {
           id: messageId++,
-          sender: "lyra",
+          sender: "Ectro",
           text: t("welcomeMessage"),
           component: "PlatformLogos",
         },
@@ -101,10 +101,10 @@ export const PromptGenerator = () => {
     setMessages((prev) => [...prev, { id: messageId++, sender: "user", text }]);
   };
 
-  const addLyraMessage = (text, component = null) => {
+  const addEctroMessage = (text, component = null) => {
     setMessages((prev) => [
       ...prev,
-      { id: messageId++, sender: "lyra", text, component },
+      { id: messageId++, sender: "Ectro", text, component },
     ]);
   };
 
@@ -114,13 +114,13 @@ export const PromptGenerator = () => {
     addUserMessage(userInput);
     setUserInput("");
     setFlowState("awaiting_options");
-    addLyraMessage(t("optionSelectMessage"), "OptionSelector");
+    addEctroMessage(t("optionSelectMessage"), "OptionSelector");
   };
 
   const handleOptionSelect = async (options) => {
     // Visually confirm selection by removing the options selector
     setMessages((prev) => prev.filter((m) => m.component !== "OptionSelector"));
-    addLyraMessage(
+    addEctroMessage(
       `Okay, using ${options.targetAI} with ${options.promptStyle} style. Optimizing...`,
     );
     setFlowState("processing");
@@ -132,8 +132,8 @@ export const PromptGenerator = () => {
     const mockExplanation = `• **Role Assignment:** Cast the AI as a master storyteller...`;
     // --- End Mock API Call ---
 
-    addLyraMessage(mockOptimizedPrompt, "Result");
-    addLyraMessage(mockExplanation, "Explanation");
+    addEctroMessage(mockOptimizedPrompt, "Result");
+    addEctroMessage(mockExplanation, "Explanation");
 
     setIsLoading(false);
     setFlowState("idle");
@@ -218,7 +218,7 @@ export const PromptGenerator = () => {
             key={msg.id}
             className={`flex items-start gap-4 ${msg.sender === "user" ? "justify-end" : ""}`}
           >
-            {msg.sender === "lyra" && (
+            {msg.sender === "Ectro" && (
               <Avatar className="w-9 h-9 border">
                 <AvatarFallback>
                   <Bot size={20} />

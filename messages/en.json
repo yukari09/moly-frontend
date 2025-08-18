@@ -5,7 +5,7 @@
     "about": "Go to the about page"
   },
   "PromptGenerator": {
-    "title": "Lyra, Your AI Prompt Optimizer",
+    "title": "Ectro, Your AI Prompt Optimizer",
     "description": "Start with your rough idea, and I'll transform it into a precision-crafted prompt.",
     "rawPromptLabel": "Your Rough Prompt or Idea",
     "rawPromptPlaceholder": "e.g., 'Write me a marketing email' or 'Help with my resume'",
@@ -19,7 +19,7 @@
     "optimizingButton": "Optimizing...",
     "optimizedPromptTitle": "Your Optimized Prompt",
     "keyImprovementsTitle": "Key Improvements",
-    "welcomeMessage": "Hello! I'm Lyra, your AI prompt optimizer. Just share your rough prompt and I'll handle the optimization!",
+    "welcomeMessage": "Hello! I'm Ectro, your AI prompt optimizer. Just share your rough prompt and I'll handle the optimization!",
     "optionSelectMessage": "Got it. Now, please select the target AI and desired style for the optimization.",
     "inputPlaceholder": "Type your prompt idea here..."
   },
@@ -37,7 +37,7 @@
   },
   "ExamplesSection": {
     "title": "See the Difference",
-    "subtitle": "From a simple idea to a powerful, structured prompt. See how Lyra enhances clarity and unlocks better AI responses.",
+    "subtitle": "From a simple idea to a powerful, structured prompt. See how Ectro enhances clarity and unlocks better AI responses.",
     "marketingLabel": "Marketing",
     "jobSeekingLabel": "Job Seeking",
     "contentCreationLabel": "Content Creation",
@@ -56,23 +56,23 @@
   },
   "TestimonialsSection": {
     "title": "Praised by Professionals",
-    "subtitle": "Don't just take our word for it. Here's what developers, marketers, and writers are saying about Lyra.",
+    "subtitle": "Don't just take our word for it. Here's what developers, marketers, and writers are saying about Ectro.",
     "quote1": "This tool is a game-changer. I can now generate complex, structured prompts in seconds, which used to take me minutes of careful thought.",
     "title1": "Software Developer",
-    "quote2": "Lyra has significantly improved the quality of our marketing copy. The prompts are more creative and targeted, leading to better engagement.",
+    "quote2": "Ectro has significantly improved the quality of our marketing copy. The prompts are more creative and targeted, leading to better engagement.",
     "title2": "Marketing Manager",
-    "quote3": "As a content creator, I'm constantly battling writer's block. Lyra helps me brainstorm and refine my ideas into actionable prompts for my AI assistant.",
+    "quote3": "As a content creator, I'm constantly battling writer's block. Ectro helps me brainstorm and refine my ideas into actionable prompts for my AI assistant.",
     "title3": "Content Creator",
-    "quote4": "Lyra has become an indispensable part of my daily workflow. The clarity and structure it brings to my prompts save me hours every week.",
+    "quote4": "Ectro has become an indispensable part of my daily workflow. The clarity and structure it brings to my prompts save me hours every week.",
     "title4": "Product Manager",
-    "quote5": "I was skeptical at first, but Lyra consistently delivers prompts that lead to significantly better AI outputs. It's like having a prompt engineering expert on demand.",
+    "quote5": "I was skeptical at first, but Ectro consistently delivers prompts that lead to significantly better AI outputs. It's like having a prompt engineering expert on demand.",
     "title5": "AI Researcher",
-    "quote6": "The ability to quickly refine my ideas into precise prompts has boosted my productivity. Lyra is intuitive and incredibly effective.",
+    "quote6": "The ability to quickly refine my ideas into precise prompts has boosted my productivity. Ectro is intuitive and incredibly effective.",
     "title6": "Freelance Writer"
   },
   "ApplicablePlatformsSection": {
     "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
-    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
+    "subtitle": "Ectro is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
     "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
     "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
     "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
@@ -90,19 +90,19 @@
     "title": "Frequently Asked Questions",
     "subtitle": "Have questions? We have answers. Here are some of the most common questions we get.",
     "q1": "What AI platforms are supported?",
-    "a1": "Lyra is designed to be platform-agnostic. Our core optimization techniques work for any modern large language model, including those from OpenAI (ChatGPT), Google (Gemini), Anthropic (Claude), and more.",
+    "a1": "Ectro is designed to be platform-agnostic. Our core optimization techniques work for any modern large language model, including those from OpenAI (ChatGPT), Google (Gemini), Anthropic (Claude), and more.",
     "q2": "Is there a free version?",
     "a2": "Yes, the basic prompt optimization is free to use for up to 3 times per day per user. For more advanced features, we plan to introduce a Pro version in the future.",
-    "q3": "How does Lyra actually improve my prompts?",
-    "a3": "Lyra uses a combination of techniques based on established prompt engineering principles. This includes adding specific context, assigning a role to the AI, defining a clear output format, and breaking down complex tasks (Chain-of-Thought).",
-    "q4": "Can I use Lyra for any language?",
-    "a4": "Yes, while Lyra's interface is in English, you can submit prompts in any language. The optimization principles are universal and will enhance your prompts regardless of the language used.",
+    "q3": "How does Ectro actually improve my prompts?",
+    "a3": "Ectro uses a combination of techniques based on established prompt engineering principles. This includes adding specific context, assigning a role to the AI, defining a clear output format, and breaking down complex tasks (Chain-of-Thought).",
+    "q4": "Can I use Ectro for any language?",
+    "a4": "Yes, while Ectro's interface is in English, you can submit prompts in any language. The optimization principles are universal and will enhance your prompts regardless of the language used.",
     "q5": "Is my data secure? Do you save my prompts?",
     "a5": "We take your privacy very seriously. All optimizations in the free version are processed locally in your browser, and we do not save any of your prompts. For the future Pro version, we will provide a clear data handling policy.",
     "q6": "How is this tool different from just using ChatGPT directly?",
-    "a6": "Using AI directly relies on your own prompting skills. Lyra acts as an expert assistant, applying a systematic methodology to automatically add structure, context, and constraints to your ideas, thereby consistently generating higher-quality results.",
+    "a6": "Using AI directly relies on your own prompting skills. Ectro acts as an expert assistant, applying a systematic methodology to automatically add structure, context, and constraints to your ideas, thereby consistently generating higher-quality results.",
     "q7": "Do you offer an API for developers?",
-    "a7": "We plan to offer API access in a future Pro version, allowing you to integrate Lyra's optimization capabilities into your own applications."
+    "a7": "We plan to offer API access in a future Pro version, allowing you to integrate Ectro's optimization capabilities into your own applications."
   },
   "CTASection": {
     "title": "Ready to Level Up Your Prompts?",
@@ -135,23 +135,8 @@
     "log_in": "Log In",
     "features": "Features",
     "difference": "Difference",
-    "setting": "Setting"
-  },
-  "ApplicablePlatformsSection": {
-    "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
-    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
-    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
-    "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
-    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
-    "chatgptOptimizerDescription": "Improve the quality of your ChatGPT conversations. Make your questions more precise and the answers more effective and insightful.",
-    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
-    "geminiOptimizerDescription": "Tailor multimodal prompts for Gemini, unlocking its powerful capabilities in text, image, and code generation for more comprehensive results.",
-    "claudeOptimizerTitle": "Claude Prompt Optimizer",
-    "claudeOptimizerDescription": "Optimize long, complex prompts for Claude, ensuring it fully understands your intent to provide deep analysis and high-quality text outputs.",
-    "imageOptimizerTitle": "Image Prompt Optimizer",
-    "imageOptimizerDescription": "Whether for Stable Diffusion or DALL-E, optimize your image generation prompts to gain fine-grained control over every detail.",
-    "videoOptimizerTitle": "Video Prompt Optimizer",
-    "videoOptimizerDescription": "Create precise scripts and instructions for video generation AI, bringing your creative vision to life and saving time on edits."
+    "setting": "Setting",
+    "user_case": "User Case"
   },
   "UserSetting": {
     "account_settings": "Account Settings",
@@ -319,20 +304,12 @@
     "submittedWebsites": "Submitted Websites",
     "comingSoon": "Coming Soon"
   },
-  "ApplicablePlatformsSection": {
-    "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
-    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
-    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
-    "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
-    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
-    "chatgptOptimizerDescription": "Improve the quality of your ChatGPT conversations. Make your questions more precise and the answers more effective and insightful.",
-    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
-    "geminiOptimizerDescription": "Tailor multimodal prompts for Gemini, unlocking its powerful capabilities in text, image, and code generation for more comprehensive results.",
-    "claudeOptimizerTitle": "Claude Prompt Optimizer",
-    "claudeOptimizerDescription": "Optimize long, complex prompts for Claude, ensuring it fully understands your intent to provide deep analysis and high-quality text outputs.",
-    "imageOptimizerTitle": "Image Prompt Optimizer",
-    "imageOptimizerDescription": "Whether for Stable Diffusion or DALL-E, optimize your image generation prompts to gain fine-grained control over every detail.",
-    "videoOptimizerTitle": "Video Prompt Optimizer",
-    "videoOptimizerDescription": "Create precise scripts and instructions for video generation AI, bringing your creative vision to life and saving time on edits."
+  "TermsPage": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 18, 2025"
+  },
+  "PrivacyPage": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 18, 2025"
   }
 }
