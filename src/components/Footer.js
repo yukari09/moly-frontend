@@ -33,11 +33,13 @@ export const Footer = () => {
 
   return (
     <footer className="bg-gray-50 border-t">
-      <div className="max-w-screen-xl mx-auto px-6 py-12">
+      <div className="max-w-screen-xl mx-auto px-6 pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">
             <h3 className="text-xl font-bold">Ectro</h3>
-            <p className="mt-2 text-muted-foreground max-w-xs">{t("slogan")}</p>
+            <p className="mt-2 text-muted-foreground max-w-xs text-sm">
+              {t("slogan")}
+            </p>
           </div>
           <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
             <div>
@@ -47,7 +49,7 @@ export const Footer = () => {
                   <li key={link.labelKey}>
                     <Link
                       href={link.href}
-                      className="text-muted-foreground hover:text-primary"
+                      className="text-muted-foreground text-sm hover:text-primary"
                     >
                       {t(link.labelKey)}
                     </Link>
@@ -62,7 +64,7 @@ export const Footer = () => {
                   <li key={link.labelKey}>
                     <Link
                       href={link.href}
-                      className="text-muted-foreground hover:text-primary"
+                      className="text-muted-foreground text-sm hover:text-primary"
                     >
                       {t(link.labelKey)}
                     </Link>
@@ -77,7 +79,7 @@ export const Footer = () => {
                   <li key={link.labelKey}>
                     <Link
                       href={link.href}
-                      className="text-muted-foreground hover:text-primary"
+                      className="text-muted-foreground text-sm hover:text-primary"
                     >
                       {t(link.labelKey)}
                     </Link>
@@ -87,7 +89,9 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center">
+      </div>
+      <div className="mt-12 py-8  border-t">
+        <div className="flex flex-col sm:flex-row justify-between items-center  max-w-screen-xl mx-auto px-6">
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Ectro. {t("copyright")}
           </p>

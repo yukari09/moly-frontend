@@ -21,7 +21,8 @@
     "keyImprovementsTitle": "Key Improvements",
     "welcomeMessage": "Hello! I'm Ectro, your AI prompt optimizer. Just share your rough prompt and I'll handle the optimization!",
     "optionSelectMessage": "Got it. Now, please select the target AI and desired style for the optimization.",
-    "inputPlaceholder": "Type your prompt idea here..."
+    "inputPlaceholder": "Type your prompt idea here...",
+    "characterLimitToast": "You can only enter up to {count} characters."
   },
   "FeaturesSection": {
     "title": "Unleash the Full Potential of AI",

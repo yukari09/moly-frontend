@@ -18,7 +18,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+ 
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -91,32 +91,35 @@ export default function Header() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href="/#features" legacyBehavior passHref>
+                   
                     <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
+                       
+                      href="/#features" 
                     >
                       {t.rich("features")}
                     </NavigationMenuLink>
-                  </Link>
+                   
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/#difference" legacyBehavior passHref>
+                  
                     <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
+                       
+                      href="/#difference" 
                     >
                       {t.rich("difference")}
                     </NavigationMenuLink>
-                  </Link>
+                   
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <Link href="/#use-cases" legacyBehavior passHref>
+                  
                     <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
+                      href="/#use-cases"
+                      
                     >
                       {t.rich("user_case")}
                     </NavigationMenuLink>
-                  </Link>
+                   
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>

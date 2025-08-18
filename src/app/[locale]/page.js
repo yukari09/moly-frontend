@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { PromptGenerator } from "@/components/PromptGenerator";
-import { SupportedPlatLogos } from "@/components/SupportedPlatLogos";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { ExamplesSection } from "@/components/ExamplesSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
@@ -22,7 +21,6 @@ export default function Home() {
           <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
             {t("subtitle")}
           </p>
-          <SupportedPlatLogos />
         </div>
 
         <div className="mt-12">
