@@ -111,5 +111,21 @@
     "features": "기능",
     "difference": "차이점",
     "setting": "설정"
+  },
+  "ApplicablePlatformsSection": {
+    "title": "您的 Prompt，我们的优化：适用平台与场景",
+    "subtitle": "Lyra 旨在成为一个通用的提示优化器，增强您与各种 AI 模型和用例的互动。",
+    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
+    "midjourneyOptimizerDescription": "将您的创意转化为 Midjourney 能理解的精确指令，生成更惊艳、更符合预期的图像。",
+    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
+    "chatgptOptimizerDescription": "提升 ChatGPT 对话的质量，让您的提问更精准，回答更有效，获得更具洞察力的交流。",
+    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
+    "geminiOptimizerDescription": "为 Gemini 量身定制多模态 Prompt，解锁其在文本、图像、代码等方面的强大能力，实现更全面的创作。",
+    "claudeOptimizerTitle": "Claude Prompt Optimizer",
+    "claudeOptimizerDescription": "为 Claude 优化长篇、复杂的 Prompt，确保其理解您的意图并提供深入的分析和高质量的文本输出。",
+    "imageOptimizerTitle": "Image Prompt Optimizer",
+    "imageOptimizerDescription": "无论是 Stable Diffusion 还是 DALL-E，优化您的图像生成 Prompt，精确控制细节，获得理想视觉效果。",
+    "videoOptimizerTitle": "Video Prompt Optimizer",
+    "videoOptimizerDescription": "为视频生成 AI 打造精准脚本和指令，让您的视频创意变为现实，节省大量后期调整时间。"
   }
 }

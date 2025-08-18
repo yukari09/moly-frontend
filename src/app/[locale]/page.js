@@ -4,6 +4,7 @@ import { SupportedPlatLogos } from "@/components/SupportedPlatLogos";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { ExamplesSection } from "@/components/ExamplesSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
+import { ApplicablePlatformsSection } from "@/components/ApplicablePlatformsSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
@@ -32,6 +33,7 @@ export default function Home() {
       <FeaturesSection />
       <ExamplesSection />
       <HowItWorksSection />
+      <ApplicablePlatformsSection />
       <TestimonialsSection />
       <FAQSection />
       <CTASection />

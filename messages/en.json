@@ -115,6 +115,22 @@
     "difference": "Difference",
     "setting": "Setting"
   },
+  "ApplicablePlatformsSection": {
+    "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
+    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
+    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
+    "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
+    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
+    "chatgptOptimizerDescription": "Improve the quality of your ChatGPT conversations. Make your questions more precise and the answers more effective and insightful.",
+    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
+    "geminiOptimizerDescription": "Tailor multimodal prompts for Gemini, unlocking its powerful capabilities in text, image, and code generation for more comprehensive results.",
+    "claudeOptimizerTitle": "Claude Prompt Optimizer",
+    "claudeOptimizerDescription": "Optimize long, complex prompts for Claude, ensuring it fully understands your intent to provide deep analysis and high-quality text outputs.",
+    "imageOptimizerTitle": "Image Prompt Optimizer",
+    "imageOptimizerDescription": "Whether for Stable Diffusion or DALL-E, optimize your image generation prompts to gain fine-grained control over every detail.",
+    "videoOptimizerTitle": "Video Prompt Optimizer",
+    "videoOptimizerDescription": "Create precise scripts and instructions for video generation AI, bringing your creative vision to life and saving time on edits."
+  },
   "UserSetting": {
     "account_settings": "Account Settings",
     "account_settings_description": "Manage your account settings and profile information.",
@@ -280,5 +296,21 @@
     "avatarAlt": "{name}'s avatar",
     "submittedWebsites": "Submitted Websites",
     "comingSoon": "Coming Soon"
+  },
+  "ApplicablePlatformsSection": {
+    "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
+    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
+    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
+    "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
+    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
+    "chatgptOptimizerDescription": "Improve the quality of your ChatGPT conversations. Make your questions more precise and the answers more effective and insightful.",
+    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
+    "geminiOptimizerDescription": "Tailor multimodal prompts for Gemini, unlocking its powerful capabilities in text, image, and code generation for more comprehensive results.",
+    "claudeOptimizerTitle": "Claude Prompt Optimizer",
+    "claudeOptimizerDescription": "Optimize long, complex prompts for Claude, ensuring it fully understands your intent to provide deep analysis and high-quality text outputs.",
+    "imageOptimizerTitle": "Image Prompt Optimizer",
+    "imageOptimizerDescription": "Whether for Stable Diffusion or DALL-E, optimize your image generation prompts to gain fine-grained control over every detail.",
+    "videoOptimizerTitle": "Video Prompt Optimizer",
+    "videoOptimizerDescription": "Create precise scripts and instructions for video generation AI, bringing your creative vision to life and saving time on edits."
   }
 }

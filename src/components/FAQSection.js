@@ -29,6 +29,21 @@ const faqs = [
     questionKey: "q4",
     answerKey: "a4",
   },
+  {
+    value: "item-5",
+    questionKey: "q5",
+    answerKey: "a5",
+  },
+  {
+    value: "item-6",
+    questionKey: "q6",
+    answerKey: "a6",
+  },
+  {
+    value: "item-7",
+    questionKey: "q7",
+    answerKey: "a7",
+  },
 ];
 
 export const FAQSection = () => {
