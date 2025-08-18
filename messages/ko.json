@@ -67,17 +67,39 @@
     "quote6": "아이디어를 정확한 프롬프트로 빠르게 다듬는 능력은 생산성을 크게 향상시켰습니다. Lyra는 직관적이고 믿을 수 없을 정도로 효과적입니다.",
     "title6": "프리랜서 작가"
   },
+  "ApplicablePlatformsSection": {
+    "title": "您的 Prompt，我们的优化：适用平台与场景",
+    "subtitle": "Lyra 旨在成为一个通用的提示优化器，增强您与各种 AI 模型和用例的互动。",
+    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
+    "midjourneyOptimizerDescription": "将您的创意转化为 Midjourney 能理解的精确指令，生成更惊艳、更符合预期的图像。",
+    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
+    "chatgptOptimizerDescription": "提升 ChatGPT 对话的质量，让您的提问更精准，回答更有效，获得更具洞찰力的交流。",
+    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
+    "geminiOptimizerDescription": "为 Gemini 量身定制多模态 Prompt，解锁其在文本、图像、代码等方面的强大能力，实现更全面的创作。",
+    "claudeOptimizerTitle": "Claude Prompt Optimizer",
+    "claudeOptimizerDescription": "为 Claude 优化长篇、复杂的 Prompt，确保其理解您的意图并提供深入的分析和高质量的文本输出。",
+    "imageOptimizerTitle": "Image Prompt Optimizer",
+    "imageOptimizerDescription": "无论是 Stable Diffusion 还是 DALL-E，优化您的图像生成 Prompt，精确控制细节，获得理想视觉效果。",
+    "videoOptimizerTitle": "Video Prompt Optimizer",
+    "videoOptimizerDescription": "为视频生成 AI 打造精准脚本和指令，让您的视频创意变为现实，节省大量后期调整时间。"
+  },
   "FAQSection": {
     "title": "자주 묻는 질문",
     "subtitle": "질문이 있으신가요? 저희가 답변해 드립니다. 가장 일반적인 질문들은 다음과 같습니다.",
     "q1": "어떤 AI 플랫폼이 지원되나요?",
     "a1": "Lyra는 플랫폼에 구애받지 않도록 설계되었습니다. 우리의 핵심 최적화 기술은 OpenAI(ChatGPT), Google(Gemini), Anthropic(Claude) 등의 최신 대규모 언어 모델에서 작동합니다.",
     "q2": "무료 버전이 있나요?",
-    "a2": "네, 기본 프롬프트 최적화는 무료로 사용할 수 있습니다. 향후 일괄 처리 및 팀 협업과 같은 고급 기능을 갖춘 Pro 버전을 출시할 계획입니다.",
+    "a2": "네, 기본 프롬프트 최적화는 사용자당 하루 3회까지 무료로 사용할 수 있습니다. 더 많은 고급 기능을 위해 향후 Pro 버전을 출시할 계획입니다.",
     "q3": "Lyra는 실제로 어떻게 내 프롬프트를 개선하나요?",
     "a3": "Lyra는 확립된 프롬프트 엔지니어링 원칙에 기반한 기술 조합을 사용합니다. 여기에는 특정 컨텍스트 추가, AI에 역할 할당, 명확한 출력 형식 정의, 복잡한 작업 분해(사고의 사슬)가 포함됩니다.",
     "q4": "어떤 언어로든 Lyra를 사용할 수 있나요?",
-    "a4": "네, Lyra의 인터페이스는 영어이지만 모든 언어로 프롬프트를 제출할 수 있습니다. 최적화 원칙은 보편적이며 사용된 언어에 관계없이 프롬프트를 향상시킵니다."
+    "a4": "네, Lyra의 인터페이스는 영어이지만 모든 언어로 프롬프트를 제출할 수 있습니다. 최적화 원칙은 보편적이며 사용된 언어에 관계없이 프롬프트를 향상시킵니다.",
+    "q5": "내 데이터는 안전한가요? 내 프롬프트를 저장하나요?",
+    "a5": "저희는 귀하의 개인 정보를 매우 중요하게 생각합니다. 무료 버전의 모든 최적화는 브라우저에서 로컬로 처리되며 귀하의 프롬프트를 저장하지 않습니다. 향후 Pro 버전에서는 명확한 데이터 처리 정책을 제공할 것입니다.",
+    "q6": "이 도구는 ChatGPT를 직접 사용하는 것과 어떻게 다른가요?",
+    "a6": "AI를 직접 사용하는 것은 자신의 프롬프트 기술에 달려 있습니다. Lyra는 전문가 조수 역할을 하여 체계적인 방법론을 적용하여 아이디어에 구조, 컨텍스트 및 제약 조건을 자동으로 추가하여 지속적으로 고품질 결과를 생성합니다.",
+    "q7": "개발자용 API를 제공하나요?",
+    "a7": "향후 Pro 버전에서 API 액세스를 제공하여 Lyra의 최적화 기능을 자신의 애플리케이션에 통합할 수 있도록 할 계획입니다."
   },
   "CTASection": {
     "title": "프롬프트를 한 단계 업그레이드할 준비가 되셨나요?",

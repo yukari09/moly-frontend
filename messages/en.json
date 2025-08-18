@@ -70,17 +70,39 @@
     "quote6": "The ability to quickly refine my ideas into precise prompts has boosted my productivity. Lyra is intuitive and incredibly effective.",
     "title6": "Freelance Writer"
   },
+  "ApplicablePlatformsSection": {
+    "title": "Your Prompt, Our Optimization: For Every Platform & Scenario",
+    "subtitle": "Lyra is designed to be a universal prompt optimizer, enhancing your interactions with a wide range of AI models and use cases.",
+    "midjourneyOptimizerTitle": "Midjourney Prompt Optimizer",
+    "midjourneyOptimizerDescription": "Transform your creative ideas into precise instructions that Midjourney can understand, generating more stunning and accurate images.",
+    "chatgptOptimizerTitle": "ChatGPT Prompt Optimizer",
+    "chatgptOptimizerDescription": "Improve the quality of your ChatGPT conversations. Make your questions more precise and the answers more effective and insightful.",
+    "geminiOptimizerTitle": "Gemini Prompt Optimizer",
+    "geminiOptimizerDescription": "Tailor multimodal prompts for Gemini, unlocking its powerful capabilities in text, image, and code generation for more comprehensive results.",
+    "claudeOptimizerTitle": "Claude Prompt Optimizer",
+    "claudeOptimizerDescription": "Optimize long, complex prompts for Claude, ensuring it fully understands your intent to provide deep analysis and high-quality text outputs.",
+    "imageOptimizerTitle": "Image Prompt Optimizer",
+    "imageOptimizerDescription": "Whether for Stable Diffusion or DALL-E, optimize your image generation prompts to gain fine-grained control over every detail.",
+    "videoOptimizerTitle": "Video Prompt Optimizer",
+    "videoOptimizerDescription": "Create precise scripts and instructions for video generation AI, bringing your creative vision to life and saving time on edits."
+  },
   "FAQSection": {
     "title": "Frequently Asked Questions",
     "subtitle": "Have questions? We have answers. Here are some of the most common questions we get.",
     "q1": "What AI platforms are supported?",
     "a1": "Lyra is designed to be platform-agnostic. Our core optimization techniques work for any modern large language model, including those from OpenAI (ChatGPT), Google (Gemini), Anthropic (Claude), and more.",
     "q2": "Is there a free version?",
-    "a2": "Yes, the basic prompt optimization is free to use. We plan to introduce a Pro version with more advanced features, such as batch processing and team collaboration, in the future.",
+    "a2": "Yes, the basic prompt optimization is free to use for up to 3 times per day per user. For more advanced features, we plan to introduce a Pro version in the future.",
     "q3": "How does Lyra actually improve my prompts?",
     "a3": "Lyra uses a combination of techniques based on established prompt engineering principles. This includes adding specific context, assigning a role to the AI, defining a clear output format, and breaking down complex tasks (Chain-of-Thought).",
     "q4": "Can I use Lyra for any language?",
-    "a4": "Yes, while Lyra's interface is in English, you can submit prompts in any language. The optimization principles are universal and will enhance your prompts regardless of the language used."
+    "a4": "Yes, while Lyra's interface is in English, you can submit prompts in any language. The optimization principles are universal and will enhance your prompts regardless of the language used.",
+    "q5": "Is my data secure? Do you save my prompts?",
+    "a5": "We take your privacy very seriously. All optimizations in the free version are processed locally in your browser, and we do not save any of your prompts. For the future Pro version, we will provide a clear data handling policy.",
+    "q6": "How is this tool different from just using ChatGPT directly?",
+    "a6": "Using AI directly relies on your own prompting skills. Lyra acts as an expert assistant, applying a systematic methodology to automatically add structure, context, and constraints to your ideas, thereby consistently generating higher-quality results.",
+    "q7": "Do you offer an API for developers?",
+    "a7": "We plan to offer API access in a future Pro version, allowing you to integrate Lyra's optimization capabilities into your own applications."
   },
   "CTASection": {
     "title": "Ready to Level Up Your Prompts?",
