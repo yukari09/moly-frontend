@@ -1,7 +1,103 @@
 {
   "HomePage": {
-    "title": "Website Gallery",
+    "title": "AI Prompt Optimizer",
+    "subtitle": "Transform your vague requests into precise, effective prompts that deliver better results.",
     "about": "Go to the about page"
+  },
+  "PromptGenerator": {
+    "title": "Lyra, Your AI Prompt Optimizer",
+    "description": "Start with your rough idea, and I'll transform it into a precision-crafted prompt.",
+    "rawPromptLabel": "Your Rough Prompt or Idea",
+    "rawPromptPlaceholder": "e.g., 'Write me a marketing email' or 'Help with my resume'",
+    "targetAILabel": "Target AI",
+    "promptStyleLabel": "Prompt Style",
+    "styleBasic": "Basic",
+    "styleBasicDescription": "Quick optimization for general use.",
+    "styleDetail": "Detail",
+    "styleDetailDescription": "I'll ask clarifying questions for a comprehensive result.",
+    "optimizeButton": "Optimize Prompt",
+    "optimizingButton": "Optimizing...",
+    "optimizedPromptTitle": "Your Optimized Prompt",
+    "keyImprovementsTitle": "Key Improvements",
+    "welcomeMessage": "Hello! I'm Lyra, your AI prompt optimizer. Just share your rough prompt and I'll handle the optimization!",
+    "optionSelectMessage": "Got it. Now, please select the target AI and desired style for the optimization.",
+    "inputPlaceholder": "Type your prompt idea here..."
+  },
+  "FeaturesSection": {
+    "title": "Unleash the Full Potential of AI",
+    "subtitle": "Our systematic approach transforms your vague ideas into high-precision prompts that deliver exceptional results, every time.",
+    "deconstructTitle": "Deconstruct",
+    "deconstructDescription": "We break down your request to its core intent, identifying key entities and context.",
+    "diagnoseTitle": "Diagnose",
+    "diagnoseDescription": "We audit for clarity gaps, ambiguity, and completeness to pinpoint areas for improvement.",
+    "developTitle": "Develop",
+    "developDescription": "Using advanced techniques, we enrich the prompt with structure, context, and constraints.",
+    "deliverTitle": "Deliver",
+    "deliverDescription": "You receive a precision-crafted prompt, ready to be used with your target AI platform."
+  },
+  "ExamplesSection": {
+    "title": "See the Difference",
+    "subtitle": "From a simple idea to a powerful, structured prompt. See how Lyra enhances clarity and unlocks better AI responses.",
+    "marketingLabel": "Marketing",
+    "jobSeekingLabel": "Job Seeking",
+    "contentCreationLabel": "Content Creation",
+    "beforeTitle": "Before",
+    "afterTitle": "After"
+  },
+  "HowItWorksSection": {
+    "title": "How It Works",
+    "subtitle": "Get started in three simple steps. From a rough idea to a perfected prompt in under a minute.",
+    "step1Title": "Input Idea",
+    "step1Description": "Start by typing your initial thought or goal into the chat.",
+    "step2Title": "Select Options",
+    "step2Description": "Choose your target AI and optimization style with a single click.",
+    "step3Title": "Get Optimized Prompt",
+    "step3Description": "Receive your new, high-performance prompt, ready for use."
+  },
+  "TestimonialsSection": {
+    "title": "Praised by Professionals",
+    "subtitle": "Don't just take our word for it. Here's what developers, marketers, and writers are saying about Lyra.",
+    "quote1": "This tool is a game-changer. I can now generate complex, structured prompts in seconds, which used to take me minutes of careful thought.",
+    "title1": "Software Developer",
+    "quote2": "Lyra has significantly improved the quality of our marketing copy. The prompts are more creative and targeted, leading to better engagement.",
+    "title2": "Marketing Manager",
+    "quote3": "As a content creator, I'm constantly battling writer's block. Lyra helps me brainstorm and refine my ideas into actionable prompts for my AI assistant.",
+    "title3": "Content Creator"
+  },
+  "FAQSection": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Have questions? We have answers. Here are some of the most common questions we get.",
+    "q1": "What AI platforms are supported?",
+    "a1": "Lyra is designed to be platform-agnostic. Our core optimization techniques work for any modern large language model, including those from OpenAI (ChatGPT), Google (Gemini), Anthropic (Claude), and more.",
+    "q2": "Is there a free version?",
+    "a2": "Yes, the basic prompt optimization is free to use. We plan to introduce a Pro version with more advanced features, such as batch processing and team collaboration, in the future.",
+    "q3": "How does Lyra actually improve my prompts?",
+    "a3": "Lyra uses a combination of techniques based on established prompt engineering principles. This includes adding specific context, assigning a role to the AI, defining a clear output format, and breaking down complex tasks (Chain-of-Thought).",
+    "q4": "Can I use Lyra for any language?",
+    "a4": "Yes, while Lyra's interface is in English, you can submit prompts in any language. The optimization principles are universal and will enhance your prompts regardless of the language used."
+  },
+  "CTASection": {
+    "title": "Ready to Level Up Your Prompts?",
+    "subtitle": "Stop guessing and start creating. Get access to powerful prompt optimization and unlock better AI results today.",
+    "buttonText": "Get Started for Free"
+  },
+  "Footer": {
+    "slogan": "Transforming ideas into high-precision prompts.",
+    "productColumn": "Product",
+    "link_features": "Features",
+    "link_examples": "Examples",
+    "link_pricing": "Pricing",
+    "companyColumn": "Company",
+    "link_about": "About Us",
+    "link_blog": "Blog",
+    "link_contact": "Contact",
+    "legalColumn": "Legal",
+    "link_terms": "Terms of Service",
+    "link_privacy": "Privacy Policy",
+    "copyright": "All rights reserved."
+  },
+  "SupportedPlatformsSection": {
+    "title": "Broadly Compatible, Seamlessly Integrated"
   },
   "Header": {
     "profile": "Profile",
@@ -9,7 +105,8 @@
     "log_out": "Log Out",
     "sign_up": "Sign Up",
     "log_in": "Log In",
-    "pricing": "Pricing",
+    "features": "Features",
+    "difference": "Difference",
     "setting": "Setting"
   },
   "UserSetting": {

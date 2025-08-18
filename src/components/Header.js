@@ -94,16 +94,16 @@ export default function Header() {
               <NavigationMenuList>
  
                 <NavigationMenuItem>
-                  <Link href="/docs" >
-                    <NavigationMenuLink >
-                      Docs
+                  <Link href="/#features" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      {t.rich("features")}
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/pricing" >
-                    <NavigationMenuLink >
-                      {t.rich("pricing")}
+                  <Link href="/#difference" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      {t.rich("difference")}
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
