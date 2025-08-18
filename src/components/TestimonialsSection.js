@@ -23,6 +23,24 @@ const testimonials = [
     titleKey: "title3",
     avatar: "https://randomuser.me/api/portraits/women/32.jpg",
   },
+  {
+    quoteKey: "quote4",
+    name: "David R.",
+    titleKey: "title4",
+    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+  },
+  {
+    quoteKey: "quote5",
+    name: "Emily W.",
+    titleKey: "title5",
+    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
+  },
+  {
+    quoteKey: "quote6",
+    name: "Michael B.",
+    titleKey: "title6",
+    avatar: "https://randomuser.me/api/portraits/men/29.jpg",
+  },
 ];
 
 export const TestimonialsSection = () => {
