@@ -47,3 +47,4 @@ bun.lockb
 .env
 .env.testing
 .env.production
+package-lock.json

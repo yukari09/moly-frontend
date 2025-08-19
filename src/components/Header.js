@@ -95,6 +95,7 @@ export default function Header() {
                       <Link href="/#features">{t.rich("features")}</Link>
                     </NavigationMenuLink>
                    
+                   
                 </NavigationMenuItem>
                 <NavigationMenuItem>                  
                     <NavigationMenuLink asChild>
