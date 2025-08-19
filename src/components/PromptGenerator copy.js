@@ -113,54 +113,29 @@ export const PromptGenerator = () => {
 
   const handleOptionSelect = useCallback(
     async (options) => {
-      // 获取最后一条用户消息
-      const lastUserMessage = messages.filter(m => m.sender === 'user').slice(-1)[0];
-      const userPrompt = lastUserMessage?.text || '';
-
       // Visually confirm selection by removing the options selector
       setMessages((prev) =>
         prev.filter((m) => m.component !== 'OptionSelector'),
       );
       addEctroMessage(
-        `Okay, using ${options.targetAI} with ${options.promptStyle} style. Optimizing your prompt: "${userPrompt.substring(0, 50)}${userPrompt.length > 50 ? '...' : ''}"`,
+        `Okay, using ${options.targetAI} with ${options.promptStyle} style. Optimizing...`,
       );
       setFlowState('processing');
       setIsLoading(true);
 
-      options['userPrompt'] = userPrompt
+      // --- Mock API Call ---
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const mockOptimizedPrompt = `Craft a compelling narrative about a lone astronaut who discovers a sentient, crystalline lifeform on a desolate moon of Jupiter.\n\n**Key Elements:**\n- **Character:** Dr. Aris Thorne...`;
+      const mockExplanation = `• **Role Assignment:** Cast the AI as a master storyteller...`;
+      // --- End Mock API Call ---
 
-
-      try {
-        const response = await fetch('/api/ectro', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(options),
-        });
-
-        if (!response.ok) {
-          throw new Error(`API request failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const optimizedPrompt = data.optimizedPrompt || `**Optimized Prompt for ${options.targetAI}:**\n\n${userPrompt}\n\n**Enhanced with ${options.targetAI} best practices:**\n- Clear role definition\n- Specific instructions\n- Expected output format\n- Context and constraints`;
-        const explanation = data.explanation || `**Optimization Explanation:**\n• **Original Input:** "${userPrompt}"\n• **Target Platform:** ${options.targetAI}\n• **Style:** ${options.promptStyle}\n• **Enhancements Applied:** Structure, clarity, and platform-specific optimization`;
-
-        addEctroMessage(optimizedPrompt, 'Result');
-        addEctroMessage(explanation, 'Explanation');
-      } catch (error) {
-        console.error('API call failed:', error);
-        toast.error('Failed to optimize prompt. Please try again.');
-        
-        // 发生错误时的回退逻辑
-        addEctroMessage('Sorry, there was an error optimizing your prompt. Please try again.', 'Error');
-      }
+      addEctroMessage(mockOptimizedPrompt, 'Result');
+      addEctroMessage(mockExplanation, 'Explanation');
 
       setIsLoading(false);
       setFlowState('idle');
     },
-    [addEctroMessage, messages], // 添加 messages 到依赖数组
+    [addEctroMessage],
   );
 
   const handleSend = useCallback(() => {
