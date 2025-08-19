@@ -163,7 +163,7 @@ export const PromptGenerator = () => {
     <div className="flex flex-col h-[75vh] w-full max-w-3xl mx-auto bg-white border rounded-lg shadow-lg">
       <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-6 space-y-6"
+        className="flex-1 overflow-y-auto px-4 py-6 space-y-6"
       >
         {messages.map((msg) => (
           <div
@@ -207,18 +207,18 @@ export const PromptGenerator = () => {
           </div>
         )}
       </div>
-      <div className="mt-auto border-t bg-background">
+      <div className="border rounded-lg mx-4 mb-2">
         <Textarea
           placeholder={t('inputPlaceholder')}
           value={userInput}
           onChange={handleInputChange}
           onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
           disabled={flowState !== 'idle'}
-          className="w-full border-0 rounded-b-none resize-none focus-visible:ring-0 p-4 bg-transparent"
+          className="w-full border-0 resize-none focus-visible:ring-0 p-4"
           maxLength={MAX_CHARS}
           rows={3}
         />
-        <div className="flex items-center justify-between p-2 border-t">
+        <div className="flex items-center justify-between py-1 px-4">
           <span className="text-xs text-muted-foreground">
             {userInput.length} / {MAX_CHARS}
           </span>
@@ -228,7 +228,7 @@ export const PromptGenerator = () => {
             onClick={handleSend}
             disabled={flowState !== 'idle' || !userInput.trim()}
           >
-            <Send className="w-4 h-4" />
+            <Send className="icon" />
           </Button>
         </div>
       </div>
