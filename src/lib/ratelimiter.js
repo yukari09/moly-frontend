@@ -1,8 +1,6 @@
 import { Redis } from "ioredis";
 import logger from "./logger";
 
-const WINDOW_SIZE_IN_SECONDS = 5 * 60; // 5 minutes
-const MAX_REQUESTS = 3;
 const globalPrefix = process.env.REDIS_KEY_PREFIX || "moly:";
 
 let redis;
@@ -94,38 +92,67 @@ initializeRedis().catch(error => {
   logger.error("Failed to initialize Redis on module load:", error);
 });
 
-async function limit(identifier) {
-  try {
-    const redisClient = await ensureRedisReady();
-    
-    const key = `${globalPrefix}ratelimit:email:${identifier}`;
-    
-    const current = await redisClient.get(key);
-    
-    if (current && Number(current) >= MAX_REQUESTS) {
-      return { success: false };
-    }
-
-    // Use a pipeline for atomic execution
-    const multi = redisClient.multi();
-    multi.incr(key);
-    multi.expire(key, WINDOW_SIZE_IN_SECONDS, "NX");
-    const results = await multi.exec();
-    
-    // Check if pipeline execution was successful
-    if (!results || results.some(([err]) => err)) {
-      throw new Error("Redis pipeline execution failed");
-    }
-
-    return { success: true };
-
-  } catch (error) {
-    logger.error("Rate limiting check failed:", error);
-    // Fallback to allow the request if the rate limiter itself fails
-    logger.warn(`Rate limiting is disabled due to an error for identifier: ${identifier}`);
-    return { success: true };
+/**
+ * Creates a new rate limiter with a specific configuration.
+ * @param {object} config - The configuration for the rate limiter.
+ * @param {string} config.namespace - A unique namespace for this rate limiter (e.g., 'email', 'api').
+ * @param {number} config.windowSizeInSeconds - The duration of the rate-limiting window in seconds.
+ * @param {number} config.maxRequests - The maximum number of requests allowed within the window.
+ * @returns {{limit: function(identifier: string): Promise<{success: boolean, limit: number, remaining: number}>}}
+ */
+export function createRateLimiter({ namespace, windowSizeInSeconds, maxRequests }) {
+  if (!namespace || !windowSizeInSeconds || !maxRequests) {
+    // This is a developer error, so we throw.
+    throw new Error(`Rate limiter configuration is incomplete for namespace: ${namespace}`);
   }
+
+  async function limit(identifier) {
+    try {
+      const redisClient = await ensureRedisReady();
+      const key = `${globalPrefix}ratelimit:${namespace}:${identifier}`;
+
+      const current = await redisClient.incr(key);
+
+      // When the key is new, INCR returns 1. We then set the expiry.
+      if (current === 1) {
+        await redisClient.expire(key, windowSizeInSeconds);
+      }
+
+      if (current > maxRequests) {
+        return { success: false, limit: maxRequests, remaining: 0 };
+      }
+
+      return { success: true, limit: maxRequests, remaining: maxRequests - current };
+    } catch (error) {
+      logger.error(`Rate limiting check failed for namespace ${namespace}:`, error);
+      // Fallback to allow the request if the rate limiter itself fails
+      logger.warn(
+        `Rate limiting is disabled due to an error for identifier: ${identifier} in namespace: ${namespace}`
+      );
+      return { success: true, limit: maxRequests, remaining: maxRequests };
+    }
+  }
+
+  return { limit };
 }
+
+// Configuration for the existing email rate limiter
+const EMAIL_WINDOW_SIZE_IN_SECONDS = 5 * 60; // 5 minutes
+const EMAIL_MAX_REQUESTS = 3;
+
+// Export the email rate limiter to maintain backward compatibility.
+export const emailRateLimiter = createRateLimiter({
+  namespace: 'email',
+  windowSizeInSeconds: EMAIL_WINDOW_SIZE_IN_SECONDS,
+  maxRequests: EMAIL_MAX_REQUESTS,
+});
+
+// Temporary limiter
+export const optimizerRateLimiter = createRateLimiter({
+  namespace: 'optimizer',
+  windowSizeInSeconds: 24 * 50 * 60,
+  maxRequests: 3,
+});
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
@@ -134,7 +161,3 @@ process.on('SIGTERM', async () => {
     logger.info('Redis connection closed gracefully');
   }
 });
-
-export const emailRateLimiter = {
-  limit,
-};
