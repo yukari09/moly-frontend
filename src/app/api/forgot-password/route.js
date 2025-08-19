@@ -7,7 +7,7 @@ import { emailRateLimiter } from '@/lib/ratelimiter';
 import * as gql from '@/lib/graphql';
 
 export async function POST(request) {
-  const ip = request.headers.get('x-forwarded-for') || request.ip || '127.0.0.1';
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || '127.0.0.1';
 
   try {
     const { success } = await emailRateLimiter.limit(ip);
