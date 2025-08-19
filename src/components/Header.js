@@ -94,18 +94,18 @@ export default function Header() {
               <NavigationMenuList>
  
                 <NavigationMenuItem>
-                  <Link href="/docs" >
-                    <NavigationMenuLink >
-                      Docs
+                   
+                    <NavigationMenuLink asChild>
+                      <Link href="/docs" >Docs</Link>
                     </NavigationMenuLink>
-                  </Link>
+                   
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/pricing" >
-                    <NavigationMenuLink >
-                      {t.rich("pricing")}
+                   
+                    <NavigationMenuLink asChild>
+                      <Link href="/pricing" >{t.rich("pricing")}</Link>
                     </NavigationMenuLink>
-                  </Link>
+                   
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
