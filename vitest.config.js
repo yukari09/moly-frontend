@@ -9,6 +9,9 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     globals: true,
     css: true,
+    env: {
+      NODE_ENV: 'development'
+    }
     // Vitest automatically loads .env.test in test mode
   },
   resolve: {

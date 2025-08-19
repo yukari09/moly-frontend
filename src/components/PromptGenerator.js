@@ -8,6 +8,17 @@ import { Send, Bot, User } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { OpenAI, Gemini, Claude, Midjourney } from '@lobehub/icons';
 import { toast } from 'sonner';
+import { marked } from 'marked';
+
+
+const replaceSingleNewline = (str) => {
+  if (typeof str !== 'string') {
+    return '';
+  }
+  return str.split('\n\n').map(paragraph => {
+    return paragraph.replace(/\n/g, '\n\n');
+  }).join('\n\n');
+}
 
 const generateUniqueId = () =>
   `msg_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
@@ -113,7 +124,7 @@ export const PromptGenerator = () => {
 
   const handleOptionSelect = useCallback(
     async (options) => {
-      // 获取最后一条用户消息
+
       const lastUserMessage = messages.filter(m => m.sender === 'user').slice(-1)[0];
       const userPrompt = lastUserMessage?.text || '';
 
@@ -144,16 +155,13 @@ export const PromptGenerator = () => {
         }
 
         const data = await response.json();
-        const optimizedPrompt = data.optimizedPrompt || `**Optimized Prompt for ${options.targetAI}:**\n\n${userPrompt}\n\n**Enhanced with ${options.targetAI} best practices:**\n- Clear role definition\n- Specific instructions\n- Expected output format\n- Context and constraints`;
-        const explanation = data.explanation || `**Optimization Explanation:**\n• **Original Input:** "${userPrompt}"\n• **Target Platform:** ${options.targetAI}\n• **Style:** ${options.promptStyle}\n• **Enhancements Applied:** Structure, clarity, and platform-specific optimization`;
-
+        const optimizedPrompt = data.message
         addEctroMessage(optimizedPrompt, 'Result');
-        addEctroMessage(explanation, 'Explanation');
       } catch (error) {
         console.error('API call failed:', error);
         toast.error('Failed to optimize prompt. Please try again.');
         
-        // 发生错误时的回退逻辑
+      
         addEctroMessage('Sorry, there was an error optimizing your prompt. Please try again.', 'Error');
       }
 
@@ -176,7 +184,7 @@ export const PromptGenerator = () => {
     if (msg.component === 'OptionSelector') {
       return (
         <div>
-          <p className="whitespace-pre-wrap text-sm">{msg.text}</p>
+          <p>{msg.text}</p>
           <OptionSelector onSelect={handleOptionSelect} />
         </div>
       );
@@ -184,19 +192,24 @@ export const PromptGenerator = () => {
     if (msg.component === 'PlatformLogos') {
       return (
         <div>
-          <p className="whitespace-pre-wrap text-sm">{msg.text}</p>
+          <p>{msg.text}</p>
           <PlatformLogos />
         </div>
       );
     }
-    return <p className="whitespace-pre-wrap text-sm">{msg.text}</p>;
+    if(msg.component == "Result"){
+      const md = replaceSingleNewline(msg.text)
+      const htmlText = marked.parse(md)
+      return <div dangerouslySetInnerHTML={{ __html: htmlText }} />;
+    }
+    return <p>{msg.text}</p>;
   };
 
   return (
     <div className="flex flex-col h-[75vh] w-full max-w-3xl mx-auto bg-white border rounded-lg shadow-lg">
       <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-6"
+        className="flex-1 overflow-y-auto px-4 py-6 space-y-6 prose prose-sm max-w-none"
       >
         {messages.map((msg) => (
           <div
@@ -204,7 +217,7 @@ export const PromptGenerator = () => {
             className={`flex items-start gap-4 ${msg.sender === 'user' ? 'justify-end' : ''}`}
           >
             {msg.sender === 'Ectro' && (
-              <Avatar className="w-9 h-9 border">
+              <Avatar className="size-8 border my-4">
                 <AvatarFallback>
                   <Bot size={20} />
                 </AvatarFallback>
@@ -219,7 +232,7 @@ export const PromptGenerator = () => {
               {renderMessageContent(msg)}
             </div>
             {msg.sender === 'user' && (
-              <Avatar className="w-9 h-9 border">
+              <Avatar className="size-8 my-4 border">
                 <AvatarFallback>
                   <User size={20} />
                 </AvatarFallback>

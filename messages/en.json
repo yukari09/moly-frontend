@@ -22,7 +22,9 @@
     "welcomeMessage": "Hello! I'm Ectro, your AI prompt optimizer. Just share your rough prompt and I'll handle the optimization!",
     "optionSelectMessage": "Got it. Now, please select the target AI and desired style for the optimization.",
     "inputPlaceholder": "Type your prompt idea here...",
-    "characterLimitToast": "You can only enter up to {count} characters."
+    "characterLimitToast": "You can only enter up to {count} characters.",
+    "requireProvidePrompt": "Please provide your prompt for optimizer.",
+    "requireUserSelectAiTarget": "Please select one target ai platform."
   },
   "FeaturesSection": {
     "title": "Unleash the Full Potential of AI",
@@ -312,5 +314,23 @@
   "PrivacyPage": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: August 18, 2025"
+  },
+  "Errors": {
+    "fieldIsRequired": "{field} is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordTooShort": "Password must be at least 8 characters long.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "usernameRequired": "Username is required.",
+    "nameRequired": "Name is required.",
+    "phoneRequired": "Phone number is required.",
+    "invalidPhoneNumber": "Please enter a valid phone number.",
+    "invalidUrl": "Please enter a valid URL.",
+    "fileTooLarge": "File size is too large.",
+    "unsupportedFileType": "Unsupported file type.",
+    "networkError": "Network error. Please try again.",
+    "serverError": "Server error. Please try again later.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "somethingWentWrong": "Something went wrong. Please try again."
   }
 }

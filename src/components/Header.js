@@ -20,7 +20,7 @@ import {
   NavigationMenuTrigger,
  
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
+import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { getMetaValue } from "@/lib/utils";
@@ -90,36 +90,22 @@ export default function Header() {
           <div className="hidden md:block">
             <NavigationMenu>
               <NavigationMenuList>
-                <NavigationMenuItem>
-                   
-                    <NavigationMenuLink
-                       
-                      href="/#features" 
-                    >
-                      {t.rich("features")}
+                <NavigationMenuItem>                   
+                    <NavigationMenuLink asChild>
+                      <Link href="/#features">{t.rich("features")}</Link>
                     </NavigationMenuLink>
                    
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                  
-                    <NavigationMenuLink
-                       
-                      href="/#difference" 
-                    >
-                      {t.rich("difference")}
-                    </NavigationMenuLink>
-                   
+                <NavigationMenuItem>                  
+                    <NavigationMenuLink asChild>
+                      <Link href="/#difference" >{t.rich("difference")}</Link>
+                    </NavigationMenuLink>                   
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  
-                    <NavigationMenuLink
-                      href="/#use-cases"
-                      
-                    >
-                      {t.rich("user_case")}
-                    </NavigationMenuLink>
-                   
+                <NavigationMenuItem>                  
+                    <NavigationMenuLink asChild>
+                      <Link href="/#use-cases">{t.rich("user_case")}</Link>
+                    </NavigationMenuLink>                   
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
