@@ -10,7 +10,6 @@ import { OpenAI, Gemini, Claude, Midjourney } from '@lobehub/icons';
 import { toast } from 'sonner';
 import { marked } from 'marked';
 
-
 const replaceSingleNewline = (str) => {
   if (typeof str !== 'string') {
     return '';
@@ -172,6 +171,7 @@ export const PromptGenerator = () => {
   );
 
   const handleSend = useCallback(() => {
+    
     if (!userInput.trim()) return;
 
     addUserMessage(userInput);

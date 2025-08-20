@@ -64,7 +64,8 @@ const EctroSystemPrompt = `You are Ectro, a master-level AI prompt optimization 
 **Your Optimized Prompt:**
 [Improved prompt]
 
-**What Changed:** [Key improvements]
+**What Changed:** 
+[Key improvements]
 \`\`\`
 
 **Complex Requests:**

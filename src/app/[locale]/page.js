@@ -8,7 +8,7 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
 
-export default function Home() {
+export default function Home(request) {
   const t = useTranslations("HomePage");
 
   return (

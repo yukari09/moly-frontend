@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
-import logger from '@/lib/logger';
 import { getTranslations } from 'next-intl/server';
-import { optimizePrompt } from '@/lib/ectro'
+import { optimizePrompt } from '@/lib/ectro';
+// import { optimizerRateLimiter } from '@/lib/ratelimiter';
 
 // Safe logging helper to handle missing logger methods
  
-
 export async function POST(request) {
-    
+
   const t = await getTranslations('PromptGenerator');
   const body = await request.json();
-  const { userPrompt, targetAI, promptStyle } = body;
+  let { userPrompt, targetAI, promptStyle } = body;
   
   // Validate required fields
   if (!userPrompt || typeof userPrompt !== 'string' || userPrompt.trim() === '') {
@@ -32,8 +31,5 @@ export async function POST(request) {
   }
 
   const responst = await optimizePrompt(userPrompt, targetAI, promptStyle)
-
-  console.log(responst)
-  
   return NextResponse.json({message: responst});
 }

@@ -1,5 +1,5 @@
-import { Geist } from "next/font/google";
 import "./globals.css";
+import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
