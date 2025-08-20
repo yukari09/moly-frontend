@@ -1,13 +1,24 @@
 import { NextResponse } from 'next/server';
 import { getTranslations } from 'next-intl/server';
 import { optimizePrompt } from '@/lib/ectro';
-// import { optimizerRateLimiter } from '@/lib/ratelimiter';
+import { getClientRealIp } from "@/lib/request";
+import { optimizerRateLimiter } from '@/lib/ratelimiter';
 
 // Safe logging helper to handle missing logger methods
  
 export async function POST(request) {
 
+  const ip = getClientRealIp(request);
   const t = await getTranslations('PromptGenerator');
+
+  const { success } = await optimizerRateLimiter.limit(ip); 
+  if (!success) {
+      return NextResponse.json(
+          { error: t("tooManyRequest")},
+          { status: 429 }
+      );
+  }
+
   const body = await request.json();
   let { userPrompt, targetAI, promptStyle } = body;
   

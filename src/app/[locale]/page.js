@@ -8,6 +8,18 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
 
+export const metadata = {
+  title: '关于我们',
+  description: '这是一个关于我们公司的页面，提供公司的历史、使命和团队信息。',
+  keywords: ['关于', '公司', '团队', '使命'],
+  openGraph: {
+    title: '关于我们',
+    description: '深入了解我们的故事',
+    url: 'https://你的网站.com/about',
+    siteName: '你的网站',
+  },
+};
+
 export default function Home(request) {
   const t = useTranslations("HomePage");
 

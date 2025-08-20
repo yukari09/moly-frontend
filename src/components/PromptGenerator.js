@@ -10,6 +10,7 @@ import { OpenAI, Gemini, Claude, Midjourney } from '@lobehub/icons';
 import { toast } from 'sonner';
 import { marked } from 'marked';
 
+
 const replaceSingleNewline = (str) => {
   if (typeof str !== 'string') {
     return '';
@@ -149,29 +150,30 @@ export const PromptGenerator = () => {
           body: JSON.stringify(options),
         });
 
-        if (!response.ok) {
-          throw new Error(`API request failed: ${response.status}`);
+        const data = await response.json();
+
+        if(data.error != undefined) {
+          throw new Error(`${data.error}`);
+        }else if (!response.ok) {
+          throw new Error(`API request failed, Please try again.`);
         }
 
-        const data = await response.json();
         const optimizedPrompt = data.message
         addEctroMessage(optimizedPrompt, 'Result');
       } catch (error) {
-        console.error('API call failed:', error);
-        toast.error('Failed to optimize prompt. Please try again.');
+        toast.error(error.message)
         
       
-        addEctroMessage('Sorry, there was an error optimizing your prompt. Please try again.', 'Error');
+        addEctroMessage(error.message, 'Error');
       }
 
       setIsLoading(false);
       setFlowState('idle');
     },
-    [addEctroMessage, messages], // 添加 messages 到依赖数组
+    [addEctroMessage, messages], 
   );
 
   const handleSend = useCallback(() => {
-    
     if (!userInput.trim()) return;
 
     addUserMessage(userInput);

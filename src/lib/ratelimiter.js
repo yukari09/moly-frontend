@@ -150,7 +150,7 @@ export const emailRateLimiter = createRateLimiter({
 // Temporary limiter
 export const optimizerRateLimiter = createRateLimiter({
   namespace: 'optimizer',
-  windowSizeInSeconds: 24 * 50 * 60,
+  windowSizeInSeconds: 24 * 60 * 60,
   maxRequests: 3,
 });
 

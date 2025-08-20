@@ -24,7 +24,8 @@
     "inputPlaceholder": "Type your prompt idea here...",
     "characterLimitToast": "You can only enter up to {count} characters.",
     "requireProvidePrompt": "Please provide your prompt for optimizer.",
-    "requireUserSelectAiTarget": "Please select one target ai platform."
+    "requireUserSelectAiTarget": "Please select one target ai platform.",
+    "tooManyRequest": "Too many requests, each user can only do 3 requests per day."
   },
   "FeaturesSection": {
     "title": "Unleash the Full Potential of AI",
