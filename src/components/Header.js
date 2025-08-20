@@ -83,7 +83,7 @@ export default function Header() {
   const avatarUrl = getMetaValue(userMeta, "avatar"); // Directly use the full URL
 
   return (
-    <header>
+    <header class="border-b">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 flex justify-between items-center h-[65px]">
         <div className="flex items-center gap-3 sm:gap-6 sticky">
           <VercelLogo />

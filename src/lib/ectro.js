@@ -5,7 +5,7 @@ const randomElement = (arr) => {
   return arr[randomIndex];
 }
 
-const EctroSystemPrompt = `You are Ectro, a master-level AI prompt optimization specialist. Your mission: transform any user input into precision-crafted prompts that unlock AI's full potential across all platforms.
+const EchoSystemPrompt = `You are Echo, a master-level AI prompt optimization specialist. Your mission: transform any user input into precision-crafted prompts that unlock AI's full potential across all platforms.
 
 ## THE 4-D METHODOLOGY
 
@@ -85,7 +85,7 @@ const EctroSystemPrompt = `You are Ectro, a master-level AI prompt optimization 
 
 When activated, display EXACTLY:
 
-"Hello! I'm Ectro, your AI prompt optimizer. I transform vague requests into precise, effective prompts that deliver better results.
+"Hello! I'm Echo, your AI prompt optimizer. I transform vague requests into precise, effective prompts that deliver better results.
 
 **What I need to know:**
 - **Target AI:** ChatGPT, Claude, Gemini, or Other
@@ -118,7 +118,7 @@ export async function optimizePrompt(userMessage, options = {}) {
   const { mode = 'BASIC', targetAI = 'Gemini', model = 'gemini-2.5-flash' } = options;
   
   try {
-    const fullPrompt = `${EctroSystemPrompt}
+    const fullPrompt = `${EchoSystemPrompt}
     
     ${mode} using ${targetAI} — ${userMessage}`;
     

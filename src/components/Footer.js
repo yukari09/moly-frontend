@@ -36,7 +36,7 @@ export const Footer = () => {
       <div className="max-w-screen-xl mx-auto px-6 pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">
-            <h3 className="text-xl font-bold">Ectro</h3>
+            <h3 className="text-xl font-bold">Echo</h3>
             <p className="mt-2 text-muted-foreground max-w-xs text-sm">
               {t("slogan")}
             </p>
@@ -93,7 +93,7 @@ export const Footer = () => {
       <div className="mt-12 py-8  border-t">
         <div className="flex flex-col sm:flex-row justify-between items-center  max-w-screen-xl mx-auto px-6">
           <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} Ectro. {t("copyright")}
+            &copy; {currentYear} Echo. {t("copyright")}
           </p>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
             {socialLinks.map((link, index) => (

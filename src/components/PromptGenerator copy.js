@@ -89,10 +89,10 @@ export const PromptGenerator = () => {
     ]);
   }, []);
 
-  const addEctroMessage = useCallback((text, component = null) => {
+  const addEchoMessage = useCallback((text, component = null) => {
     setMessages((prev) => [
       ...prev,
-      { id: generateUniqueId(), sender: 'Ectro', text, component },
+      { id: generateUniqueId(), sender: 'Echo', text, component },
     ]);
   }, []);
 
@@ -107,9 +107,9 @@ export const PromptGenerator = () => {
   // Set initial welcome message
   useEffect(() => {
     if (messages.length === 0) {
-      addEctroMessage(t('welcomeMessage'), 'PlatformLogos');
+      addEchoMessage(t('welcomeMessage'), 'PlatformLogos');
     }
-  }, [messages.length, addEctroMessage, t]);
+  }, [messages.length, addEchoMessage, t]);
 
   const handleOptionSelect = useCallback(
     async (options) => {
@@ -117,7 +117,7 @@ export const PromptGenerator = () => {
       setMessages((prev) =>
         prev.filter((m) => m.component !== 'OptionSelector'),
       );
-      addEctroMessage(
+      addEchoMessage(
         `Okay, using ${options.targetAI} with ${options.promptStyle} style. Optimizing...`,
       );
       setFlowState('processing');
@@ -129,13 +129,13 @@ export const PromptGenerator = () => {
       const mockExplanation = `• **Role Assignment:** Cast the AI as a master storyteller...`;
       // --- End Mock API Call ---
 
-      addEctroMessage(mockOptimizedPrompt, 'Result');
-      addEctroMessage(mockExplanation, 'Explanation');
+      addEchoMessage(mockOptimizedPrompt, 'Result');
+      addEchoMessage(mockExplanation, 'Explanation');
 
       setIsLoading(false);
       setFlowState('idle');
     },
-    [addEctroMessage],
+    [addEchoMessage],
   );
 
   const handleSend = useCallback(() => {
@@ -144,8 +144,8 @@ export const PromptGenerator = () => {
     addUserMessage(userInput);
     setUserInput('');
     setFlowState('awaiting_options');
-    addEctroMessage(t('optionSelectMessage'), 'OptionSelector');
-  }, [addUserMessage, addEctroMessage, userInput, t]);
+    addEchoMessage(t('optionSelectMessage'), 'OptionSelector');
+  }, [addUserMessage, addEchoMessage, userInput, t]);
 
   const renderMessageContent = (msg) => {
     if (msg.component === 'OptionSelector') {
@@ -178,7 +178,7 @@ export const PromptGenerator = () => {
             key={msg.id}
             className={`flex items-start gap-4 ${msg.sender === 'user' ? 'justify-end' : ''}`}
           >
-            {msg.sender === 'Ectro' && (
+            {msg.sender === 'Echo' && (
               <Avatar className="w-9 h-9 border">
                 <AvatarFallback>
                   <Bot size={20} />

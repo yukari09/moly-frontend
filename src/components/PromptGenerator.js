@@ -100,10 +100,10 @@ export const PromptGenerator = () => {
     ]);
   }, []);
 
-  const addEctroMessage = useCallback((text, component = null) => {
+  const addEchoMessage = useCallback((text, component = null) => {
     setMessages((prev) => [
       ...prev,
-      { id: generateUniqueId(), sender: 'Ectro', text, component },
+      { id: generateUniqueId(), sender: 'Echo', text, component },
     ]);
   }, []);
 
@@ -118,9 +118,9 @@ export const PromptGenerator = () => {
   // Set initial welcome message
   useEffect(() => {
     if (messages.length === 0) {
-      addEctroMessage(t('welcomeMessage'), 'PlatformLogos');
+      addEchoMessage(t('welcomeMessage'), 'PlatformLogos');
     }
-  }, [messages.length, addEctroMessage, t]);
+  }, [messages.length, addEchoMessage, t]);
 
   const handleOptionSelect = useCallback(
     async (options) => {
@@ -132,7 +132,7 @@ export const PromptGenerator = () => {
       setMessages((prev) =>
         prev.filter((m) => m.component !== 'OptionSelector'),
       );
-      addEctroMessage(
+      addEchoMessage(
         `Okay, using ${options.targetAI} with ${options.promptStyle} style. Optimizing your prompt: "${userPrompt.substring(0, 50)}${userPrompt.length > 50 ? '...' : ''}"`,
       );
       setFlowState('processing');
@@ -142,7 +142,7 @@ export const PromptGenerator = () => {
 
 
       try {
-        const response = await fetch('/api/ectro', {
+        const response = await fetch('/api/Echo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -159,18 +159,18 @@ export const PromptGenerator = () => {
         }
 
         const optimizedPrompt = data.message
-        addEctroMessage(optimizedPrompt, 'Result');
+        addEchoMessage(optimizedPrompt, 'Result');
       } catch (error) {
         toast.error(error.message)
         
       
-        addEctroMessage(error.message, 'Error');
+        addEchoMessage(error.message, 'Error');
       }
 
       setIsLoading(false);
       setFlowState('idle');
     },
-    [addEctroMessage, messages], 
+    [addEchoMessage, messages], 
   );
 
   const handleSend = useCallback(() => {
@@ -179,8 +179,8 @@ export const PromptGenerator = () => {
     addUserMessage(userInput);
     setUserInput('');
     setFlowState('awaiting_options');
-    addEctroMessage(t('optionSelectMessage'), 'OptionSelector');
-  }, [addUserMessage, addEctroMessage, userInput, t]);
+    addEchoMessage(t('optionSelectMessage'), 'OptionSelector');
+  }, [addUserMessage, addEchoMessage, userInput, t]);
 
   const renderMessageContent = (msg) => {
     if (msg.component === 'OptionSelector') {
@@ -211,14 +211,14 @@ export const PromptGenerator = () => {
     <div className="flex flex-col h-[75vh] w-full max-w-3xl mx-auto bg-white border rounded-lg shadow-lg">
       <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-6 prose prose-sm max-w-none"
+        className="flex-1 overflow-y-auto px-4 py-6  prose prose-sm max-w-none"
       >
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex items-start gap-4 ${msg.sender === 'user' ? 'justify-end' : ''}`}
           >
-            {msg.sender === 'Ectro' && (
+            {msg.sender === 'Echo' && (
               <Avatar className="size-8 border my-4">
                 <AvatarFallback>
                   <Bot size={20} />
