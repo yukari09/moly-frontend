@@ -42,6 +42,11 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/moly:${{ github.ref_name }}
+          build-args: |
+            NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAAAABLfdqrrH9bmKIai
+            NEXT_PUBLIC_SITE_URL=https://echo.dattk.com
+            NEXT_PUBLIC_GA_ID=G-PYBYBYGL2R
+            NEXT_PUBLIC_IMAGE_HOST=https://image.moly.onl
           cache-from: |
             type=local,src=/tmp/.buildx-cache-arm64
           cache-to: |
