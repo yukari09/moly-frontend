@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { generateRootStructuredData } from "@/lib/seo";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -30,9 +31,14 @@ export default async function RootLayout({ children, params }) {
   } catch (error) {
     notFound();
   }
+  const structuredData = generateRootStructuredData();
   return (
     <html lang={locale} className={geist.className}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <Header />

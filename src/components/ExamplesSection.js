@@ -58,7 +58,7 @@ export const ExamplesSection = () => {
                     <CardTitle>{t('beforeTitle')}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="whitespace-pre-wrap text-sm font-mono bg-gray-100 p-4 rounded-md">{t(ex.beforeKey)}</pre>
+                    <pre className="whitespace-pre-wrap text-sm font-mono  p-4 rounded-md">{t(ex.beforeKey)}</pre>
                   </CardContent>
                 </Card>
                 <Card className="border-primary border-2">
@@ -66,7 +66,7 @@ export const ExamplesSection = () => {
                     <CardTitle>{t('afterTitle')}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="whitespace-pre-wrap text-sm font-mono bg-gray-100 p-4 rounded-md">{t(ex.afterKey)}</pre>
+                    <pre className="whitespace-pre-wrap text-sm font-mono  p-4 rounded-md">{t(ex.afterKey)}</pre>
                     <p className="text-sm text-muted-foreground mt-2">{t(ex.annotationKey)}</p>
                   </CardContent>
                 </Card>

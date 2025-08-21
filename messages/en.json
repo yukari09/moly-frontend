@@ -52,17 +52,17 @@
  
     "imageGeneration": "Image Generation",
     "imageGenerationBeforeContent": "A beautiful landscape",
-    "imageGenerationAfterContent": "Photorealistic mountain landscape at golden hour, snow-capped peaks, alpine lake reflection, dramatic clouds, shot with wide-angle lens, cinematic lighting, 8K resolution",
+    "imageGenerationAfterContent": "For an image generation AI, create a highly detailed and visually stunning depiction of a beautiful natural landscape. The scene should evoke a sense of serenity and grandeur, featuring majestic, snow-capped mountains reflecting in a pristine, crystal-clear lake, surrounded by a vibrant, ancient forest. Capture the soft, warm light of either a sunrise or sunset, with a sky painted in breathtaking hues of orange, pink, and purple, and perhaps a subtle mist rising from the water.",
     "imageGenerationAnnotation": "Perfect for best midjourney prompts for realistic photos and AI image generator.",
  
     "textWriting": "Text Writing",
     "textWritingBeforeContent": "Write a blog post about AI",
-    "textWritingAfterContent": "Write a comprehensive blog post about the impact of artificial intelligence on modern society, including key benefits and potential challenges.",
+    "textWritingAfterContent": "You are a knowledgeable and engaging technology blogger writing for a general audience. Craft a blog post about Artificial Intelligence, focusing on its latest advancements and how it's shaping our daily lives and future. The post should have an inviting and enthusiastic tone, be approximately 700-900 words, and include:\n\n- An engaging introduction that hooks the reader.\n\n- 2-3 body paragraphs exploring different facets of AI (e.g., breakthroughs in specific areas, practical applications, ethical considerations).\n\n- A forward-looking conclusion that summarizes key points and leaves the reader with a thought-provoking idea about AI's potential.\n\nEnsure the language is clear, accessible, and avoids overly technical jargon.",
     "textWritingAnnotation": "Ideal for generating in-depth articles and thought leadership pieces.",
 
     "videoGeneration": "Video Generation",
     "videoGenerationBeforeContent": "Create a video about space",
-    "videoGenerationAfterContent": "Create a 2-minute video script about the wonders of space exploration, including key missions, technological advancements, and future possibilities.",
+    "videoGenerationAfterContent": "You are an expert science communicator and video scriptwriter for a general audience.\n\nDevelop a compelling and engaging script outline for a 3-5 minute educational video about the wonders of space.\n\nThe outline should include:\n\n1.  **Introduction:** A captivating hook and introduction to the vastness of space.\n\n2.  **Key Sections:** 2-3 fascinating aspects of space (e.g., nebulae, black holes, exoplanets). For each, provide a brief description and a visual concept idea.\n\n3.  **Conclusion:** A summary and a thought-provoking statement about our place in the cosmos.\n\nEnsure the tone is awe-inspiring and accessible for non-experts.",
     "videoGenerationAnnotation": "Great for scripting engaging video content and educational materials."
   },
   "HowItWorksSection": {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getTranslations } from 'next-intl/server';
-import { optimizePrompt } from '@/lib/Echo';
+import { optimizePrompt } from '@/lib/echo';
 import { getClientRealIp } from "@/lib/request";
 import { optimizerRateLimiter } from '@/lib/ratelimiter';
 

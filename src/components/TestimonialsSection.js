@@ -9,37 +9,37 @@ const testimonials = [
     quoteKey: "quote1",
     name: "Sarah L.",
     titleKey: "title1",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    avatar: "/Sarah L.jpg",
   },
   {
     quoteKey: "quote2",
     name: "Mark C.",
     titleKey: "title2",
-    avatar: "https://randomuser.me/api/portraits/men/43.jpg",
+    avatar: "/Mark C.jpg",
   },
   {
     quoteKey: "quote3",
     name: "Jessica P.",
     titleKey: "title3",
-    avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+    avatar: "/Jessica P.jpg",
   },
   {
     quoteKey: "quote4",
     name: "David R.",
     titleKey: "title4",
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+    avatar: "/David R.jpg",
   },
   {
     quoteKey: "quote5",
     name: "Emily W.",
     titleKey: "title5",
-    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
+    avatar: "/Emily W.jpg",
   },
   {
     quoteKey: "quote6",
     name: "Michael B.",
     titleKey: "title6",
-    avatar: "https://randomuser.me/api/portraits/men/29.jpg",
+    avatar: "/Michael B.jpg",
   },
 ];
 

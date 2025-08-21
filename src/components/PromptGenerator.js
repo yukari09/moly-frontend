@@ -142,7 +142,7 @@ export const PromptGenerator = () => {
 
 
       try {
-        const response = await fetch('/api/Echo', {
+        const response = await fetch('/api/echo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
