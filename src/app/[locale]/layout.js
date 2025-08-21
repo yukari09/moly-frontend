@@ -8,6 +8,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { generateRootStructuredData } from "@/lib/seo";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const geist = Geist({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default async function RootLayout({ children, params }) {
             <Toaster />
           </NextIntlClientProvider>
         </AuthProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   );

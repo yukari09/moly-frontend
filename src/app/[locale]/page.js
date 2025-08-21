@@ -8,6 +8,7 @@ import { ApplicablePlatformsSection } from "@/components/ApplicablePlatformsSect
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
+import { generateHomepageStructuredData } from "@/lib/seo";
 
 
 export async function generateMetadata({ params: _ }) {
@@ -21,9 +22,14 @@ export async function generateMetadata({ params: _ }) {
 
 export default function Home(request) {
   const t = useTranslations("HomePage");
+  const homepageStructuredData = generateHomepageStructuredData(t);
 
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }}
+      />
       <main className="max-w-screen-xl mx-auto px-6 py-12 md:py-24">
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight text-black">

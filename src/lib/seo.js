@@ -8,7 +8,7 @@
  */
 export function generateRootStructuredData() {
   // IMPORTANT: Please replace these placeholder values with your actual data.
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moly.app"; // Your production domain
+  const siteUrl = process.env.NEXTAUTH_URL || "https://www.moly.app"; // Your production domain
   const orgName = "Moly";
   const logoUrl = `${siteUrl}/logo.png`; // A full URL to your logo
 
@@ -46,5 +46,25 @@ export function generateRootStructuredData() {
         }
       }
     ]
+  };
+}
+
+/**
+ * Generates JSON-LD structured data for the homepage.
+ * @param {object} t - The translation object from next-intl.
+ * @returns {object} The JSON-LD object for the homepage.
+ */
+export function generateHomepageStructuredData(t) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moly.app";
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": siteUrl,
+    "name": t('pageTitle'),
+    "description": t('pageDescription'),
+    "isPartOf": {
+      "@id": `${siteUrl}/#website`
+    }
   };
 }
