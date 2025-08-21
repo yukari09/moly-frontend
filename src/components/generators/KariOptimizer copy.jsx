@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { toast } from 'sonner';
 import { Copy, Sparkles, Zap, Loader2, AlertCircle, RefreshCw, CheckCircle, Save, Share2, RotateCcw, Heart, Trash2, HelpCircle, History, ChevronDown, ChevronUp } from 'lucide-react';
-import { useMonitoring, useFormMonitoring } from '@/hooks/useMonitoring';
+
 import { conversionTracking } from '@/lib/monitoring';
 
 export function KariOptimizer({ generatorType, defaultMode = 'BASIC' }) {

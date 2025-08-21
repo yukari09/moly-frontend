@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { toast } from 'sonner';
 import { Copy, Sparkles, Zap, Loader2, AlertCircle, RefreshCw, CheckCircle, Save, Share2, RotateCcw, Trash2, HelpCircle, History, Lightbulb, CheckCircle2 } from 'lucide-react';
-import { useMonitoring, useFormMonitoring } from '@/hooks/useMonitoring';
+
 import { Label } from '@/components/ui/label';
 import { JetBrains_Mono } from 'next/font/google';
 
