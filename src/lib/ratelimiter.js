@@ -89,7 +89,13 @@ async function ensureRedisReady() {
 
 // Initialize on module load
 initializeRedis().catch(error => {
-  logger.error("Failed to initialize Redis on module load:", error);
+  // If Redis is not available (e.g., during build time), log a warning instead of an error.
+  // The rate limiter will gracefully degrade and allow requests.
+  if (error && error.message.includes('REDIS_URL')) {
+    logger.warn(`Rate limiter disabled: ${error.message}`);
+  } else {
+    logger.error("Failed to initialize Redis on module load:", error);
+  }
 });
 
 /**
