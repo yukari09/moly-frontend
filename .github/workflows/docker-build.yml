@@ -2,9 +2,9 @@ name: Build and Push Docker Images
 
 on:
   push:
-    branches: [ at_generate ]
+    branches: [ ai_generate ]
   pull_request:
-    branches: [ at_generate ]
+    branches: [ ai_generate ]
 
 jobs:
   build-and-push:
