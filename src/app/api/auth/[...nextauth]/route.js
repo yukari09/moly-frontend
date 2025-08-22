@@ -30,7 +30,7 @@ export const authOptions = {
         });
 
         if (!registrationResult || !registrationResult.result) {
-          throw new Error('Registration failed: No user data returned.');
+          throw new Error('Registration failed: Email has been taken.');
         }
         
         const gqlUser = registrationResult.result;
