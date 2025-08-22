@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, LucideGlobe, Triangle, User } from "lucide-react";
+import { ChevronDown, LucideGlobe, Bot, User } from "lucide-react";
 import { Button, ListItem } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,7 +28,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
-const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
+const VercelLogo = () => <Bot className="w-6 h-6" />;
 
 const languageNames = {
   en: "English",

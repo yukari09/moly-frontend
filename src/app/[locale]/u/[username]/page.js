@@ -7,7 +7,7 @@ import { getTranslations } from 'next-intl/server';
 
 // This function generates dynamic metadata for the page
 export async function generateMetadata({ params }) {
-  const { username } = params;
+  const { username } = await params;
   const t = await getTranslations('PublicUserProfile');
   try {
     const user = await getUserByUsername(username);
@@ -44,7 +44,7 @@ function SocialLink({ icon, href }) {
 }
 
 export default async function UserProfilePage({ params }) {
-  const { username } = params;
+  const { username } = await params;
   const t = await getTranslations('PublicUserProfile');
   let user;
 
