@@ -8,9 +8,9 @@
  */
 export function generateRootStructuredData() {
   // IMPORTANT: Please replace these placeholder values with your actual data.
-  const siteUrl = process.env.NEXTAUTH_URL || "https://www.moly.app"; // Your production domain
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moly.app"; // Your production domain
   const orgName = "Moly";
-  const logoUrl = `${siteUrl}/logo.png`; // A full URL to your logo
+  const logoUrl = `${siteUrl}/logo.svg`; // A full URL to your logo
 
   return {
     "@context": "https://schema.org",
