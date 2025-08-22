@@ -34,7 +34,7 @@ ENV NEXT_PUBLIC_IMAGE_HOST=${NEXT_PUBLIC_IMAGE_HOST}
 # Disable telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN bun run build
+RUN bun run build --turbo
 
 # Production image, copy all the files and run next
 FROM base AS runner
