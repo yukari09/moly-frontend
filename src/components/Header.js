@@ -28,7 +28,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
-const VercelLogo = () => <Bot className="w-6 h-6 fill-current" />;
+const VercelLogo = () => <Bot className="w-6 h-6" />;
 
 const languageNames = {
   en: "English",
