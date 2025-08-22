@@ -58,7 +58,7 @@
     "textWriting": "Text Writing",
     "textWritingBeforeContent": "Write a blog post about AI",
     "textWritingAfterContent": "You are a knowledgeable and engaging technology blogger writing for a general audience. Craft a blog post about Artificial Intelligence, focusing on its latest advancements and how it's shaping our daily lives and future. The post should have an inviting and enthusiastic tone, be approximately 700-900 words, and include:\n\n- An engaging introduction that hooks the reader.\n\n- 2-3 body paragraphs exploring different facets of AI (e.g., breakthroughs in specific areas, practical applications, ethical considerations).\n\n- A forward-looking conclusion that summarizes key points and leaves the reader with a thought-provoking idea about AI's potential.\n\nEnsure the language is clear, accessible, and avoids overly technical jargon.",
-    "textWritingAnnotation": "Ideal for generating in-depth articles and thought leadership pieces.",
+    "textWritingAnnotation": "With ChatGPT Prompt Optimizer, you can effortlessly generate in-depth articles and thought leadership pieces.",
 
     "videoGeneration": "Video Generation",
     "videoGenerationBeforeContent": "Create a video about space",
