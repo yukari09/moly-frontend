@@ -1,8 +1,6 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import AuthProvider from "@/components/AuthProvider";
+import AuthProvider from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -35,9 +33,7 @@ export default async function RootLayout({ children, params }) {
       <body>
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <Header />
             {children}
-            <Footer />
             <Toaster />
           </NextIntlClientProvider>
         </AuthProvider>

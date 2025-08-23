@@ -107,7 +107,8 @@
     "description": "Enter your new password below.",
     "newPasswordLabel": "New Password",
     "confirmNewPasswordLabel": "Confirm New Password",
-    "resetPasswordButton": "Reset Password"
+    "resetPasswordButton": "Reset Password",
+    "webSiteTermAndPrivacy": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privicy>Privacy Policy</privicy>."
   },
   "RegisterPage": {
     "emailValidation": "Please enter a valid email.",
@@ -129,11 +130,14 @@
     "registrationSuccess": "Registration successful! Welcome.",
     "unexpectedError": "An unexpected error occurred.",
     "alreadyHaveAccountPrompt": "Already have an account?",
-    "loginLink": "Log in"
+    "loginLink": "Log in",
+    "signIn": "Sign In",
+    "webSiteTermAndPrivacy": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privicy>Privacy Policy</privicy>."
   },
   "LoginPage": {
-    "title": "Login",
+    "title": "Login to your account to continue.",
     "description": "Enter your email below to login to your account.",
+    "welcomeBack": "Welcome back",
     "emailLabel": "Email",
     "emailPlaceholder": "m@example.com",
     "emailRequired": "Email is required",
@@ -146,7 +150,8 @@
     "loginFailed": "Login Failed: Invalid credentials",
     "loginSuccess": "Login Successful!",
     "unexpectedError": "An unexpected error occurred.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "webSiteTermAndPrivacy": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privicy>Privacy Policy</privicy>."
   },
   "ForgotPasswordPage": {
     "emailValidation": "Please enter a valid email.",
@@ -157,7 +162,8 @@
     "sendResetLinkButton": "Send Reset Link",
     "resetLinkSentSuccess": "If an account with that email exists, a password reset link has been sent.",
     "somethingWentWrong": "Something went wrong.",
-    "unexpectedError": "An unexpected error occurred."
+    "unexpectedError": "An unexpected error occurred.",
+    "webSiteTermAndPrivacy": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privicy>Privacy Policy</privicy>."
   },
   "SignOutPage": {
     "title": "Sign Out",

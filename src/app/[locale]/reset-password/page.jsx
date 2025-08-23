@@ -1,12 +1,12 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { getTranslations } from "next-intl/server";
 
-import { RegisterPageForm } from "@/components/register-form"
+import { ResetPasswordForm } from "@/components/reset-password-form"
 
 
 export async function generateMetadata({ params }) {
   const { locale } = await(params);
-  const t = await getTranslations({ locale, namespace: "RegisterPage" });
+  const t = await getTranslations({ locale, namespace: "ResetPasswordPage" });
 
   return {
     title: t("title"),
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function RegisterPage() {
+export default async function LoginPage() {
   return (
     <div
       className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -26,7 +26,7 @@ export default async function RegisterPage() {
           </div>
           {process.env.APP_NAME}
         </a>
-        <RegisterPageForm />
+        <ResetPasswordForm />
       </div>
     </div>
   );
