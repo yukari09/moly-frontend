@@ -8,7 +8,8 @@ import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-export default function VerifyEmailPage() {
+
+export function VerifyEmail() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const callbackUrl = searchParams.get('callbackUrl');
@@ -54,7 +55,7 @@ export default function VerifyEmailPage() {
   }, [verificationStatus, session, updateSession]);
 
   return (
-    <div className="flex items-center justify-center py-24 bg-white">
+    <div className="flex items-center justify-center py-24">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
           <CardTitle className="text-2xl">{t('title')}</CardTitle>

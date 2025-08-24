@@ -9,7 +9,8 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
 import { generateHomepageStructuredData } from "@/lib/seo";
-
+import Header from "@/components/layout-header";
+import Footer from "@/components/layout-footer";
 
 export async function generateMetadata({ params: _ }) {
   const t = await getTranslations("HomePage");
@@ -25,6 +26,8 @@ export default function Home(request) {
   const homepageStructuredData = generateHomepageStructuredData(t);
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
@@ -53,5 +56,7 @@ export default function Home(request) {
       <FAQSection />
       <CTASection />
     </div>
+    <Footer/>
+    </>
   );
 }
