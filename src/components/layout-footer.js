@@ -27,7 +27,7 @@ const socialLinks = [
   { href: "#", icon: <Linkedin className="w-5 h-5" /> },
 ];
 
-export const Footer = () => {
+export default function Footer() {
   const t = useTranslations("Footer");
   const currentYear = new Date().getFullYear();
 
