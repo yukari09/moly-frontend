@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd } from "lucide-react"
+import Link from 'next/link';
 import { getTranslations } from "next-intl/server";
 
 import { ForgotPasswordForm } from "@/components/forgot-password-form"
@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
   const t = await getTranslations({ locale, namespace: "ForgotPasswordPage" });
 
   return {
-    title: t("title"),
+    title: `${t("title")} - ${process.env.APP_NAME}`,
     description: t("description"),
   };
 }
@@ -19,13 +19,19 @@ export default async function LoginPage() {
     <div
       className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        <a href="#" className="flex items-center gap-2 self-center font-medium">
+        <Link href="/" className="flex items-center gap-2 self-center font-medium">
           <div
-            className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-            <GalleryVerticalEnd className="size-4" />
+            className="flex items-center justify-center rounded-md">
+            <img 
+              src="/logo.svg"
+              alt={process.env.APP_NAME}
+              className='size-6 fill-white'
+              width="64"
+              height="64"
+            />
           </div>
           {process.env.APP_NAME}
-        </a>
+        </Link>
         <ForgotPasswordForm />
       </div>
     </div>

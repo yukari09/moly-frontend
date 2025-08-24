@@ -1,4 +1,3 @@
-import { GalleryVerticalEnd } from "lucide-react"
 import { getTranslations } from "next-intl/server";
 
 import { VerifyEmail } from "@/components/verify-email"
@@ -9,7 +8,7 @@ export async function generateMetadata({ params }) {
   const t = await getTranslations({ locale, namespace: "VerifyEmailPage" });
 
   return {
-    title: t("title"),
+    title: `${t("title")} - ${process.env.APP_NAME}`,
     description: t("title"),
   };
 }
