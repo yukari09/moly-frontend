@@ -30,14 +30,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, rowSelection, onRowSelectionChange, getRowId, totalCount }) {
   const [sorting, setSorting] = React.useState([])
-  const [rowSelection, setRowSelection] = React.useState({})
   const [columnFilters, setColumnFilters] = React.useState([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
   })
+
+  const pageCount = totalCount ? Math.ceil(totalCount / pagination.pageSize) : -1;
 
   const table = useReactTable({
     data,
@@ -46,10 +47,13 @@ export function DataTable({ columns, data }) {
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: onRowSelectionChange,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onPaginationChange: setPagination,
+    manualPagination: true,
+    pageCount,
+    getRowId,
     state: {
       sorting,
       rowSelection,
@@ -105,12 +109,9 @@ export function DataTable({ columns, data }) {
         </Table>
       </div>
       <div className="flex items-center justify-between px-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
+        <div className="flex-1 text-sm">
           <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Total: {totalCount}</p>
             <p className="text-sm font-medium">Rows per page</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
@@ -130,9 +131,10 @@ export function DataTable({ columns, data }) {
               </SelectContent>
             </Select>
           </div>
+        </div>
+        <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Page {table.getState().pagination.pageIndex + 1} of{" "} {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">
             <Button

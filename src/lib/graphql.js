@@ -56,6 +56,7 @@ export async function isUsernameAvailable(username, session) {
 const LIST_TERMS_QUERY = `
   query ListTerms($taxonomyName: String!, $first: Int, $after: String, $filter: TermFilterInput) {
     listTerms(taxonomyName: $taxonomyName, first: $first, after: $after, filter: $filter) {
+      count
       edges {
         cursor
         node {
@@ -115,6 +116,10 @@ const REGISTER_MUTATION = `
           metaValue
         }
       }
+      errors{
+          message
+          shortMessage
+      }
       metadata {
         token
       }
@@ -123,6 +128,9 @@ const REGISTER_MUTATION = `
 `;
 export async function register(input) {
   const data = await _request(REGISTER_MUTATION, { input });
+  if (data.registerWithPassword.errors && data.registerWithPassword.errors.length > 0) {
+    throw new Error(data.registerWithPassword.errors[0].message);
+  }
   return data.registerWithPassword;
 }
 
@@ -192,12 +200,19 @@ const CREATE_POST_MUTATION = `
         id
         postName
       }
+      errors{
+          message
+          shortMessage
+      }
     }
   }
 `;
 export async function createPost(input, session) {
   const data = await _request(CREATE_POST_MUTATION, { input }, session);
-  return data.createPost;
+  if (data.createPost.errors && data.createPost.errors.length > 0) {
+    throw new Error(data.createPost.errors[0].message);
+  }
+  return data.createPost.result;
 }
 
 const CREATE_TERM_MUTATION = `
@@ -207,6 +222,10 @@ const CREATE_TERM_MUTATION = `
         id
         name
         slug
+      }
+      errors{
+          message
+          shortMessage
       }
     }
   }
@@ -219,13 +238,22 @@ export async function createTerm(input, session) {
 const DESTROY_TERM_MUTATION = `
   mutation DestroyTerm($id: ID!) {
     destroyTerm(id: $id) {
-      id
+      result {
+        id
+      }
+      errors{
+          message
+          shortMessage
+      }
     }
   }
 `;
 export async function destroyTerm(id, session) {
   const data = await _request(DESTROY_TERM_MUTATION, { id }, session);
-  return data.destroyTerm;
+  if (data.destroyTerm.errors && data.destroyTerm.errors.length > 0) {
+    throw new Error(data.destroyTerm.errors[0].message);
+  }
+  return data.destroyTerm.result;
 }
 
 // Note: `uploadMedia` using standard fetch is complex due to multipart/form-data.

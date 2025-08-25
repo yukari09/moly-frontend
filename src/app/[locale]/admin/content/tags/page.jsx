@@ -6,8 +6,8 @@ import { DataTable } from '@/components/ui/data-table';
 import { columns } from './columns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -18,6 +18,8 @@ function TagsPageClient() {
   const [pageInfo, setPageInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [rowSelection, setRowSelection] = useState({});
+  const [bulkAction, setBulkAction] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
 
   const [filterField, setFilterField] = useState(searchParams.get('filter_field') || 'name');
   const [filterValue, setFilterValue] = useState(searchParams.get('filter_value') || '');
@@ -42,6 +44,7 @@ function TagsPageClient() {
       const result = await response.json();
       setData(result.edges.map(edge => edge.node));
       setPageInfo(result.pageInfo);
+      setTotalCount(result.count);
     } catch (error) {
       toast.error(error.message);
     }
@@ -84,53 +87,61 @@ function TagsPageClient() {
 
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-8 border-b pb-6">
         <h1 className="text-2xl font-bold">Tags</h1>
-        <Button size="sm" asChild>
+        <Button size="sm" variant="secondary" asChild>
           <Link href="/admin/content/tags/new">New Tag</Link>
         </Button>
       </div>
 
-      <div className="flex items-center justify-between mb-4">
-        <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
-          <Select name="filter_field" defaultValue={filterField} onValueChange={setFilterField}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by" />
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <Select 
+            onValueChange={setBulkAction} 
+            value={bulkAction} 
+            disabled={Object.keys(rowSelection).length === 0}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Bulk Action" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="name">Name</SelectItem>
-              <SelectItem value="slug">Slug</SelectItem>
+              <SelectItem value="delete">Delete</SelectItem>
             </SelectContent>
           </Select>
-          <Input
-            name="filter_value"
-            placeholder="Filter value..."
-            value={currentFilterValue}
-            onChange={(e) => setCurrentFilterValue(e.target.value)}
-            className="max-w-sm"
-          />
-          <Button type="submit" disabled={isLoading}>Filter</Button>
-        </form>
-        
-        {Object.keys(rowSelection).length > 0 && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">Delete ({Object.keys(rowSelection).length})</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the selected tags.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteSelected}>Delete</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
+          <Button 
+            disabled={Object.keys(rowSelection).length === 0 || !bulkAction}
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              if (bulkAction === 'delete') {
+                handleDeleteSelected();
+              }
+            }}
+          >
+            Apply
+          </Button>
+        </div>
+        <div className="flex items-center justify-between">
+          <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
+            <Select name="filter_field" defaultValue={filterField} onValueChange={setFilterField}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="slug">Slug</SelectItem>
+              </SelectContent>
+            </Select>
+            <Input
+              name="filter_value"
+              placeholder="Filter value..."
+              value={currentFilterValue}
+              onChange={(e) => setCurrentFilterValue(e.target.value)}
+              className="max-w-sm"
+            />
+            <Button type="submit" disabled={isLoading}>Filter</Button>
+          </form>
+        </div>
       </div>
 
       <div className={isLoading ? 'opacity-50 transition-opacity' : ''}>
@@ -140,13 +151,8 @@ function TagsPageClient() {
           rowSelection={rowSelection}
           onRowSelectionChange={setRowSelection}
           getRowId={(row) => row.id}
+          totalCount={totalCount}
         />
-      </div>
-
-      <div className="flex justify-end mt-4">
-        <Button onClick={() => setAfter(pageInfo.endCursor)} disabled={!pageInfo?.hasNextPage || isLoading}>
-          Next Page
-        </Button>
       </div>
     </div>
   );

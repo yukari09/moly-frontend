@@ -101,17 +101,18 @@ export async function DELETE(req) {
     const { ids } = body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
-      return new Response(JSON.stringify({ error: 'An array of tag IDs is required' }), { 
+      return new Response(JSON.stringify({ error: 'IDs are required for deletion' }), { 
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    const results = await Promise.all(
-      ids.map(id => destroyTerm(id, session))
-    );
+    // Use Promise.all to wait for all deletions to complete
+    const deletionPromises = ids.map(id => destroyTerm(id, session));
+    const results = await Promise.all(deletionPromises);
 
-    return NextResponse.json({ success: true, deletedCount: results.length });
+    return NextResponse.json({ success: true, results });
+
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500,
