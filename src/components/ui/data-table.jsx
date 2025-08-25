@@ -30,13 +30,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-export function DataTable({ columns, data, rowSelection, onRowSelectionChange, getRowId, totalCount }) {
-  const [sorting, setSorting] = React.useState([])
+export function DataTable({ columns, data, rowSelection, onRowSelectionChange, getRowId, totalCount, pagination, onPaginationChange, sorting, onSortingChange }) {
   const [columnFilters, setColumnFilters] = React.useState([])
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  })
 
   const pageCount = totalCount ? Math.ceil(totalCount / pagination.pageSize) : -1;
 
@@ -45,13 +40,14 @@ export function DataTable({ columns, data, rowSelection, onRowSelectionChange, g
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: onSortingChange,
     getSortedRowModel: getSortedRowModel(),
     onRowSelectionChange: onRowSelectionChange,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onPaginationChange: setPagination,
+    onPaginationChange: onPaginationChange,
     manualPagination: true,
+    manualSorting: true,
     pageCount,
     getRowId,
     state: {
@@ -155,6 +151,41 @@ export function DataTable({ columns, data, rowSelection, onRowSelectionChange, g
               <span className="sr-only">Go to previous page</span>
               <ChevronLeft className="h-4 w-4" />
             </Button>
+            {(function() {
+              const pageIndex = table.getState().pagination.pageIndex;
+              const pageCount = table.getPageCount();
+              const pageNumbers = [];
+
+              if (pageCount <= 7) {
+                for (let i = 0; i < pageCount; i++) {
+                  pageNumbers.push(i);
+                }
+              } else {
+                pageNumbers.push(0);
+                if (pageIndex > 2) {
+                  pageNumbers.push('...');
+                }
+                for (let i = Math.max(1, pageIndex - 1); i <= Math.min(pageCount - 2, pageIndex + 1); i++) {
+                  pageNumbers.push(i);
+                }
+                if (pageIndex < pageCount - 3) {
+                  pageNumbers.push('...');
+                }
+                pageNumbers.push(pageCount - 1);
+              }
+
+              return pageNumbers.map((page, index) => (
+                <Button
+                  key={index}
+                  variant={page === pageIndex ? 'secondary' : 'outline'}
+                  className="h-8 w-8 p-0"
+                  onClick={() => typeof page === 'number' && table.setPageIndex(page)}
+                  disabled={page === pageIndex || typeof page !== 'number'}
+                >
+                  {typeof page === 'number' ? page + 1 : page}
+                </Button>
+              ));
+            })()}
             <Button
               variant="outline"
               className="h-8 w-8 p-0"

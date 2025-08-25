@@ -78,6 +78,24 @@ export async function listTerms(taxonomyName, first, after, filter, session) {
   return data.listTerms;
 }
 
+const LIST_TERMS_OFFSET_QUERY = `
+  query ListTermsOffset($taxonomyName: String, $limit: Int, $offset: Int, $filter: TermFilterInput, $sort: [TermSortInput]) {
+    listTermsOffset(taxonomyName: $taxonomyName, limit: $limit, offset: $offset, filter: $filter, sort: $sort) {
+      count
+      results {
+        id
+        name
+        slug
+        insertedAt
+      }
+    }
+  }
+`;
+export async function listTermsOffset(taxonomyName, limit, offset, filter, session, sort) {
+  const data = await _request(LIST_TERMS_OFFSET_QUERY, { taxonomyName, limit, offset, filter, sort }, session);
+  return data.listTermsOffset;
+}
+
 const GET_USER_BY_USERNAME_QUERY = `
   query GetUserByUsername($username: String!, $secrectKey: String!) {
     getUserByUsername(username: $username, secrectKey: $secrectKey) {

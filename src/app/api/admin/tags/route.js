@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { listTerms, createTerm, destroyTerm } from '@/lib/graphql'
+import { listTermsOffset, createTerm, destroyTerm } from '@/lib/graphql'
 import { NextResponse } from 'next/server'
 
 export async function GET(req) {
@@ -16,10 +16,11 @@ export async function GET(req) {
   }
 
   const { searchParams } = new URL(req.url)
-  const first = searchParams.get('first')
-  const after = searchParams.get('after')
+  const limit = searchParams.get('limit')
+  const offset = searchParams.get('offset')
   const filterField = searchParams.get('filter_field')
   const filterValue = searchParams.get('filter_value')
+  const sortParam = searchParams.get('sort')
 
   let filter = null;
   if (filterField && filterValue) {
@@ -28,13 +29,28 @@ export async function GET(req) {
     }
   }
 
+  let sort = undefined;
+  if (sortParam) {
+    try {
+      sort = JSON.parse(sortParam);
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Invalid sort parameter' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+  }
+
   try {
-    const tags = await listTerms(
+    const tags = await listTermsOffset(
       'post_tag',
-      first ? parseInt(first) : 10, // Default to 10 per page
-      after,
+      limit ? parseInt(limit) : 10,
+      offset ? parseInt(offset) : 0,
       filter,
-      session
+      session,
+      sort
     )
     return NextResponse.json(tags)
   } catch (error) {

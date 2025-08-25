@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { DataTable } from '@/components/ui/data-table';
+import { listTermsOffset } from '@/lib/graphql';
 import { columns } from './columns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,36 +21,45 @@ function TagsPageClient() {
   const [rowSelection, setRowSelection] = useState({});
   const [bulkAction, setBulkAction] = useState('');
   const [totalCount, setTotalCount] = useState(0);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [sorting, setSorting] = useState([]);
 
   const [filterField, setFilterField] = useState(searchParams.get('filter_field') || 'name');
   const [filterValue, setFilterValue] = useState(searchParams.get('filter_value') || '');
-  const [after, setAfter] = useState(searchParams.get('after') || null);
   const [currentFilterValue, setCurrentFilterValue] = useState(filterValue);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     const params = new URLSearchParams();
-    params.set('first', '10');
+    params.set('limit', pagination.pageSize);
+    params.set('offset', pagination.pageIndex * pagination.pageSize);
     if (filterField && filterValue) {
       params.set('filter_field', filterField);
       params.set('filter_value', filterValue);
     }
-    if (after) {
-      params.set('after', after);
+    if (sorting.length > 0) {
+      // Transform react-table sorting state to GraphQL TermSortInput format
+      const sortParams = sorting.map(s => ({
+        field: s.id.toUpperCase(), // Assuming column IDs match TermSortField enum values
+        order: s.desc ? 'DESC' : 'ASC'
+      }));
+      params.set('sort', JSON.stringify(sortParams));
     }
 
     try {
       const response = await fetch(`/api/admin/tags?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch data');
       const result = await response.json();
-      setData(result.edges.map(edge => edge.node));
-      setPageInfo(result.pageInfo);
+      setData(result.results);
       setTotalCount(result.count);
     } catch (error) {
       toast.error(error.message);
     }
     setIsLoading(false);
-  }, [filterField, filterValue, after]);
+  }, [pagination, filterField, filterValue, sorting]);
 
   useEffect(() => {
     fetchData();
@@ -57,7 +67,7 @@ function TagsPageClient() {
 
   const handleFilterSubmit = (event) => {
     event.preventDefault();
-    setAfter(null);
+    setPagination(p => ({ ...p, pageIndex: 0 }));
     setFilterValue(currentFilterValue);
   };
 
@@ -152,6 +162,10 @@ function TagsPageClient() {
           onRowSelectionChange={setRowSelection}
           getRowId={(row) => row.id}
           totalCount={totalCount}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          sorting={sorting}
+          onSortingChange={setSorting}
         />
       </div>
     </div>
