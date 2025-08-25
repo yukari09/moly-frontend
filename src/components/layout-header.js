@@ -29,7 +29,6 @@ import {useParams} from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
 
-
 const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
 
 const languageNames = {
@@ -141,13 +140,14 @@ export default function Header() {
           {status === "authenticated" && (
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer">
+                <Avatar className="size-8 cursor-pointer">
                   <AvatarImage src={avatarUrl || ""} alt={name || ""} />
-                  <AvatarFallback>                      {name ? (
-                        name.charAt(0).toUpperCase()
-                      ) : (
-                        <User className="h-4 w-4" />
-                      )}
+                  <AvatarFallback>
+                    {name ? (
+                          name.slice(0, 2).toUpperCase()
+                        ) : (
+                          <User className="h-4 w-4" />
+                    )}
                   </AvatarFallback>
                 </Avatar>
                  

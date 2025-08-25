@@ -19,53 +19,57 @@ function getPathnameWithoutLocale(pathname, locales) {
 
 const authMiddleware = withAuth(
   function onSuccess(req) {
+    // API 路由直接通过，不需要国际化
+    if (req.nextUrl.pathname.startsWith('/api')) {
+      return
+    }
     return intlMiddleware(req)
   },
   {
     callbacks: {
-      authorized: ({ token }) => token != null
+      authorized: ({ req, token }) => {
+        if (token == null) return false
+
+        const pathname = req.nextUrl.pathname
+        
+        // 统一检查 admin 路径（API 和页面）
+        if (pathname.includes('/admin')) {
+          return token.roles && token.roles.includes('admin')
+        }
+
+        return true
+      },
     },
     pages: {
-      signIn: '/login'  // 确保这个路径在 publicPaths 中
-    }
+      signIn: '/login',
+    },
   }
 )
 
 export default function middleware(request) {
   const { pathname } = request.nextUrl
-  const { locales } = routing
   
-  const pathnameWithoutLocale = getPathnameWithoutLocale(pathname, locales)
+  // 受保护的路径
+  const protectedPaths = ['/dashboard', '/profile', '/admin', '/settings', '/api/admin']
   
-  const publicPaths = [
-    '/', 
-    '/about', 
-    '/contact', 
-    '/login',        // 添加登录页面
-    '/register',     // 如果有注册页面
-    '/auth/signin',  // 如果还需要保留这些路径
-    '/auth/signup',
-    '/auth/error'
-  ]
-  
-  const protectedPaths = [
-    '/dashboard', 
-    '/profile', 
-    '/admin', 
-    '/settings'
-  ]
+  const pathnameWithoutLocale = pathname.startsWith('/api') 
+    ? pathname 
+    : getPathnameWithoutLocale(pathname, routing.locales)
 
-  const isProtectedPath = protectedPaths.some(path => 
-    pathnameWithoutLocale.startsWith(path)
-  )
+  const isProtected = protectedPaths.some(path => pathnameWithoutLocale.startsWith(path))
 
-  if (isProtectedPath) {
+  if (isProtected) {
     return authMiddleware(request)
+  }
+  
+  // 非保护的 API 路由直接通过
+  if (pathname.startsWith('/api')) {
+    return
   }
   
   return intlMiddleware(request)
 }
 
 export const config = {
-  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)'
+  matcher: '/((?!api/(?!admin).*|trpc|_next|_vercel|.*\\..*).*)'
 }

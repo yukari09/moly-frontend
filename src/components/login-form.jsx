@@ -41,7 +41,7 @@ export function LoginForm({
   } = useForm();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && !callbackUrl.includes("/admin")) {
       router.push(callbackUrl);
     }
   }, [status, router, callbackUrl]);
@@ -60,7 +60,7 @@ export function LoginForm({
         toast.error(t("loginFailed"));
       } else {
         toast.success(t("loginSuccess"));
-        router.push("/");
+        router.push(callbackUrl);
       }
     } catch (error) {
       toast.error(t("unexpectedError"));

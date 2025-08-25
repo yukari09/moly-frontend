@@ -15,17 +15,26 @@ async function _request(query, variables = {}, session = null) {
     headers['Authorization'] = `Bearer ${session.accessToken}`;
   }
 
+  // Clean variables object by removing keys with null or undefined values.
+  // This prevents issues with GraphQL APIs that are strict about optional inputs.
+  const cleanedVariables = {};
+  for (const key in variables) {
+    if (variables[key] !== null && variables[key] !== undefined) {
+      cleanedVariables[key] = variables[key];
+    }
+  }
+
   const res = await fetch(process.env.GRAPHQL_API_URL, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ query, variables }),
+    body: JSON.stringify({ query, variables: cleanedVariables }),
   });
 
   const data = await res.json();
 
   if (!res.ok || data.errors) {
     const errorMessage = data.errors?.[0]?.message || "An unknown GraphQL error occurred.";
-    logger.error("GraphQL Request Failed:", { query: query.trim().split('\n')[1].trim(), variables, errorMessage });
+    logger.error("GraphQL Request Failed:", { query: query.trim().split('\n')[1].trim(), variables: cleanedVariables, errorMessage });
     throw new Error(errorMessage);
   }
 
@@ -45,21 +54,27 @@ export async function isUsernameAvailable(username, session) {
 }
 
 const LIST_TERMS_QUERY = `
-  query ListTerms($taxonomyName: String!) {
-    listTerms(taxonomyName: $taxonomyName) {
+  query ListTerms($taxonomyName: String!, $first: Int, $after: String, $filter: TermFilterInput) {
+    listTerms(taxonomyName: $taxonomyName, first: $first, after: $after, filter: $filter) {
       edges {
+        cursor
         node {
           id
           name
           slug
+          insertedAt
         }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
   }
 `;
-export async function listTerms(taxonomyName, session) {
-  const data = await _request(LIST_TERMS_QUERY, { taxonomyName }, session);
-  return data.listTerms.edges.map(edge => edge.node);
+export async function listTerms(taxonomyName, first, after, filter, session) {
+  const data = await _request(LIST_TERMS_QUERY, { taxonomyName, first, after, filter }, session);
+  return data.listTerms;
 }
 
 const GET_USER_BY_USERNAME_QUERY = `
@@ -199,6 +214,18 @@ const CREATE_TERM_MUTATION = `
 export async function createTerm(input, session) {
   const data = await _request(CREATE_TERM_MUTATION, { input }, session);
   return data.createTerm.result;
+}
+
+const DESTROY_TERM_MUTATION = `
+  mutation DestroyTerm($id: ID!) {
+    destroyTerm(id: $id) {
+      id
+    }
+  }
+`;
+export async function destroyTerm(id, session) {
+  const data = await _request(DESTROY_TERM_MUTATION, { id }, session);
+  return data.destroyTerm;
 }
 
 // Note: `uploadMedia` using standard fetch is complex due to multipart/form-data.

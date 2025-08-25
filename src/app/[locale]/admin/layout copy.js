@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -31,16 +30,15 @@ export const metadata = {
 };
 
 export default async function AdminLayout({ children }) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   // Middleware now handles unauthenticated access, so the session is guaranteed to exist here.
+
   const currentUser = {
     name: session.user.name,
     email: session.user.email,
     avatar: session.user.image,
-    username: session.user.username, // Now available
-    roles: session.user.roles,       // Now available
-  };
+  }
 
   return (
     <html lang="en" className={geist.className}>
@@ -72,7 +70,12 @@ export default async function AdminLayout({ children }) {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-              {children}
+              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+              </div>
+              <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
             </div>
           </SidebarInset>
         </SidebarProvider>
