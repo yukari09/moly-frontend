@@ -11,24 +11,56 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
+
+import { useDebounce } from '@/hooks/use-debounce';
+import { useRouter } from 'next/navigation';
 
 function TagsPageClient() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [rowSelection, setRowSelection] = useState({});
   const [bulkAction, setBulkAction] = useState('');
   const [totalCount, setTotalCount] = useState(0);
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [sorting, setSorting] = useState([]);
 
-  const [filterField, setFilterField] = useState(searchParams.get('filter_field') || 'name');
-  const [filterValue, setFilterValue] = useState(searchParams.get('filter_value') || '');
-  const [currentFilterValue, setCurrentFilterValue] = useState(filterValue);
+  const [pagination, setPagination] = useState({
+    pageIndex: searchParams.get('page') ? Number(searchParams.get('page')) - 1 : 0,
+    pageSize: searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10,
+  });
+
+  const [sorting, setSorting] = useState(
+    searchParams.get('sort')
+      ? [{
+          id: searchParams.get('sort'),
+          desc: searchParams.get('sortDesc') === 'true',
+        }]
+      : []
+  );
+
+  const [filterField, setFilterField] = useState(searchParams.get('filterField') || 'name');
+  const [filterValue, setFilterValue] = useState(searchParams.get('filterValue') || '');
+
+  const debouncedFilterValue = useDebounce(filterValue, 500);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('page', pagination.pageIndex + 1);
+    params.set('pageSize', pagination.pageSize);
+    if (sorting.length > 0) {
+      params.set('sort', sorting[0].id);
+      params.set('sortDesc', sorting[0].desc);
+    }
+    if (filterField) {
+      params.set('filterField', filterField);
+    }
+    if (debouncedFilterValue) {
+      params.set('filterValue', debouncedFilterValue);
+    }
+    router.push(`?${params.toString()}`);
+  }, [pagination, sorting, filterField, debouncedFilterValue, router]);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -36,7 +68,7 @@ function TagsPageClient() {
       limit: pagination.pageSize,
       offset: pagination.pageIndex * pagination.pageSize,
       filterField: filterField,
-      filterValue: filterValue,
+      filterValue: debouncedFilterValue,
     };
 
     if (sorting.length > 0) {
@@ -78,7 +110,7 @@ function TagsPageClient() {
       toast.error(error.message);
     }
     setIsLoading(false);
-  }, [pagination, filterField, filterValue, sorting]);
+  }, [pagination, sorting, filterField, debouncedFilterValue]);
 
   useEffect(() => {
     fetchData();
@@ -87,13 +119,12 @@ function TagsPageClient() {
   const handleFilterSubmit = (event) => {
     event.preventDefault();
     setPagination(p => ({ ...p, pageIndex: 0 }));
-    setFilterValue(currentFilterValue);
+    setFilterValue(filterValue);
   };
 
   const handleClearFilter = () => {
     setFilterField('name');
     setFilterValue('');
-    setCurrentFilterValue('');
     setPagination(p => ({ ...p, pageIndex: 0 }));
   };
 
@@ -170,8 +201,8 @@ function TagsPageClient() {
             <Input
               name="filter_value"
               placeholder="Filter value..."
-              value={currentFilterValue}
-              onChange={(e) => setCurrentFilterValue(e.target.value)}
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)}
               className="max-w-sm"
             />
             <Button type="submit" disabled={isLoading}>Filter</Button>
@@ -187,19 +218,27 @@ function TagsPageClient() {
         </div>
       </div>
 
-      <div className={isLoading ? 'opacity-50 transition-opacity' : ''}>
-        <DataTable 
-          columns={columns} 
-          data={data} 
-          rowSelection={rowSelection}
-          onRowSelectionChange={setRowSelection}
-          getRowId={(row) => row.id}
-          totalCount={totalCount}
-          pagination={pagination}
-          onPaginationChange={setPagination}
-          sorting={sorting}
-          onSortingChange={setSorting}
-        />
+      <div className="relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/50 z-10">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+        <div className={isLoading ? 'opacity-50 transition-opacity' : ''}>
+          <DataTable 
+            columns={columns} 
+            data={data} 
+            rowSelection={rowSelection}
+            onRowSelectionChange={setRowSelection}
+            getRowId={(row) => row.id}
+            totalCount={totalCount}
+            pagination={pagination}
+            onPaginationChange={setPagination}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            emptyStateMessage="No tags found. Try adjusting your filters."
+          />
+        </div>
       </div>
     </div>
   );
