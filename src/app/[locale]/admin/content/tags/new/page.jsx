@@ -43,7 +43,7 @@ export default function NewTagPage() {
     event.preventDefault();
     setIsLoading(true);
 
-    const response = await fetch('/api/admin/tags', {
+    const response = await fetch('/api/admin/tags/new', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, slug, description }),

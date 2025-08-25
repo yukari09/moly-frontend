@@ -16,7 +16,6 @@ function TagsPageClient() {
   const searchParams = useSearchParams();
 
   const [data, setData] = useState([]);
-  const [pageInfo, setPageInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [rowSelection, setRowSelection] = useState({});
   const [bulkAction, setBulkAction] = useState('');
@@ -33,24 +32,44 @@ function TagsPageClient() {
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
-    const params = new URLSearchParams();
-    params.set('limit', pagination.pageSize);
-    params.set('offset', pagination.pageIndex * pagination.pageSize);
-    if (filterField && filterValue) {
-      params.set('filter_field', filterField);
-      params.set('filter_value', filterValue);
-    }
+    const requestBody = {
+      limit: pagination.pageSize,
+      offset: pagination.pageIndex * pagination.pageSize,
+      filterField: filterField,
+      filterValue: filterValue,
+    };
+
     if (sorting.length > 0) {
-      // Transform react-table sorting state to GraphQL TermSortInput format
-      const sortParams = sorting.map(s => ({
-        field: s.id.toUpperCase(), // Assuming column IDs match TermSortField enum values
-        order: s.desc ? 'DESC' : 'ASC'
-      }));
-      params.set('sort', JSON.stringify(sortParams));
+      const sortFieldMapping = {
+        'id': 'ID',
+        'name': 'NAME',
+        'slug': 'SLUG',
+        'insertedAt': 'INSERTED_AT',
+        'updatedAt': 'UPDATED_AT',
+      };
+
+      const sortParams = sorting.map(s => {
+        const field = sortFieldMapping[s.id];
+        if (!field) {
+          console.error(`Unknown sort field: ${s.id}`);
+          return null;
+        }
+        return {
+          field: field,
+          order: s.desc ? 'DESC' : 'ASC'
+        };
+      }).filter(Boolean);
+      requestBody.sortParam = JSON.stringify(sortParams);
     }
 
     try {
-      const response = await fetch(`/api/admin/tags?${params.toString()}`);
+      const response = await fetch('/api/admin/tags', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
       if (!response.ok) throw new Error('Failed to fetch data');
       const result = await response.json();
       setData(result.results);
@@ -69,6 +88,13 @@ function TagsPageClient() {
     event.preventDefault();
     setPagination(p => ({ ...p, pageIndex: 0 }));
     setFilterValue(currentFilterValue);
+  };
+
+  const handleClearFilter = () => {
+    setFilterField('name');
+    setFilterValue('');
+    setCurrentFilterValue('');
+    setPagination(p => ({ ...p, pageIndex: 0 }));
   };
 
   const handleDeleteSelected = async () => {
@@ -120,7 +146,6 @@ function TagsPageClient() {
           </Select>
           <Button 
             disabled={Object.keys(rowSelection).length === 0 || !bulkAction}
-            size="sm"
             variant="outline"
             onClick={() => {
               if (bulkAction === 'delete') {
@@ -150,6 +175,14 @@ function TagsPageClient() {
               className="max-w-sm"
             />
             <Button type="submit" disabled={isLoading}>Filter</Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleClearFilter}
+              disabled={isLoading || (!filterValue && filterField === 'name')}
+            >
+              Clear
+            </Button>
           </form>
         </div>
       </div>
