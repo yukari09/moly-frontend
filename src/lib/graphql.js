@@ -9,7 +9,16 @@ import logger from "./logger";
  * @returns {Promise<any>} The `data` part of the GraphQL response.
  */
 async function _request(query, variables = {}, session = null) {
-  const headers = { 'Content-Type': 'application/json' };
+  const secretKey = process.env.GRAPHQL_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error("GRAPHQL_SECRET_KEY is not defined in environment variables.");
+  }
+  const tenantKey = process.env.GRAPHQL_TENANT;
+  if (!tenantKey) {
+    throw new Error("GRAPHQL_TENANT is not defined in environment variables.");
+  }
+
+  const headers = { 'Content-Type': 'application/json', 'x-app-secret': secretKey, 'x-tenant-id': tenantKey};
   if (session?.accessToken) {
     // @ts-ignore
     headers['Authorization'] = `Bearer ${session.accessToken}`;
@@ -79,8 +88,8 @@ export async function listTerms(taxonomyName, first, after, filter, session) {
 }
 
 const LIST_TERMS_OFFSET_QUERY = `
-  query ListTermsOffset($taxonomyName: String, $limit: Int, $offset: Int, $filter: TermFilterInput, $sort: [TermSortInput]) {
-    listTermsOffset(taxonomyName: $taxonomyName, limit: $limit, offset: $offset, filter: $filter, sort: $sort) {
+  query ListTermsOffset($taxonomyName: String, $limit: Int, $offset: Int, $filter: TermFilterInput, $sort: [TermSortInput], $parent: ID, $slug: String) {
+    listTermsOffset(taxonomyName: $taxonomyName, limit: $limit, offset: $offset, filter: $filter, sort: $sort, parent: $parent, slug: $slug) {
       count
       results {
         id
@@ -91,14 +100,49 @@ const LIST_TERMS_OFFSET_QUERY = `
     }
   }
 `;
-export async function listTermsOffset(taxonomyName, limit, offset, filter, session, sort) {
-  const data = await _request(LIST_TERMS_OFFSET_QUERY, { taxonomyName, limit, offset, filter, sort }, session);
+export async function listTermsOffset(taxonomyName, limit, offset, filter, session, sort, parent, slug) {
+  const data = await _request(LIST_TERMS_OFFSET_QUERY, { taxonomyName, limit, offset, filter, sort, parent, slug }, session);
   return data.listTermsOffset;
 }
 
+const LIST_POSTS_OFFSET_QUERY = `
+  query ListPostsOffset($limit: Int, $offset: Int, $filter: PostFilterInput, $sort: [PostSortInput]) {
+    listPostsOffset(limit: $limit, offset: $offset, filter: $filter, sort: $sort) {
+      count
+      results {
+        id
+        postName
+        postStatus
+        insertedAt
+      }
+    }
+  }
+`;
+export async function listPostsOffset(limit, offset, filter, sort, session) {
+  const data = await _request(LIST_POSTS_OFFSET_QUERY, { limit, offset, filter, sort }, session);
+  return data.listPostsOffset;
+}
+
+const GET_TERM_QUERY = `
+  query GetTerm($id: ID!) {
+    getTerm(id: $id) {
+      id
+      name
+      slug
+      termTaxonomy {
+        description
+      }
+    }
+  }
+`;
+export async function getTerm(id, session) {
+  const data = await _request(GET_TERM_QUERY, { id }, session);
+  return data.getTerm;
+}
+
 const GET_USER_BY_USERNAME_QUERY = `
-  query GetUserByUsername($username: String!, $secrectKey: String!) {
-    getUserByUsername(username: $username, secrectKey: $secrectKey) {
+  query ReadOneUser($filter: UserFilterInput) {
+    readOneUser(filter: $filter) {
       id
       email
       userMeta {
@@ -108,13 +152,15 @@ const GET_USER_BY_USERNAME_QUERY = `
     }
   }
 `;
-export async function getUserByUsername(username) {
-  const secrectKey = process.env.GRAPHQL_SECRET_KEY;
-  if (!secrectKey) {
-    throw new Error("GRAPHQL_SECRET_KEY is not defined in environment variables.");
-  }
-  const data = await _request(GET_USER_BY_USERNAME_QUERY, { username, secrectKey });
-  return data.getUserByUsername;
+export async function getUserByUsername(username, session) {
+  const filter = {
+    userMeta: {
+      metaKey: { eq: "username" },
+      metaValue: { eq: username },
+    },
+  };
+  const data = await _request(GET_USER_BY_USERNAME_QUERY, { filter }, session);
+  return data.readOneUser;
 }
 
 
@@ -126,8 +172,6 @@ const REGISTER_MUTATION = `
       result {
         id
         email
-        status
-        roles
         userMeta {
           id
           metaKey
@@ -154,12 +198,10 @@ export async function register(input) {
 
 const SIGN_IN_MUTATION = `
   mutation SignInWithPassword($email: String!, $password: String!) {
-    signInWithPassword(email: $email, password: $password, agreement: "true") {
+    signInWithPassword(email: $email, password: $password) {
       id
       token
       email
-      status
-      roles
       userMeta {
         id
         metaKey
@@ -209,6 +251,38 @@ const UPDATE_USER_META_MUTATION = `
 export async function updateUserMeta(userMeta, session) {
   const data = await _request(UPDATE_USER_META_MUTATION, { userMeta }, session);
   return data.updateUserMeta;
+}
+
+const VERIFY_CONFIRM_TOKEN_MUTATION = `
+  mutation VerifyConfirmToken($purpose: String!, $token: String!) {
+    verifyConfirmToken(purpose: $purpose, token: $token) {
+      id
+      email
+      userMeta {
+        id
+        metaKey
+        metaValue
+      }
+    }
+  }
+`;
+export async function verifyConfirmToken(purpose, token) {
+  const data = await _request(VERIFY_CONFIRM_TOKEN_MUTATION, { purpose, token });
+  return data.verifyConfirmToken;
+}
+
+const RESET_PASSWORD_WITH_TOKEN_MUTATION = `
+  mutation ResetPasswordWithToken($password: String!, $passwordConfirmation: String!, $resetToken: String!) {
+    resetPasswordWithToken(password: $password, passwordConfirmation: $passwordConfirmation, resetToken: $resetToken) {
+      id
+      email
+    }
+  }
+`;
+
+export async function resetPasswordWithToken(password, passwordConfirmation, resetToken) {
+  const data = await _request(RESET_PASSWORD_WITH_TOKEN_MUTATION, { password, passwordConfirmation, resetToken });
+  return data.resetPasswordWithToken;
 }
 
 const CREATE_POST_MUTATION = `
@@ -274,6 +348,29 @@ export async function destroyTerm(id, session) {
   return data.destroyTerm.result;
 }
 
+const UPDATE_TERM_MUTATION = `
+  mutation UpdateTerm($id: ID!, $input: UpdateTermInput!) {
+    updateTerm(id: $id, input: $input) {
+      result {
+        id
+        name
+        slug
+      }
+      errors{
+          message
+          shortMessage
+      }
+    }
+  }
+`;
+export async function updateTerm(id, input, session) {
+  const data = await _request(UPDATE_TERM_MUTATION, { id, input }, session);
+  if (data.updateTerm.errors && data.updateTerm.errors.length > 0) {
+    throw new Error(data.updateTerm.errors[0].message);
+  }
+  return data.updateTerm.result;
+}
+
 // Note: `uploadMedia` using standard fetch is complex due to multipart/form-data.
 // It's often handled outside a generic JSON-based client like this.
 // We will add a placeholder for now.
@@ -283,3 +380,5 @@ export async function uploadMedia(file, session) {
   logger.warn("uploadMedia is not fully implemented in the GraphQL client yet.");
   return null;
 }
+
+

@@ -45,7 +45,9 @@ export async function POST(req) {
       offset ? parseInt(offset) : 0,
       filter,
       session,
-      sort
+      sort,
+      null,
+      null
     )
     return NextResponse.json(tags);
 

@@ -26,7 +26,6 @@ export const authOptions = {
           email: credentials.email,
           password: credentials.password,
           passwordConfirmation: credentials.password,
-          agreement: "true",
         });
 
         if (!registrationResult || !registrationResult.result) {
@@ -62,8 +61,8 @@ export const authOptions = {
           email: gqlUser.email,
           image: getMetaValue(userMeta, "avatar"),
           username: getMetaValue(userMeta, "username"),
-          status: gqlUser.status || getMetaValue(userMeta, "status"),
-          roles: gqlUser.roles || [],
+          status: getMetaValue(userMeta, "status"),
+          roles: getMetaValue(userMeta, "roles")?.split(",") || [],
           accessToken: accessToken,
           userMeta: userMeta,
         };
@@ -95,8 +94,8 @@ export const authOptions = {
             email: gqlUser.email,
             image: getMetaValue(userMeta, "avatar"),
             username: getMetaValue(userMeta, "username"),
-            status: gqlUser.status || getMetaValue(userMeta, "status"),
-            roles: gqlUser.roles || [],
+            status: getMetaValue(userMeta, "status"),
+            roles: getMetaValue(userMeta, "roles")?.split(",") || [],
             accessToken: gqlUser.token,
             userMeta: userMeta,
           };
@@ -140,9 +139,8 @@ export const authOptions = {
           updatedToken.name = getMetaValue(newSessionUser.userMeta, "name");
           updatedToken.image = getMetaValue(newSessionUser.userMeta, "avatar");
           updatedToken.username = getMetaValue(newSessionUser.userMeta, "username");
-        }
-        if (newSessionUser.status) {
-          updatedToken.status = newSessionUser.status;
+          updatedToken.status = getMetaValue(newSessionUser.userMeta, "status");
+          updatedToken.roles = getMetaValue(newSessionUser.userMeta, "roles")?.split(",") || [];
         }
         return updatedToken;
       }

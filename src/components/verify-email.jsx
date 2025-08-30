@@ -49,10 +49,11 @@ export function VerifyEmail() {
 
   // Effect 2: Update the user's session after successful verification.
   useEffect(() => {
-    if (verificationStatus === 'success' && session && session.user?.status !== 'active') {
+    if (verificationStatus === 'success' && session && session.user?.status !== 'active' && !sessionUpdated) {
       updateSession({ user: { status: 'active' } });
+      setSessionUpdated(true);
     }
-  }, [verificationStatus, session, updateSession]);
+  }, [verificationStatus, session, updateSession, sessionUpdated]);
 
   return (
     <div className="flex items-center justify-center py-24">

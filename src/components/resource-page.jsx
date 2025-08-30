@@ -1,0 +1,205 @@
+'use client';
+
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { DataTable } from '@/components/ui/data-table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
+import { useDebounce } from '@/hooks/use-debounce';
+
+export function ResourcePage({ columns, dataProvider, resourceName, newResourceLink }) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rowSelection, setRowSelection] = useState({});
+  const [bulkAction, setBulkAction] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
+
+  const [pagination, setPagination] = useState({
+    pageIndex: searchParams.get('page') ? Number(searchParams.get('page')) - 1 : 0,
+    pageSize: searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10,
+  });
+
+  const [sorting, setSorting] = useState(
+    searchParams.get('sort')
+      ? [{
+          id: searchParams.get('sort'),
+          desc: searchParams.get('sortDesc') === 'true',
+        }]
+      : []
+  );
+
+  const [filterField, setFilterField] = useState(searchParams.get('filterField') || 'name');
+  const [filterValue, setFilterValue] = useState(searchParams.get('filterValue') || '');
+
+  const debouncedFilterValue = useDebounce(filterValue, 500);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('page', pagination.pageIndex + 1);
+    params.set('pageSize', pagination.pageSize);
+    if (sorting.length > 0) {
+      params.set('sort', sorting[0].id);
+      params.set('sortDesc', sorting[0].desc);
+    }
+    if (filterField) {
+      params.set('filterField', filterField);
+    }
+    if (debouncedFilterValue) {
+      params.set('filterValue', debouncedFilterValue);
+    }
+    router.push(`?${params.toString()}`);
+  }, [pagination, sorting, filterField, debouncedFilterValue, router]);
+
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const sortParams = sorting.map(s => ({
+        field: s.id === 'insertedAt' ? 'INSERTED_AT' : s.id.toUpperCase(),
+        order: s.desc ? 'DESC' : 'ASC'
+      }));
+
+      const result = await dataProvider.fetchData({
+        limit: pagination.pageSize,
+        offset: pagination.pageIndex * pagination.pageSize,
+        filterField: filterField,
+        filterValue: debouncedFilterValue,
+        sortParam: sortParams.length > 0 ? JSON.stringify(sortParams) : undefined,
+      });
+
+      setData(result.results);
+      setTotalCount(result.count);
+    } catch (error) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  }, [dataProvider, pagination, sorting, filterField, debouncedFilterValue]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleFilterSubmit = (event) => {
+    event.preventDefault();
+    setPagination(p => ({ ...p, pageIndex: 0 }));
+    setFilterValue(filterValue);
+  };
+
+  const handleClearFilter = () => {
+    setFilterField('name');
+    setFilterValue('');
+    setPagination(p => ({ ...p, pageIndex: 0 }));
+  };
+
+  const handleDeleteSelected = async () => {
+    const idsToDelete = Object.keys(rowSelection);
+    if (idsToDelete.length === 0) return;
+
+    try {
+      await dataProvider.deleteData(idsToDelete);
+      toast.success(`${idsToDelete.length} ${resourceName}(s) deleted successfully.`);
+      setRowSelection({});
+      fetchData(); // Refetch data
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-8 border-b pb-6">
+        <h1 className="text-2xl font-bold">{resourceName}</h1>
+        <Button size="sm" variant="secondary" asChild>
+          <Link href={newResourceLink}>New {resourceName}</Link>
+        </Button>
+      </div>
+
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <Select 
+            onValueChange={setBulkAction} 
+            value={bulkAction} 
+            disabled={Object.keys(rowSelection).length === 0}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Bulk Action" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="delete">Delete</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button 
+            disabled={Object.keys(rowSelection).length === 0 || !bulkAction}
+            variant="outline"
+            onClick={() => {
+              if (bulkAction === 'delete') {
+                handleDeleteSelected();
+              }
+            }}
+          >
+            Apply
+          </Button>
+        </div>
+        <div className="flex items-center justify-between">
+          <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
+            <Select name="filter_field" defaultValue={filterField} onValueChange={setFilterField}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="slug">Slug</SelectItem>
+              </SelectContent>
+            </Select>
+            <Input
+              name="filter_value"
+              placeholder="Filter value..."
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)}
+              className="max-w-sm"
+            />
+            <Button type="submit" disabled={isLoading}>Filter</Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleClearFilter}
+              disabled={isLoading || (!filterValue && filterField === 'name')}
+            >
+              Clear
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      <div className="relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/50 z-10">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+        <div className={isLoading ? 'opacity-50 transition-opacity' : ''}>
+          <DataTable 
+            columns={columns} 
+            data={data} 
+            rowSelection={rowSelection}
+            onRowSelectionChange={setRowSelection}
+            getRowId={(row) => row.id}
+            totalCount={totalCount}
+            pagination={pagination}
+            onPaginationChange={setPagination}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

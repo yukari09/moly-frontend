@@ -7,6 +7,12 @@ import { getTranslations } from 'next-intl/server';
 
 // This function generates dynamic metadata for the page
 export async function generateMetadata({ params }) {
+  if (!params) {
+    return {
+      title: 'User not found',
+      description: 'This user could not be found.',
+    };
+  }
   const { username } = params;
   const t = await getTranslations('PublicUserProfile');
   try {

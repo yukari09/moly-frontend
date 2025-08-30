@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { sendEmail } from '@/lib/email';
-import { ResetPasswordTemplate } from '@/emails/ResetPasswordTemplate';
 import { verifyTurnstileToken } from '@/lib/turnstile';
 import logger from '@/lib/logger';
 import { emailRateLimiter } from '@/lib/ratelimiter';
@@ -19,18 +17,7 @@ export async function POST(request) {
     const { email, turnstileToken } = await request.json();
     await verifyTurnstileToken(turnstileToken);
 
-    try {
-      const resetToken = await gql.generateResetToken(email);
-      const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
-      await sendEmail({
-        to: email,
-        subject: `Reset your ${process.env.APP_NAME} password`,
-        react: <ResetPasswordTemplate resetLink={resetLink} />,
-      });
-    } catch (error) {
-      // Suppress the error for security reasons to prevent email enumeration attacks.
-      logger.error("Forgot password error (suppressed for security):", error.message);
-    }
+    await gql.sendResetPasswordEmail(email);
 
     // Always return a generic success message.
     return NextResponse.json({ message: "If an account with that email exists, a password reset link has been sent." });
