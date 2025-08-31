@@ -124,7 +124,7 @@ export function LoginForm({
                   className="mx-auto"
                   onSuccess={setTurnstileToken}
                 />
-                <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
+                <Button type="submit" className="w-full"                   disabled={isLoading || !turnstileToken}>
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {t("loginButton")}
                 </Button>

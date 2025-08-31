@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { getTerm, updateTerm } from '@/lib/graphql'
+import { getPost, updatePost } from '@/lib/graphql'
 import { NextResponse } from 'next/server'
 
 export async function GET(req, context) {
@@ -14,8 +14,8 @@ export async function GET(req, context) {
   }
 
   try {
-    const term = await getTerm(params.id, "post_tag", session);
-    return NextResponse.json(term);
+    const post = await getPost(params.id, session);
+    return NextResponse.json(post);
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500,
@@ -35,23 +35,18 @@ export async function PUT(req, context) {
   }
 
   try {
-    const term = await getTerm(params.id, 'post_tag', session);
     const body = await req.json();
-    const { name, slug, description } = body;
+    const { postTitle, postContent, categories, tags } = body;
 
     const input = {
-      name: name,
-      slug: slug,
-      termTaxonomy: [
-        {
-          id: term.termTaxonomy[0].id,
-          description: description || ''
-        }
-      ]
+      postTitle: postTitle,
+      postContent: postContent,
+      categories: categories,
+      tags: tags,
     };
 
-    const updatedTerm = await updateTerm(params.id, input, session);
-    return NextResponse.json(updatedTerm);
+    const updatedPost = await updatePost(params.id, input, session);
+    return NextResponse.json(updatedPost);
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500,

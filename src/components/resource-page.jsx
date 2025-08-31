@@ -22,56 +22,52 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
   const [bulkAction, setBulkAction] = useState('');
   const [totalCount, setTotalCount] = useState(0);
 
-  const [pagination, setPagination] = useState({
+  const [filters, setFilters] = useState({
     pageIndex: searchParams.get('page') ? Number(searchParams.get('page')) - 1 : 0,
     pageSize: searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10,
+    sort: searchParams.get('sort'),
+    sortDesc: searchParams.get('sortDesc') === 'true',
+    filterField: searchParams.get('filterField') || 'name',
+    filterValue: searchParams.get('filterValue') || '',
   });
 
-  const [sorting, setSorting] = useState(
-    searchParams.get('sort')
-      ? [{
-          id: searchParams.get('sort'),
-          desc: searchParams.get('sortDesc') === 'true',
-        }]
-      : []
-  );
+  const debouncedFilterValue = useDebounce(filters.filterValue, 500);
 
-  const [filterField, setFilterField] = useState(searchParams.get('filterField') || 'name');
-  const [filterValue, setFilterValue] = useState(searchParams.get('filterValue') || '');
-
-  const debouncedFilterValue = useDebounce(filterValue, 500);
+  
 
   useEffect(() => {
     const params = new URLSearchParams();
-    params.set('page', pagination.pageIndex + 1);
-    params.set('pageSize', pagination.pageSize);
-    if (sorting.length > 0) {
-      params.set('sort', sorting[0].id);
-      params.set('sortDesc', sorting[0].desc);
+    params.set('page', filters.pageIndex + 1);
+    params.set('pageSize', filters.pageSize);
+    if (filters.sort) {
+      params.set('sort', filters.sort);
+      params.set('sortDesc', filters.sortDesc);
     }
-    if (filterField) {
-      params.set('filterField', filterField);
+    if (filters.filterField) {
+      params.set('filterField', filters.filterField);
     }
-    if (debouncedFilterValue) {
-      params.set('filterValue', debouncedFilterValue);
+    if (filters.filterValue) {
+      params.set('filterValue', filters.filterValue);
+    } else {
+      params.delete('filterValue');
     }
     router.push(`?${params.toString()}`);
-  }, [pagination, sorting, filterField, debouncedFilterValue, router]);
+  }, [filters.pageIndex, filters.pageSize, filters.sort, filters.sortDesc, filters.filterField, filters.filterValue, router]);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const sortParams = sorting.map(s => ({
-        field: s.id === 'insertedAt' ? 'INSERTED_AT' : s.id.toUpperCase(),
-        order: s.desc ? 'DESC' : 'ASC'
-      }));
+      const sortParams = filters.sort ? [{
+        field: filters.sort === 'insertedAt' ? 'INSERTED_AT' : filters.sort.toUpperCase(),
+        order: filters.sortDesc ? 'DESC' : 'ASC'
+      }] : undefined;
 
       const result = await dataProvider.fetchData({
-        limit: pagination.pageSize,
-        offset: pagination.pageIndex * pagination.pageSize,
-        filterField: filterField,
+        limit: filters.pageSize,
+        offset: filters.pageIndex * filters.pageSize,
+        filterField: filters.filterField,
         filterValue: debouncedFilterValue,
-        sortParam: sortParams.length > 0 ? JSON.stringify(sortParams) : undefined,
+        sortParam: sortParams ? JSON.stringify(sortParams) : undefined,
       });
 
       setData(result.results);
@@ -80,7 +76,7 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
       toast.error(error.message);
     }
     setIsLoading(false);
-  }, [dataProvider, pagination, sorting, filterField, debouncedFilterValue]);
+  }, [dataProvider, filters.pageIndex, filters.pageSize, filters.sort, filters.sortDesc, filters.filterField, debouncedFilterValue]);
 
   useEffect(() => {
     fetchData();
@@ -88,14 +84,16 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
 
   const handleFilterSubmit = (event) => {
     event.preventDefault();
-    setPagination(p => ({ ...p, pageIndex: 0 }));
-    setFilterValue(filterValue);
+    setFilters(f => ({ ...f, pageIndex: 0 }));
   };
 
   const handleClearFilter = () => {
-    setFilterField('name');
-    setFilterValue('');
-    setPagination(p => ({ ...p, pageIndex: 0 }));
+    setFilters(f => ({
+      ...f,
+      filterField: 'name',
+      filterValue: '',
+      pageIndex: 0,
+    }));
   };
 
   const handleDeleteSelected = async () => {
@@ -149,7 +147,7 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
         </div>
         <div className="flex items-center justify-between">
           <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
-            <Select name="filter_field" defaultValue={filterField} onValueChange={setFilterField}>
+            <Select name="filter_field" defaultValue={filters.filterField} onValueChange={(value) => setFilters(f => ({ ...f, filterField: value }))}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by" />
               </SelectTrigger>
@@ -161,8 +159,8 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
             <Input
               name="filter_value"
               placeholder="Filter value..."
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
+              value={filters.filterValue}
+              onChange={(e) => setFilters(f => ({ ...f, filterValue: e.target.value }))}
               className="max-w-sm"
             />
             <Button type="submit" disabled={isLoading}>Filter</Button>
@@ -170,7 +168,7 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
               type="button" 
               variant="outline" 
               onClick={handleClearFilter}
-              disabled={isLoading || (!filterValue && filterField === 'name')}
+              disabled={isLoading || (!filters.filterValue && filters.filterField === 'name')}
             >
               Clear
             </Button>
@@ -192,10 +190,22 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
             onRowSelectionChange={setRowSelection}
             getRowId={(row) => row.id}
             totalCount={totalCount}
-            pagination={pagination}
-            onPaginationChange={setPagination}
-            sorting={sorting}
-            onSortingChange={setSorting}
+            pagination={{
+              pageIndex: filters.pageIndex,
+              pageSize: filters.pageSize,
+            }}
+            onPaginationChange={(updater) => {
+              setFilters(f => ({ ...f, ...updater(f) }));
+            }}
+            sorting={filters.sort ? [{ id: filters.sort, desc: filters.sortDesc }] : []}
+            onSortingChange={(updater) => {
+              const newSorting = updater(filters.sort ? [{ id: filters.sort, desc: filters.sortDesc }] : []);
+              if (newSorting.length === 0) {
+                setFilters(f => ({ ...f, sort: null, sortDesc: false }));
+              } else {
+                setFilters(f => ({ ...f, sort: newSorting[0].id, sortDesc: newSorting[0].desc }));
+              }
+            }}
             emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}
           />
         </div>

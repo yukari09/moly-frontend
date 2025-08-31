@@ -111,7 +111,7 @@ const LIST_POSTS_OFFSET_QUERY = `
       count
       results {
         id
-        postName
+        postTitle
         postStatus
         insertedAt
       }
@@ -124,19 +124,28 @@ export async function listPostsOffset(limit, offset, filter, sort, session) {
 }
 
 const GET_TERM_QUERY = `
-  query GetTerm($id: ID!) {
+  query GetTerm($id: ID!, $taxonomyName: String!) {
     getTerm(id: $id) {
       id
       name
       slug
-      termTaxonomy {
+      termTaxonomy(filter: {
+        taxonomy: { eq: $taxonomyName }
+      }) {
+        id
+        taxonomy
+        count
         description
       }
+      termMeta{
+        termKey
+        termValue
+      }  
     }
   }
 `;
-export async function getTerm(id, session) {
-  const data = await _request(GET_TERM_QUERY, { id }, session);
+export async function getTerm(id, taxonomyName, session) {
+  const data = await _request(GET_TERM_QUERY, { id, taxonomyName }, session);
   return data.getTerm;
 }
 
@@ -290,7 +299,7 @@ const CREATE_POST_MUTATION = `
     createPost(input: $input) {
       result {
         id
-        postName
+        postTitle
       }
       errors{
           message
@@ -369,6 +378,64 @@ export async function updateTerm(id, input, session) {
     throw new Error(data.updateTerm.errors[0].message);
   }
   return data.updateTerm.result;
+}
+
+const GET_POST_QUERY = `
+  query GetPost($id: ID!) {
+    getPost(id: $id) {
+      id
+      postTitle
+      postContent
+      postStatus
+    }
+  }
+`;
+export async function getPost(id, session) {
+  const data = await _request(GET_POST_QUERY, { id }, session);
+  return data.getPost;
+}
+
+const UPDATE_POST_MUTATION = `
+  mutation UpdatePost($id: ID!, $input: UpdatePostInput!) {
+    updatePost(id: $id, input: $input) {
+      result {
+        id
+        postTitle
+      }
+      errors {
+        message
+        shortMessage
+      }
+    }
+  }
+`;
+export async function updatePost(id, input, session) {
+  const data = await _request(UPDATE_POST_MUTATION, { id, input }, session);
+  if (data.updatePost.errors && data.updatePost.errors.length > 0) {
+    throw new Error(data.updatePost.errors[0].message);
+  }
+  return data.updatePost.result;
+}
+
+const DESTROY_POST_MUTATION = `
+  mutation DestroyPost($id: ID!) {
+    destroyPost(id: $id) {
+      result {
+        id
+      }
+      errors {
+        message
+        shortMessage
+      }
+    }
+  }
+`;
+export async function destroyPost(id, session) {
+  const data = await _request(DESTROY_POST_MUTATION, { id }, session);
+  if (data.destroyPost.errors && data.destroyPost.errors.length > 0) {
+    throw new Error(data.destroyPost.errors[0].message);
+  }
+  return data.destroyPost.result;
 }
 
 // Note: `uploadMedia` using standard fetch is complex due to multipart/form-data.

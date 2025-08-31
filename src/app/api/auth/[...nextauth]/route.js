@@ -7,6 +7,21 @@ import { getMetaValue } from "@/lib/utils";
 import logger from "@/lib/logger";
 import * as gql from "@/lib/graphql";
 
+function createUserObject(gqlUser, accessToken) {
+  const userMeta = gqlUser.userMeta;
+  return {
+    id: gqlUser.id,
+    name: getMetaValue(userMeta, "name"),
+    email: gqlUser.email,
+    image: getMetaValue(userMeta, "avatar"),
+    username: getMetaValue(userMeta, "username"),
+    status: getMetaValue(userMeta, "status"),
+    roles: getMetaValue(userMeta, "roles")?.split(",") || [],
+    accessToken: accessToken,
+    userMeta: userMeta,
+  };
+}
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -34,7 +49,6 @@ export const authOptions = {
         
         const gqlUser = registrationResult.result;
         const accessToken = registrationResult.metadata.token;
-        const userMeta = gqlUser.userMeta;
 
         // Create a temporary session to generate the confirm token
         const tempSession = { accessToken };
@@ -43,7 +57,7 @@ export const authOptions = {
           try {
             const verificationToken = await gql.generateConfirmToken("confirm_new_user", tempSession);
             const verificationLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${verificationToken}`;
-            const userName = getMetaValue(userMeta, "name") || getMetaValue(userMeta, "username");
+            const userName = getMetaValue(gqlUser.userMeta, "name") || getMetaValue(gqlUser.userMeta, "username");
             
             await sendEmail({
               to: gqlUser.email,
@@ -55,17 +69,7 @@ export const authOptions = {
           }
         })();
 
-        const userObject = {
-          id: gqlUser.id,
-          name: getMetaValue(userMeta, "name"),
-          email: gqlUser.email,
-          image: getMetaValue(userMeta, "avatar"),
-          username: getMetaValue(userMeta, "username"),
-          status: getMetaValue(userMeta, "status"),
-          roles: getMetaValue(userMeta, "roles")?.split(",") || [],
-          accessToken: accessToken,
-          userMeta: userMeta,
-        };
+        const userObject = createUserObject(gqlUser, accessToken);
 
         logger.info("User successfully registered:", userObject);
         return userObject;
@@ -86,19 +90,7 @@ export const authOptions = {
 
         try {
           const gqlUser = await gql.signInWithPassword(credentials.email, credentials.password);
-          const userMeta = gqlUser.userMeta;
-
-          const userObject = {
-            id: gqlUser.id,
-            name: getMetaValue(userMeta, "name"),
-            email: gqlUser.email,
-            image: getMetaValue(userMeta, "avatar"),
-            username: getMetaValue(userMeta, "username"),
-            status: getMetaValue(userMeta, "status"),
-            roles: getMetaValue(userMeta, "roles")?.split(",") || [],
-            accessToken: gqlUser.token,
-            userMeta: userMeta,
-          };
+          const userObject = createUserObject(gqlUser, gqlUser.token);
 
           logger.info("User successfully authenticated:", userObject);
           return userObject;

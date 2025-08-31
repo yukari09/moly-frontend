@@ -14,7 +14,7 @@ export async function GET(req, context) {
   }
 
   try {
-    const term = await getTerm(params.id, "post_tag", session);
+    const term = await getTerm(params.id, "category", session);
     return NextResponse.json(term);
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { 
@@ -35,7 +35,7 @@ export async function PUT(req, context) {
   }
 
   try {
-    const term = await getTerm(params.id, 'post_tag', session);
+    const term = await getTerm(params.id, 'category', session);
     const body = await req.json();
     const { name, slug, description } = body;
 

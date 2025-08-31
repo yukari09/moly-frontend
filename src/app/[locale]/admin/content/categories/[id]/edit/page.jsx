@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
-export default function EditTagPage() {
+export default function EditCategoryPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
@@ -22,21 +22,21 @@ export default function EditTagPage() {
 
   useEffect(() => {
     if (id) {
-      const fetchTag = async () => {
+      const fetchCategory = async () => {
         setIsLoading(true);
         try {
-          const response = await fetch(`/api/admin/tags/${id}`);
-          if (!response.ok) throw new Error('Failed to fetch tag data.');
-          const tag = await response.json();
-          setName(tag.name);
-          setSlug(tag.slug);
-          setDescription(tag.termTaxonomy?.[0]?.description || '');
+          const response = await fetch(`/api/admin/categories/${id}`);
+          if (!response.ok) throw new Error('Failed to fetch category data.');
+          const category = await response.json();
+          setName(category.name);
+          setSlug(category.slug);
+          setDescription(category.termTaxonomy?.[0]?.description || '');
         } catch (error) {
           toast.error(error.message);
         }
         setIsLoading(false);
       };
-      fetchTag();
+      fetchCategory();
     }
   }, [id]);
 
@@ -45,7 +45,7 @@ export default function EditTagPage() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`/api/admin/tags/${id}`, {
+      const response = await fetch(`/api/admin/categories/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, slug, description }),
@@ -53,11 +53,11 @@ export default function EditTagPage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to update tag.');
+        throw new Error(data.error || 'Failed to update category.');
       }
 
-      toast.success('Tag updated successfully!');
-      router.push('/admin/content/tags');
+      toast.success('Category updated successfully!');
+      router.push('/admin/content/categories');
       router.refresh();
     } catch (error) {
       toast.error(error.message);
@@ -78,8 +78,8 @@ export default function EditTagPage() {
     <div className="p-4 max-w-2xl">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">Edit Tag</h1>
-          <p className="text-muted-foreground pt-1">Update the details for this tag.</p>
+          <h1 className="text-2xl font-bold">Edit Category</h1>
+          <p className="text-muted-foreground pt-1">Update the details for this category.</p>
         </div>
 
         <div className="space-y-4">
@@ -107,7 +107,7 @@ export default function EditTagPage() {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="A short description of the tag."
+              placeholder="A short description of the category."
             />
           </div>
         </div>

@@ -9,34 +9,32 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
-export default function EditTagPage() {
+export default function EditPostPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
 
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [description, setDescription] = useState('');
+  const [postTitle, setPostTitle] = useState('');
+  const [postContent, setPostContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (id) {
-      const fetchTag = async () => {
+      const fetchPost = async () => {
         setIsLoading(true);
         try {
-          const response = await fetch(`/api/admin/tags/${id}`);
-          if (!response.ok) throw new Error('Failed to fetch tag data.');
-          const tag = await response.json();
-          setName(tag.name);
-          setSlug(tag.slug);
-          setDescription(tag.termTaxonomy?.[0]?.description || '');
+          const response = await fetch(`/api/admin/posts/${id}`);
+          if (!response.ok) throw new Error('Failed to fetch post data.');
+          const post = await response.json();
+          setPostTitle(post.postTitle);
+          setPostContent(post.postContent);
         } catch (error) {
           toast.error(error.message);
         }
         setIsLoading(false);
       };
-      fetchTag();
+      fetchPost();
     }
   }, [id]);
 
@@ -45,19 +43,19 @@ export default function EditTagPage() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`/api/admin/tags/${id}`, {
+      const response = await fetch(`/api/admin/posts/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, slug, description }),
+        body: JSON.stringify({ postTitle, postContent }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to update tag.');
+        throw new Error(data.error || 'Failed to update post.');
       }
 
-      toast.success('Tag updated successfully!');
-      router.push('/admin/content/tags');
+      toast.success('Post updated successfully!');
+      router.push('/admin/content/posts');
       router.refresh();
     } catch (error) {
       toast.error(error.message);
@@ -78,36 +76,27 @@ export default function EditTagPage() {
     <div className="p-4 max-w-2xl">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">Edit Tag</h1>
-          <p className="text-muted-foreground pt-1">Update the details for this tag.</p>
+          <h1 className="text-2xl font-bold">Edit Post</h1>
+          <p className="text-muted-foreground pt-1">Update the details for this post.</p>
         </div>
 
         <div className="space-y-4">
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="postTitle">Title</Label>
             <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id="postTitle"
+              value={postTitle}
+              onChange={(e) => setPostTitle(e.target.value)}
               required
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="postContent">Content</Label>
             <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="A short description of the tag."
+              id="postContent"
+              value={postContent}
+              onChange={(e) => setPostContent(e.target.value)}
+              placeholder="Write your post content here."
             />
           </div>
         </div>
