@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { createPost } from '@/lib/graphql'
+import { updatePost } from '@/lib/graphql'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
@@ -14,7 +14,14 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { postTitle, postContent, categories, tags } = body;
+    const { id, postTitle, postContent, categories, tags } = body;
+
+    if (!id) {
+      return new Response(JSON.stringify({ error: 'Post ID is required' }), { 
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     if (!postTitle) {
       return new Response(JSON.stringify({ error: 'Title is required' }), { 
@@ -26,9 +33,6 @@ export async function POST(req) {
     const input = {
       postTitle: postTitle,
       postContent: postContent,
-      postStatus: 'publish',
-      postType: 'post',
-      postDate: new Date().toISOString(),
     };
 
     if (categories && Array.isArray(categories)) {
@@ -45,10 +49,9 @@ export async function POST(req) {
       }
     }
 
-    const newPost = await createPost(input, session);
-    return NextResponse.json(newPost);
+    const updatedPost = await updatePost(id, input, session);
+    return NextResponse.json(updatedPost);
   } catch (error) {
-    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }

@@ -12,13 +12,7 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { useDebounce } from '@/hooks/use-debounce';
 
-export function ResourcePage({ 
-  columns, 
-  dataProvider, 
-  resourceName, 
-  newResourceLink,
-  filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }]
-}) {
+export function ResourcePage({ columns, dataProvider, resourceName, newResourceLink }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -33,7 +27,7 @@ export function ResourcePage({
     pageSize: searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10,
     sort: searchParams.get('sort'),
     sortDesc: searchParams.get('sortDesc') === 'true',
-    filterField: searchParams.get('filterField') || (filterableFields.length > 0 ? filterableFields[0].value : ''),
+    filterField: searchParams.get('filterField') || 'name',
     filterValue: searchParams.get('filterValue') || '',
   });
 
@@ -96,7 +90,7 @@ export function ResourcePage({
   const handleClearFilter = () => {
     setFilters(f => ({
       ...f,
-      filterField: filterableFields.length > 0 ? filterableFields[0].value : '',
+      filterField: 'name',
       filterValue: '',
       pageIndex: 0,
     }));
@@ -153,18 +147,13 @@ export function ResourcePage({
         </div>
         <div className="flex items-center justify-between">
           <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
-            <Select 
-              name="filter_field" 
-              value={filters.filterField} 
-              onValueChange={(value) => setFilters(f => ({ ...f, filterField: value }))}
-            >
+            <Select name="filter_field" defaultValue={filters.filterField} onValueChange={(value) => setFilters(f => ({ ...f, filterField: value }))}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by" />
               </SelectTrigger>
               <SelectContent>
-                {filterableFields.map(field => (
-                  <SelectItem key={field.value} value={field.value}>{field.label}</SelectItem>
-                ))}
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="slug">Slug</SelectItem>
               </SelectContent>
             </Select>
             <Input
@@ -179,7 +168,7 @@ export function ResourcePage({
               type="button" 
               variant="outline" 
               onClick={handleClearFilter}
-              disabled={isLoading || (!filters.filterValue && filterableFields.length > 0 && filters.filterField === filterableFields[0].value)}
+              disabled={isLoading || (!filters.filterValue && filters.filterField === 'name')}
             >
               Clear
             </Button>

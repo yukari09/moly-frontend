@@ -27,10 +27,6 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
     accessorKey: 'postTitle',
     header: ({ column }) => {
       return (
@@ -49,6 +45,20 @@ export const columns = [
         </Button>
       )
     },
+  },
+  {
+    accessorKey: 'categories',
+    header: 'Category',
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.original.categories?.[0]?.name}</div>
+    }
+  },
+  {
+    accessorKey: 'post_tags',
+    header: 'Tags',
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.original.postTags?.map(tag => tag.name).join(", ") || ""}</div>
+    }
   },
   {
     accessorKey: 'postStatus',
@@ -81,6 +91,7 @@ export const columns = [
   },
   {
     id: "actions",
+    header: "Actions",
     cell: ({ row }) => {
       const post = row.original
  

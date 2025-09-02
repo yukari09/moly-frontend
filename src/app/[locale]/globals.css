@@ -1,6 +1,4 @@
 @import "tailwindcss";
-
-@plugin "tailwind-scrollbar-hide";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -121,15 +119,6 @@
 @layer base {
   * {
     @apply border-border outline-ring/50 antialiased;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

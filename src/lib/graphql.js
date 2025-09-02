@@ -95,6 +95,18 @@ const LIST_TERMS_OFFSET_QUERY = `
         id
         name
         slug
+        termMeta{
+          termKey
+          termValue
+        }
+        termTaxonomy(filter: {
+          taxonomy: { eq: $taxonomyName }
+        }){
+          id
+          taxonomy
+          description
+          count
+        }
         insertedAt
       }
     }
@@ -114,6 +126,20 @@ const LIST_POSTS_OFFSET_QUERY = `
         postTitle
         postStatus
         insertedAt
+        postTags{
+          name
+          slug
+          termTaxonomy(filter: {taxonomy: {eq: "post_tag"}}){
+            id
+          }
+        }
+        categories{
+          name
+          slug
+          termTaxonomy(filter: {taxonomy: {eq: "category"}}){
+            id
+          }
+        }
       }
     }
   }
@@ -302,8 +328,9 @@ const CREATE_POST_MUTATION = `
         postTitle
       }
       errors{
-          message
-          shortMessage
+        fields  
+        message
+        shortMessage
       }
     }
   }
@@ -311,7 +338,7 @@ const CREATE_POST_MUTATION = `
 export async function createPost(input, session) {
   const data = await _request(CREATE_POST_MUTATION, { input }, session);
   if (data.createPost.errors && data.createPost.errors.length > 0) {
-    throw new Error(data.createPost.errors[0].message);
+    throw new Error(data.createPost.errors[0].fields.join("") + ":"  + data.createPost.errors[0].message);
   }
   return data.createPost.result;
 }
@@ -387,6 +414,18 @@ const GET_POST_QUERY = `
       postTitle
       postContent
       postStatus
+      postTags{
+        name
+        slug
+        termTaxonomy(filter: {taxonomy: {eq: "post_tag"}}){
+          id
+        }
+      }
+      categories{
+        termTaxonomy(filter: {taxonomy: {eq: "category"}}){
+          id
+        }
+      }
     }
   }
 `;
