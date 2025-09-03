@@ -1,3 +1,5 @@
+import Header from "@/components/layout-header";
+import Footer from "@/components/layout-footer";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -12,11 +14,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { ArrowRightCircle } from "lucide-react"
-
-export const metadata = {
-  title: "Home | Moly's Blog",
-  description: "Welcome to Moly's Blog. Here we share our thoughts on web development, design, and more.",
-};
 
 const posts = [
     {
@@ -74,6 +71,8 @@ const otherPosts = posts.slice(1);
 
 export default function Home() {
     return (
+        <>
+          <Header />
       <div className="min-h-screen bg-white">
         <main className="flex flex-1 flex-col">
           <section className="border-grid">
@@ -83,7 +82,7 @@ export default function Home() {
                   <Link href="/" className="flex items-center gap-2">New Website Build By Moly <ArrowRightCircle className="size-4"/></Link>
                 </Badge>
                 <h1 className="text-primary leading-tighter max-w-2xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
-                  Day Festival And Calendar
+                  Day Festival and Calendar
                 </h1>
                 <p className="text-foreground max-w-3xl text-base text-balance sm:text-lg">
                   Clean, modern building blocks. Copy and paste into your apps. Works with all React frameworks. Open Source. Free forever.
@@ -97,5 +96,7 @@ export default function Home() {
           </section>
         </main>
       </div>
+          <Footer />
+        </>
     );
 }

@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import Header from "@/components/layout-header";
+import Footer from "@/components/layout-footer";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -12,9 +14,33 @@ const geist = Geist({
 });
 
 export const metadata = {
-  title: "Next.js Starter Templates and Themes",
+  title: {
+    default: "Moly's Blog",
+    template: "%s | Moly's Blog",
+  },
   description:
-    "Discover Next.js templates, starters, and themes to jumpstart your application or website build.",
+    "A blog about web development, design, and more.",
+  openGraph: {
+    title: "Moly's Blog",
+    description: "A blog about web development, design, and more.",
+    url: "https://moly.app",
+    siteName: "Moly's Blog",
+    images: [
+      {
+        url: "https://moly.app/og.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Moly's Blog",
+    description: "A blog about web development, design, and more.",
+    images: ["https://moly.app/og.png"],
+  },
 };
 
 export default async function RootLayout({ children, params }) {
@@ -33,8 +59,10 @@ export default async function RootLayout({ children, params }) {
       <body>
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
+            <Header />
             {children}
             <Toaster />
+            <Footer />
           </NextIntlClientProvider>
         </AuthProvider>
       </body>
