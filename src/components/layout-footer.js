@@ -11,7 +11,7 @@ const footerLinks = {
 
 export default function Footer() {
     return (
-        <footer className="mt-20 border-t border-gray-200">
+      <footer className="mt-20 border-t">
         <div className="max-w-screen-2xl mx-auto px-6">
           <div className="py-16 grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2 md:col-span-1">
@@ -30,15 +30,19 @@ export default function Footer() {
               </div>
             ))}
           </div>
-          <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-200">
-            <p className="text-sm text-gray-500">© 2024 Vercel, Inc.</p>
-            <div className="flex items-center gap-4">
-                <a href="#" aria-label="Github">
-                    <Github className="w-5 h-5 text-gray-500 hover:text-black" />
-                </a>
-                <a href="#" aria-label="Twitter">
-                    <Twitter className="w-5 h-5 text-gray-500 hover:text-black" />
-                </a>
+        </div>
+        <div className="border-t">
+          <div className="max-w-screen-2xl mx-auto px-6">
+            <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-gray-500">© 2025 Vercel, Inc.</p>
+              <div className="flex items-center gap-4">
+                  <a href="#" aria-label="Github">
+                      <Github className="w-5 h-5 text-gray-500 hover:text-black" />
+                  </a>
+                  <a href="#" aria-label="Twitter">
+                      <Twitter className="w-5 h-5 text-gray-500 hover:text-black" />
+                  </a>
+              </div>
             </div>
           </div>
         </div>

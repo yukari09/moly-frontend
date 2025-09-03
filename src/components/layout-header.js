@@ -21,6 +21,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { getMetaValue } from "@/lib/utils";
@@ -28,8 +29,6 @@ import {useTranslations} from 'next-intl';
 import {useParams} from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
-
-const VercelLogo = () => <Triangle className="w-6 h-6 fill-current" />;
 
 const languageNames = {
   en: 'English',
@@ -85,9 +84,16 @@ export default function Header() {
 
   return (
     <header>
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 flex justify-between items-center h-[65px]">
-        <div className="flex items-center gap-3 sm:gap-6 sticky">
-          <VercelLogo />
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 h-[65px]">
+        <div className="flex justify-between items-center gap-3 sm:gap-6 sticky py-4">
+          <Link href="/" className="flex-1 width-1/2">
+            <Image 
+              src="/logo.svg"
+              height="32"
+              width="32"
+            />
+          </Link>
+
           <div className="hidden md:block">
             <NavigationMenu>
               <NavigationMenuList>
@@ -95,91 +101,95 @@ export default function Header() {
                 <NavigationMenuItem>
                    
                     <NavigationMenuLink asChild>
-                      <Link href="/docs" >Docs</Link>
+                      <Link href="/docs" className="font-medium" >Docs</Link>
                     </NavigationMenuLink>
                    
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                    
                     <NavigationMenuLink asChild>
-                      <Link href="/pricing" >{t.rich("pricing")}</Link>
+                      <Link href="/pricing" className="font-medium">{t.rich("pricing")}</Link>
                     </NavigationMenuLink>
                    
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          {status === "loading" && (
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
-              <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
-              <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse" />
-            </div>
-          )}
-          {status === "unauthenticated" && (
-            <>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => signIn()}
-              >
-                <span className="hidden sm:inline">{t.rich('log_in')}</span>
-                <span className="sm:hidden">Login</span>
-              </Button>
-              <Button asChild variant="default" size="sm" >
-                <Link href="/register">
-                  <span className="hidden sm:inline">{t.rich('sign_up')}</span>
-                  <span className="sm:hidden">Sign Up</span>
-                </Link>
-              </Button>
-            </>
-          )}
-          {status === "authenticated" && (
-             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="size-8 cursor-pointer">
-                  <AvatarImage src={avatarUrl || ""} alt={name || ""} />
-                  <AvatarFallback>
-                    {name ? (
-                          name.slice(0, 2).toUpperCase()
-                        ) : (
-                          <User className="h-4 w-4" />
-                    )}
-                  </AvatarFallback>
-                </Avatar>
-                 
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {session.user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push(`/u/${username}`)}>
-                  {t.rich('profile')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push('/account/profile')}>
-                  {t.rich('setting')}
-                </DropdownMenuItem>
-                {process.env.NODE_ENV === 'development' && (
-                  <DropdownMenuItem onClick={() => router.push('/debug/session')}>
-                    {t.rich('debug_session')}
+
+          <div className="flex items-center gap-2 flex-1 justify-end width-1/2">
+            {status === "loading" && (
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-16 sm:w-20 rounded-md bg-gray-200 animate-pulse" />
+                <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse" />
+              </div>
+            )}
+            {status === "unauthenticated" && (
+              <>
+                <LanguageSwitcher />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => signIn()}
+                >
+                  <span className="hidden sm:inline">{t.rich('log_in')}</span>
+                  <span className="sm:hidden">Login</span>
+                </Button>
+                <Button asChild variant="default" size="sm" >
+                  <Link href="/register">
+                    <span className="hidden sm:inline">{t.rich('sign_up')}</span>
+                    <span className="sm:hidden">Sign Up</span>
+                  </Link>
+                </Button>
+              </>
+            )}
+            {status === "authenticated" && (
+              <>
+              <LanguageSwitcher />
+               
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="size-8 cursor-pointer">
+                    <AvatarImage src={avatarUrl || ""} alt={name || ""} />
+                    <AvatarFallback>
+                      {name ? (
+                            name.slice(0, 1).toUpperCase()
+                          ) : (
+                            <User className="h-4 w-4" />
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
+                  
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => router.push(`/u/${username}`)}>
+                    {t.rich('profile')}
                   </DropdownMenuItem>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push('/auth/signout')}>
-                  {t.rich('log_out')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+                  <DropdownMenuItem onClick={() => router.push('/account/profile')}>
+                    {t.rich('setting')}
+                  </DropdownMenuItem>
+                  {process.env.NODE_ENV === 'development' && (
+                    <DropdownMenuItem onClick={() => router.push('/debug/session')}>
+                      {t.rich('debug_session')}
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => router.push('/auth/signout')}>
+                    {t.rich('log_out')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>

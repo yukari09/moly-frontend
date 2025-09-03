@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { cva } from 'class-variance-authority';
 import { PlateStatic } from 'platejs';
+import { staticEditor } from '@/lib/plate-static-editor';
 
 import { cn } from '@/lib/utils';
 
@@ -39,7 +40,8 @@ export const editorVariants = cva(cn(
 export function EditorStatic({
   className,
   variant,
+  plugins,
   ...props
 }) {
-  return (<PlateStatic className={cn(editorVariants({ variant }), className)} {...props} />);
+  return (<PlateStatic editor={staticEditor} className={cn(editorVariants({ variant }), className)} {...props} />);
 }

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }) {
       description: 'This user could not be found.',
     };
   }
-  const { username } = params;
+  const { username } = await params;
   const t = await getTranslations('PublicUserProfile');
   try {
     const user = await getUserByUsername(username);
@@ -50,7 +50,7 @@ function SocialLink({ icon, href }) {
 }
 
 export default async function UserProfilePage({ params }) {
-  const { username } = params;
+  const { username } = await params;
   const t = await getTranslations('PublicUserProfile');
   let user;
 
