@@ -189,3 +189,90 @@
 *   **用户体验**: 进一步优化交互细节和动画效果。
 
 这份文档旨在作为项目未来开发和维护的指南。
+
+---
+
+#### **8.0 交互记录与项目进展 (Interaction Log & Project Progress)**
+
+本节记录了与 AI 助手的交互过程，包括需求分析、问题解决、功能实现及遇到的挑战。
+
+**8.1 故事详情页 (`Story Detail Page`) 改造**
+
+*   **需求**: 用户要求查看并调整故事详情页。
+*   **发现**: 页面路由 (`src/app/[locale]/stories/[slug]/page.jsx`) 和内容组件 (`src/components/stories/StoryDetailContent.jsx`) 已存在，但使用静态模拟数据。
+*   **改造**: 
+    *   将“Share this story”部分从主内容区移动到左侧边栏，并封装在独立的卡片中。
+    *   为“Enjoyed this story?”（新闻订阅）部分添加了邮件输入框，并优化了布局。
+*   **问题**: 
+    *   `generateMetadata` 函数中 `params.slug` 同步访问导致 Next.js 警告。
+    *   **解决方案**: 在 `generateMetadata` 和 `StoryDetailPage` 函数中，对 `params` 进行 `await` 解构，以符合 Next.js 异步 API 的要求。
+    *   `FormControl` 组件与 `React.Fragment` 冲突导致 `Invalid prop 'data-slot'` 错误。
+    *   **解决方案**: 将 `FormControl` 内部的 `React.Fragment` 替换为 `<div>` 元素。
+
+**8.2 页面整体审查与主页 (`Home Page`) 优化**
+
+*   **需求**: 用户要求审查所有页面，找出不符合逻辑或需要调整的地方。
+*   **审查范围**: 主页、关于我们、贡献页面。
+*   **发现**: 
+    *   **关于我们页**: 结构良好，逻辑清晰，无需修改。
+    *   **主页**: 存在逻辑问题，卡片（特色节日、最新故事）缺少链接。
+    *   **贡献页面**: UI 完善，但表单功能不完整（未提交数据），且“Country”字段为文本输入框，体验不佳。
+*   **主页改造**: 
+    *   为“Happening This Month”和“From Our Stories”部分的卡片添加了 `next/link` 链接，使其可点击跳转到详情页。
+    *   为模拟数据添加了 `slug` 字段以支持链接生成。
+
+**8.3 贡献表单 (`ContributeForm`) 大改造**
+
+*   **需求**: 使贡献表单与节日详情页的数据结构完全匹配。
+*   **挑战**: 节日详情页需要非常丰富和结构化的数据（富文本、图片、多类型等），而原表单非常简单。
+*   **改造方案 (多轮迭代)**: 
+    *   **字段调整**: 
+        *   “Festival Name”改为“Title”。
+        *   “Country”字段从文本输入框改为下拉选择框（复用主页的国家列表）。
+        *   “Category”字段改为“Type”，并实现为多选复选框。
+        *   新增“Tags”文本输入框（逗号分隔）。
+        *   新增“Hero Image”和“Gallery Images”的文件选择 UI（仅前端交互，不涉及实际上传）。
+    *   **富文本编辑器**: 
+        *   原计划使用 `Plate.js` 的 `Editor` 组件实现“Story”、“Traditions”和“Traveler's Guide”三个富文本输入框。
+        *   **问题**: 发现项目中没有为可交互的 `Plate.js` 编辑器提供现成配置，导致 `Plate hooks` 错误。
+        *   **用户决策**: 暂时使用普通 `<Textarea>` 文本框作为替代方案。
+        *   **问题**: `FormControl` 与 `React.Fragment` 冲突导致 `Invalid prop 'data-slot'` 错误。
+        *   **解决方案**: 将 `FormControl` 内部的 `React.Fragment` 替换为 `<div>` 元素。
+
+**8.4 探索页面 (`Explore Page`) 深度改造**
+
+*   **需求**: 使探索页与改造后的贡献表单数据结构兼容，并优化日历交互。
+*   **挑战**: 探索页原数据结构非常简单，与贡献表单的丰富数据不匹配。
+*   **改造方案 (多轮迭代)**: 
+    *   **数据与列表**: 
+        *   更新 `festivalData` 模拟数据，使其与贡献表单的复杂结构一致。
+        *   修改 `DataTable` 列定义，增加“Type”等列，并使“Title”列可点击跳转到详情页。
+    *   **筛选器**: 
+        *   修改 `FestivalFilters.jsx`：将“Tags”筛选改为文本输入框，将“Categories”重命名为“Type”并同步选项。
+    *   **日历视图**: 
+        *   **初始尝试**: 使用 `react-day-picker` 的 `modifiers` 属性在节日日期显示“点”。
+        *   **问题**: “点”未显示（日期对象创建的时区问题）。
+        *   **解决方案**: 优化日期对象创建方式，避免时区影响。
+        *   **问题**: “点”仍未显示，用户质疑“糊弄事”，并提出使用 `FullCalendar`。
+        *   **用户决策**: 采纳用户建议，使用 `FullCalendar`。
+        *   **`FullCalendar` 实现**: 
+            *   安装 `FullCalendar` 依赖 (`@fullcalendar/react`, `@fullcalendar/daygrid`, `@fullcalendar/interaction`)。
+            *   改造 `explore/page.jsx` 布局：移除 Tabs，实现“左侧日历、右侧列表”的固定两栏布局。
+            *   集成 `FullCalendar`，将节日数据转换为事件格式，并实现日期点击筛选列表的联动功能。
+        *   **`FullCalendar` 样式问题 (重大挑战)**: 
+            *   **第一次尝试**: 在 `globals.css` 中添加大量 `FullCalendar` 自定义样式和 `@layer base` 规则。
+            *   **结果**: **严重破坏了页面整体样式**。
+            *   **解决方案**: **立即回滚 `globals.css` 的所有修改**。
+            *   **第二次尝试**: 在 `globals.css` 中仅添加 `FullCalendar` 的 `@import` 语句。
+            *   **结果**: **再次破坏页面样式**。
+            *   **解决方案**: **再次回滚 `globals.css` 的所有修改**。
+            *   **当前状态**: `FullCalendar` 已集成到页面，功能正常，但 **完全没有样式**。
+
+**8.5 经验教训 (Lessons Learned from Interaction)**
+
+*   **CSS 复杂性**: 项目的 CSS 体系（Tailwind CSS, `shadcn/ui`, Next.js App Router）对全局样式修改非常敏感。在未完全理解其内部机制前，对 `globals.css` 进行任何修改都极易导致全局样式崩溃。
+*   **依赖引入**: 引入新的大型 UI 库（如 `FullCalendar`）需要谨慎处理其样式集成，尤其是在现有复杂 CSS 体系下。
+*   **用户沟通**: 在遇到技术障碍或需要妥协时，必须清晰、透明地沟通，并提供备选方案，但最终应尊重用户的最终决策。避免“糊弄事”的印象。
+*   **逐步验证**: 对于大型改造，应分阶段进行，并在每个阶段后进行验证，避免一次性引入过多变化导致难以调试。
+
+---

@@ -17,8 +17,7 @@ const countries = [
   { name: "Mexico", code: "mx" },
 ];
 
-const categories = ["Music", "Food & Drink", "Cultural", "Arts"];
-const tags = ["Family-Friendly", "Free Admission", "Once in a Lifetime"];
+const types = ["Music", "Food & Drink", "Cultural", "Arts", "Religious"];
 
 export default function FestivalFilters() {
   return (
@@ -64,30 +63,23 @@ export default function FestivalFilters() {
           </Select>
         </div>
 
-        {/* Categories Checkboxes */}
+        {/* Type Checkboxes */}
         <div className="space-y-2">
-          <Label>Categories</Label>
+          <Label>Type</Label>
           <div className="space-y-2">
-            {categories.map(category => (
-              <div key={category} className="flex items-center space-x-2">
-                <Checkbox id={`category-${category}`} />
-                <Label htmlFor={`category-${category}`} className="font-normal">{category}</Label>
+            {types.map(type => (
+              <div key={type} className="flex items-center space-x-2">
+                <Checkbox id={`type-${type}`} />
+                <Label htmlFor={`type-${type}`} className="font-normal">{type}</Label>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Tags Checkboxes */}
+        {/* Tags Input */}
         <div className="space-y-2">
           <Label>Tags</Label>
-          <div className="space-y-2">
-            {tags.map(tag => (
-              <div key={tag} className="flex items-center space-x-2">
-                <Checkbox id={`tag-${tag}`} />
-                <Label htmlFor={`tag-${tag}`} className="font-normal">{tag}</Label>
-              </div>
-            ))}
-          </div>
+          <Input placeholder="Search by tag..." />
         </div>
 
       </CardContent>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Calendar, User, Clock, Share2, BookmarkPlus } from "lucide-react";
 
 export default function StoryDetailContent({ story }) {
@@ -12,7 +13,7 @@ export default function StoryDetailContent({ story }) {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
         
         {/* Left Sidebar (Key Info) */}
-        <aside className="lg:col-span-1 lg:sticky top-24 self-start">
+        <aside className="lg:col-span-1 lg:sticky top-24 self-start space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="font-serif">Story Information</CardTitle>
@@ -49,6 +50,19 @@ export default function StoryDetailContent({ story }) {
               </div>
             </CardContent>
           </Card>
+          
+          <Card>
+            <CardHeader>
+                <CardTitle className="font-serif text-lg">Share & Save</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex flex-col gap-3">
+                    <Button variant="outline"><Share2 className="w-4 h-4 mr-2" /> Share Story</Button>
+                    <Button variant="outline"><BookmarkPlus className="w-4 h-4 mr-2" /> Save for Later</Button>
+                </div>
+            </CardContent>
+          </Card>
+
         </aside>
 
         {/* Main Content */}
@@ -67,26 +81,24 @@ export default function StoryDetailContent({ story }) {
 
           {/* Newsletter Signup Section */}
           <section className="mt-16 pt-8 border-t">
-            <div className="bg-muted/50 rounded-lg p-8 text-center">
-              <h3 className="text-2xl font-serif font-bold mb-4">
+            <div className="bg-muted/50 rounded-lg p-8">
+              <h3 className="text-2xl font-serif font-bold mb-2 text-center">
                 Enjoyed this story?
               </h3>
-              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto text-center">
                 Subscribe to our newsletter for more cultural insights and travel stories delivered to your inbox.
               </p>
-              <Button size="lg">
-                Subscribe to Newsletter
-              </Button>
-            </div>
-          </section>
-
-          {/* Social Share Section */}
-          <section className="mt-8 text-center">
-              <h3 className="text-lg font-semibold mb-4">Share this story</h3>
-              <div className="flex justify-center gap-4">
-                  <Button variant="outline"><Share2 className="w-4 h-4 mr-2" /> Share</Button>
-                  <Button variant="outline"><BookmarkPlus className="w-4 h-4 mr-2" /> Save for Later</Button>
+              <div className="flex max-w-sm mx-auto">
+                <Input
+                  type="email"
+                  placeholder="Enter your email..."
+                  className="rounded-r-none focus:z-10"
+                />
+                <Button type="submit" className="rounded-l-none">
+                  Subscribe
+                </Button>
               </div>
+            </div>
           </section>
         </main>
       </div>

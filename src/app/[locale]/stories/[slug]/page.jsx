@@ -63,7 +63,8 @@ const mockStories = {
 };
 
 export async function generateMetadata({ params }) {
-  const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+  const { slug } = await params;
+  const story = mockStories[slug] || mockStories["history-of-lantern-festivals"];
   
   return {
     title: `${story.title} | DayCal Stories`,
@@ -71,9 +72,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function StoryDetailPage({ params }) {
+export default async function StoryDetailPage({ params }) {
   // In a real app, you would fetch story data based on `params.slug`
-  const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+  const { slug } = await params;
+  const story = mockStories[slug] || mockStories["history-of-lantern-festivals"];
 
   return (
     <article>

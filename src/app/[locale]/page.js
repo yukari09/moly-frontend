@@ -13,9 +13,9 @@ export const metadata = {
 };
 
 const featuredFestivals = [
-  { title: "Holi Festival", description: "A vibrant festival of colors, love, and spring.", tags: ["Cultural", "Religious"] },
-  { title: "Oktoberfest", description: "The world's largest Volksfest, held annually in Munich.", tags: ["Food & Drink"] },
-  { title: "Dia de los Muertos", description: "A multi-day holiday to remember friends and family.", tags: ["Cultural", "Family"] },
+  { title: "Holi Festival", slug: "holi-festival", description: "A vibrant festival of colors, love, and spring.", tags: ["Cultural", "Religious"] },
+  { title: "Oktoberfest", slug: "oktoberfest", description: "The world's largest Volksfest, held annually in Munich.", tags: ["Food & Drink"] },
+  { title: "Dia de los Muertos", slug: "dia-de-los-muertos", description: "A multi-day holiday to remember friends and family.", tags: ["Cultural", "Family"] },
 ];
 
 const interestCategories = [
@@ -26,9 +26,9 @@ const interestCategories = [
 ];
 
 const recentStories = [
-  { title: "The History of Lantern Festivals", author: "Jane Doe" },
-  { title: "10 Harvest Festivals to Visit in Autumn", author: "John Smith" },
-  { title: "A Traveler's Guide to Carnival in Rio", author: "Maria Garcia" },
+  { title: "The History of Lantern Festivals", slug: "history-of-lantern-festivals", author: "Jane Doe" },
+  { title: "10 Harvest Festivals to Visit in Autumn", slug: "harvest-festivals-in-autumn", author: "John Smith" },
+  { title: "A Traveler's Guide to Carnival in Rio", slug: "a-travelers-guide-to-carnival-in-rio", author: "Maria Garcia" },
 ];
 
 const countries = [
@@ -73,20 +73,22 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold tracking-tight mb-8">Happening This Month</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {featuredFestivals.map((festival) => (
-              <Card key={festival.title} className="flex flex-col overflow-hidden">
-                <div className="relative w-full h-48">
-                  <Image src={`https://placehold.co/800x600/6366f1/white?text=${encodeURIComponent(festival.title)}`} alt={festival.title} layout="fill" objectFit="cover" unoptimized={true} />
-                </div>
-                <CardHeader>
-                  <CardTitle>{festival.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-muted-foreground text-sm mb-4">{festival.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {festival.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+              <Link key={festival.slug} href={`/festival/${festival.slug}`} className="block rounded-lg overflow-hidden group">
+                <Card className="flex flex-col h-full transition-colors group-hover:bg-accent/50">
+                  <div className="relative w-full h-48">
+                    <Image src={`https://placehold.co/800x600/6366f1/white?text=${encodeURIComponent(festival.title)}`} alt={festival.title} layout="fill" objectFit="cover" unoptimized={true} />
                   </div>
-                </CardContent>
-              </Card>
+                  <CardHeader>
+                    <CardTitle>{festival.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-muted-foreground text-sm mb-4">{festival.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {festival.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
@@ -124,17 +126,19 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold tracking-tight mb-8">From Our Stories</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {recentStories.map((story) => (
-              <Card key={story.title} className="flex flex-col overflow-hidden">
-                 <div className="relative w-full h-48">
-                  <Image src={`https://placehold.co/800x600/1e293b/white?text=${encodeURIComponent(story.title)}`} alt={story.title} layout="fill" objectFit="cover" unoptimized={true} />
-                </div>
-                <CardHeader>
-                  <CardTitle>{story.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">By {story.author}</p>
-                </CardContent>
-              </Card>
+              <Link key={story.slug} href={`/stories/${story.slug}`} className="block rounded-lg overflow-hidden group">
+                <Card className="flex flex-col h-full transition-colors group-hover:bg-accent/50">
+                   <div className="relative w-full h-48">
+                    <Image src={`https://placehold.co/800x600/1e293b/white?text=${encodeURIComponent(story.title)}`} alt={story.title} layout="fill" objectFit="cover" unoptimized={true} />
+                  </div>
+                  <CardHeader>
+                    <CardTitle>{story.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">By {story.author}</p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
@@ -154,4 +158,3 @@ export default function HomePage() {
     </div>
   );
 }
-
