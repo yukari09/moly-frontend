@@ -1,33 +1,40 @@
-import { Geist } from "next/font/google";
+import { Lora, Montserrat } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import Header from "@/components/layout-header";
-import Footer from "@/components/layout-footer";
+import AppHeader from "@/components/layout/AppHeader";
+import AppFooter from "@/components/layout/AppFooter";
 
-const geist = Geist({
+const lora = Lora({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-lora",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
 });
 
 export const metadata = {
   title: {
-    default: "Moly's Blog",
-    template: "%s | Moly's Blog",
+    default: "DayCal",
+    template: "%s | DayCal",
   },
   description:
-    "A blog about web development, design, and more.",
+    "Your guide to the stories, traditions, and dates behind global festivals.",
   openGraph: {
-    title: "Moly's Blog",
-    description: "A blog about web development, design, and more.",
-    url: "https://moly.app",
-    siteName: "Moly's Blog",
+    title: "DayCal",
+    description: "Your guide to the stories, traditions, and dates behind global festivals.",
+    url: "https://daycal.app", // Placeholder URL
+    siteName: "DayCal",
     images: [
       {
-        url: "https://moly.app/og.png",
+        url: "https://daycal.app/og.png", // Placeholder image
         width: 1200,
         height: 630,
       },
@@ -37,9 +44,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Moly's Blog",
-    description: "A blog about web development, design, and more.",
-    images: ["https://moly.app/og.png"],
+    title: "DayCal",
+    description: "Your guide to the stories, traditions, and dates behind global festivals.",
+    images: ["https://daycal.app/og.png"], // Placeholder image
   },
 };
 
@@ -55,14 +62,14 @@ export default async function RootLayout({ children, params }) {
     notFound();
   }
   return (
-    <html lang={locale} className={geist.className}>
+    <html lang={locale} className={`${lora.variable} ${montserrat.variable}`}>
       <body>
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <Header />
-            {children}
+            <AppHeader />
+            <main>{children}</main>
             <Toaster />
-            <Footer />
+            <AppFooter />
           </NextIntlClientProvider>
         </AuthProvider>
       </body>

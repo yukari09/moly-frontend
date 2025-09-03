@@ -47,3 +47,6 @@ bun.lockb
 .env
 .env.testing
 .env.production
+public/logo.svg
+public/logo.png
+public/favicon.icon
