@@ -1,0 +1,225 @@
+[0m[2m[35m$[0m [2m[1mnext dev[0m
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:75:35)
+  73 | export default function StoryDetailPage({ params }) {
+  74 |   // In a real app, you would fetch story data based on `params.slug`
+> 75 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  76 |
+  77 |   return (
+  78 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:65:35)
+  63 |
+  64 | export async function generateMetadata({ params }) {
+> 65 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  66 |   
+  67 |   return {
+  68 |     title: `${story.title} | DayCal Stories`,
+Image with src "https://placehold.co/1600x800/1e293b/white?text=Lanterns" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/1600x800/1e293b/white?text=Lanterns" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+ [33m[1m⚠[22m[39m Cross origin request detected from 192.168.6.14 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:75:35)
+  73 | export default function StoryDetailPage({ params }) {
+  74 |   // In a real app, you would fetch story data based on `params.slug`
+> 75 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  76 |
+  77 |   return (
+  78 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:65:35)
+  63 |
+  64 | export async function generateMetadata({ params }) {
+> 65 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  66 |   
+  67 |   return {
+  68 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:75:35)
+  73 | export default function StoryDetailPage({ params }) {
+  74 |   // In a real app, you would fetch story data based on `params.slug`
+> 75 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  76 |
+  77 |   return (
+  78 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:65:35)
+  63 |
+  64 | export async function generateMetadata({ params }) {
+> 65 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  66 |   
+  67 |   return {
+  68 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:75:35)
+  73 | export default function StoryDetailPage({ params }) {
+  74 |   // In a real app, you would fetch story data based on `params.slug`
+> 75 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  76 |
+  77 |   return (
+  78 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:65:35)
+  63 |
+  64 | export async function generateMetadata({ params }) {
+> 65 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  66 |   
+  67 |   return {
+  68 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:75:35)
+  73 | export default function StoryDetailPage({ params }) {
+  74 |   // In a real app, you would fetch story data based on `params.slug`
+> 75 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  76 |
+  77 |   return (
+  78 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:65:35)
+  63 |
+  64 | export async function generateMetadata({ params }) {
+> 65 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  66 |   
+  67 |   return {
+  68 |     title: `${story.title} | DayCal Stories`,
+Image with src "https://placehold.co/1600x800/1e293b/white?text=Lanterns" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/1600x800/1e293b/white?text=Lanterns" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/1e293b/white?text=Ancient+Lanterns" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/1e293b/white?text=Ancient+Lanterns" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/f97316/white?text=Festival+Crowd" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/f97316/white?text=Festival+Crowd" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/22c55e/white?text=Night+Sky" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/22c55e/white?text=Night+Sky" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/3b82f6/white?text=Traditional+Art" has legacy prop "layout". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Image with src "https://placehold.co/800x600/3b82f6/white?text=Traditional+Art" has legacy prop "objectFit". Did you forget to run the codemod?
+Read more: https://nextjs.org/docs/messages/next-image-upgrade-to-13
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at StoryDetailPage (src/app/[locale]/stories/[slug]/page.jsx:76:35)
+  74 | export default function StoryDetailPage({ params }) {
+  75 |   // In a real app, you would fetch story data based on `params.slug`
+> 76 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  77 |
+  78 |   return (
+  79 |     <article>
+Error: Route "/[locale]/stories/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at Module.generateMetadata (src/app/[locale]/stories/[slug]/page.jsx:66:35)
+  64 |
+  65 | export async function generateMetadata({ params }) {
+> 66 |   const story = mockStories[params.slug] || mockStories["history-of-lantern-festivals"];
+     |                                   ^
+  67 |   
+  68 |   return {
+  69 |     title: `${story.title} | DayCal Stories`,
