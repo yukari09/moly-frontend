@@ -55,7 +55,10 @@
 **2.7 后端服务与数据 (Backend Services & Data)**
 
 *   **缓存/内存存储**: Redis (通过 `ioredis`) - 用于缓存和限流等任务。
-*   **文件存储**: AWS S3 - 用于对象存储。
+*   **Graphql**，Graphql Api Server的数据结构是wordpress的结构，你可以自省调查结构。
+*   **Minio** 来存储图片文件媒体等。
+*   **Ela"sticSearch** 来检索以及数据查询。
+*   **Imagor** 来处理图片 [Imagor](https://github.com/cshum/imagor), 同时已经配置了 s3作为Imagor的后端存储读取的主要方式。
 
 **2.8 测试 (Testing)**
 
@@ -68,6 +71,14 @@
 *   **图表**: `recharts`
 *   **通知**: `sonner`
 *   **邮件**: `nodemailer`
+
+**2.10 其他说明**
+
+* 在使用Graphql createPost接口，后端会把 post的数据平铺成方便检索的Elasticsearch数据。
+* Graphql 自省的请求的时候需要加 2个header, 具体看 @src/lib/graphql.js
+  - GRAPHQL_API_URL=http://192.168.6.14:4000/gql
+  - x-app-secret=BYMAarm4Il
+  _ x-tenant-id=pro_dattk
 
 ---
 

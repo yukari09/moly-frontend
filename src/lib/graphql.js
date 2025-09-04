@@ -326,6 +326,7 @@ const CREATE_POST_MUTATION = `
       result {
         id
         postTitle
+        postStatus
       }
       errors{
         fields  

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import FestivalFilters from "@/components/explore/FestivalFilters";
@@ -14,6 +14,10 @@ import { MapPin } from "lucide-react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+
+// Add standard FullCalendar CSS imports
+import '@fullcalendar/common/main.css'; // Core styles
+import '@fullcalendar/daygrid/main.css'; // DayGrid view styles
 
 // Mock data with images
 const festivalData = [
@@ -72,6 +76,13 @@ export default function ExplorePage() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [activeTab, setActiveTab] = useState("list"); // Default to list view
 
+  // NEW: Filter state variables
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterDateRange, setFilterDateRange] = useState(null); // { from: Date, to: Date }
+  const [filterCountry, setFilterCountry] = useState("");
+  const [filterTypes, setFilterTypes] = useState([]); // Array of selected types
+  const [filterTags, setFilterTags] = useState(""); // Comma-separated string of tags
+
   // Transform data for FullCalendar
   const calendarEvents = festivalData.map((f) => ({
     title: f.title,
@@ -79,10 +90,62 @@ export default function ExplorePage() {
     allDay: true,
   }));
 
-  // Filter data for the list based on selectedDate
-  const filteredData = selectedDate
-    ? festivalData.filter((f) => areDatesTheSame(new Date(f.date), selectedDate))
-    : festivalData;
+  // NEW: Memoized filteredData calculation
+  const filteredData = useMemo(() => {
+    let currentFilteredData = festivalData;
+
+    // 1. Filter by selectedDate (from calendar click)
+    if (selectedDate) {
+      currentFilteredData = currentFilteredData.filter((f) => areDatesTheSame(new Date(f.date), selectedDate));
+    }
+
+    // 2. Filter by Search Term (fuzzy search across multiple fields)
+    if (searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      currentFilteredData = currentFilteredData.filter(f =>
+        f.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+        f.country.toLowerCase().includes(lowerCaseSearchTerm) ||
+        (f.type && f.type.some(type => type.toLowerCase().includes(lowerCaseSearchTerm))) ||
+        (f.tags && f.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm)))
+      );
+    }
+
+    // 3. Filter by Date Range (from filterDateRange)
+    if (filterDateRange && filterDateRange.from) {
+      const rangeStart = filterDateRange.from.getTime();
+      const rangeEnd = filterDateRange.to ? filterDateRange.to.getTime() : rangeStart; // If no 'to', assume single day
+
+      currentFilteredData = currentFilteredData.filter(f => {
+        const festivalDate = new Date(f.date).getTime(); // Assuming f.date is the start date of the festival
+        // Check if festival date falls within the selected range
+        return festivalDate >= rangeStart && festivalDate <= rangeEnd;
+      });
+    }
+
+    // 4. Filter by Country
+    if (filterCountry) {
+      currentFilteredData = currentFilteredData.filter(f => f.country === filterCountry);
+    }
+
+    // 5. Filter by Types
+    if (filterTypes && filterTypes.length > 0) {
+      currentFilteredData = currentFilteredData.filter(f =>
+        f.type && f.type.some(type => filterTypes.includes(type))
+      );
+    }
+
+    // 6. Filter by Tags
+    if (filterTags) {
+      const tagsArray = filterTags.split(',').map(tag => tag.trim().toLowerCase()).filter(Boolean);
+      if (tagsArray.length > 0) {
+        currentFilteredData = currentFilteredData.filter(f =>
+          f.tags && f.tags.some(tag => tagsArray.includes(tag.toLowerCase()))
+        );
+      }
+    }
+
+    return currentFilteredData;
+  }, [selectedDate, searchTerm, filterDateRange, filterCountry, filterTypes, filterTags]); // Dependencies for useMemo
 
   // Handle date click on calendar
   const handleDateClick = (arg) => {
@@ -103,7 +166,18 @@ export default function ExplorePage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         {/* Left Column: Filters */}
         <div className="lg:col-span-1 space-y-8 lg:sticky lg:top-8">
-          <FestivalFilters />
+          <FestivalFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            filterDateRange={filterDateRange}
+            setFilterDateRange={setFilterDateRange}
+            filterCountry={filterCountry}
+            setFilterCountry={setFilterCountry}
+            filterTypes={filterTypes}
+            setFilterTypes={setFilterTypes}
+            filterTags={filterTags}
+            setFilterTags={setFilterTags}
+          />
         </div>
 
         {/* Right Column: Tabs for Calendar & List */}
