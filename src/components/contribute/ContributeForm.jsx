@@ -16,22 +16,42 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Upload, X } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { submitContribution } from "@/app/actions"; // Use the Server Action
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters." }),
+  overview: z.string().optional(),
   country: z.string().min(2, { message: "Country is required." }),
-  city: z.string().min(2, { message: "City is required." }),
-  date: z.date({ required_error: "A date is required." }),
+  city: z.string().optional(),
+  date: z.object({
+    from: z.date({ required_error: "A start date is required." }),
+    to: z.date().optional(),
+  }),
   type: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one type.",
   }),
   tags: z.string().optional(),
-  heroImage: z.any().optional(),
-  storyContent: z.string().optional(),
+  officialWebsite: z.string().optional(),
+  ticketInfo: z.string().optional(),
+  venueDetails: z.string().optional(),
+  scheduleHighlights: z.string().optional(),
+  uniqueAspects: z.string().optional(),
+  heroImage: z.object({
+    file: z.any(),
+    width: z.number(),
+    height: z.number(),
+    description: z.string().optional(),
+  }).optional(),
+  gallery: z.array(z.object({
+    file: z.any(),
+    width: z.number(),
+    height: z.number(),
+    description: z.string().optional(),
+  })).optional(),
+  storyContent: z.string().min(10, { message: "Story must be at least 10 characters." }),
   traditionsContent: z.string().optional(),
   travelerGuideContent: z.string().optional(),
-  gallery: z.any().optional(),
   email: z.string().email({ message: "Please enter a valid email." }).optional().or(z.literal('')),
 });
 
@@ -55,24 +75,85 @@ const festivalTypes = [
 ];
 
 export default function ContributeForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const heroImageRef = useRef(null);
   const galleryRef = useRef(null);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "", country: "", city: "",
-      type: [], tags: "", email: "",
+      title: "", overview: "", country: "", city: "",
+      type: [], tags: "", officialWebsite: "",
+      ticketInfo: "", venueDetails: "", scheduleHighlights: "", uniqueAspects: "",
+      heroImage: null,
+      gallery: [],
+      email: "",
       storyContent: "", traditionsContent: "", travelerGuideContent: "",
+      date: { from: undefined, to: undefined },
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
-    toast.success("Submission Received!", {
-      description: "Thank you for your contribution. We will review it shortly.",
+  async function onSubmit(values) {
+    setIsSubmitting(true);
+    toast.info("Submitting your contribution...");
+
+    const formData = new FormData();
+
+    // Append all text fields
+    Object.keys(values).forEach(key => {
+      if (key !== 'heroImage' && key !== 'gallery' && key !== 'date' && key !== 'type' && values[key]) {
+        formData.append(key, values[key]);
+      }
     });
-    form.reset();
+
+    // Append complex fields
+    if (values.date) formData.append('date', JSON.stringify(values.date));
+    if (values.type) formData.append('type', JSON.stringify(values.type));
+
+    // Append hero image
+    if (values.heroImage && values.heroImage.file) {
+      formData.append('heroImage', values.heroImage.file);
+      formData.append('heroImageMeta', JSON.stringify({
+        width: values.heroImage.width,
+        height: values.heroImage.height,
+        description: values.heroImage.description,
+      }));
+    }
+
+    // Append gallery images
+    if (values.gallery && values.gallery.length > 0) {
+      values.gallery.forEach((imgData, index) => {
+        if (imgData.file) {
+          formData.append(`gallery_${index}`, imgData.file);
+          formData.append(`galleryMeta_${index}`, JSON.stringify({
+            width: imgData.width,
+            height: imgData.height,
+            description: imgData.description,
+          }));
+        }
+      });
+    }
+
+    try {
+      const result = await submitContribution(formData);
+
+      if (result.success) {
+        toast.success("Submission Received!", {
+          description: "Thank you for your contribution. We will review it shortly.",
+        });
+        form.reset();
+      } else {
+        toast.error("Submission Failed", {
+          description: result.message,
+        });
+      }
+    } catch (error) {
+      toast.error("Submission Error", {
+        description: error.message || "An unexpected error occurred.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -93,6 +174,15 @@ export default function ContributeForm() {
               </FormItem>
             )} />
 
+            <FormField control={form.control} name="overview" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Overview</FormLabel>
+                <FormControl><Textarea placeholder="A brief summary of the festival..." className="resize-y min-h-[80px]" {...field} /></FormControl>
+                <FormDescription>A concise, high-level description of the festival.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )} />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <FormField control={form.control} name="country" render={({ field }) => (
                 <FormItem>
@@ -106,7 +196,7 @@ export default function ContributeForm() {
               )} />
               <FormField control={form.control} name="city" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>City (Optional)</FormLabel>
                   <FormControl><Input placeholder="e.g., Buñol" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,18 +205,33 @@ export default function ContributeForm() {
 
             <FormField control={form.control} name="date" render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Date of Festival</FormLabel>
+                <FormLabel>Date Range</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
-                      <Button variant={"outline"} className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value?.from && "text-muted-foreground")}>
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value?.from ? (
+                          field.value.to ? (
+                            <>{format(field.value.from, "LLL dd, y")} - {format(field.value.to, "LLL dd, y")}</>
+                          ) : (
+                            format(field.value.from, "LLL dd, y")
+                          )
+                        ) : (
+                          <span>Pick a date range</span>
+                        )}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      defaultMonth={field.value?.from}
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      numberOfMonths={2}
+                    />
                   </PopoverContent>
                 </Popover>
                 <FormMessage />
@@ -166,21 +271,99 @@ export default function ContributeForm() {
                 </FormItem>
             )} />
 
+            <FormField control={form.control} name="officialWebsite" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Official Website (Optional)</FormLabel>
+                    <FormControl><Input placeholder="e.g., https://www.latomatina.info" {...field} /></FormControl>
+                    <FormDescription>Link to the festival's official website or main information page.</FormDescription>
+                    <FormMessage />
+                </FormItem>
+            )} />
+
             <FormField control={form.control} name="heroImage" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Hero Image</FormLabel>
                     <FormControl>
                         <div>
-                            <input type="file" className="hidden" ref={heroImageRef} onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)} accept="image/*" />
+                            <input type="file" className="hidden" ref={heroImageRef} onChange={async (e) => {
+                                const file = e.target.files ? e.target.files[0] : null;
+                                if (file) {
+                                    // Validate file size
+                                    if (file.size > 2 * 1024 * 1024) { // 2MB
+                                        toast.error("Image size exceeds 2MB limit.");
+                                        return;
+                                    }
+
+                                    // Get dimensions
+                                    const img = new Image();
+                                    img.src = URL.createObjectURL(file);
+                                    await new Promise(resolve => img.onload = resolve); // Wait for image to load
+
+                                    field.onChange({
+                                        file: file,
+                                        width: img.width,
+                                        height: img.height,
+                                        description: "", // Placeholder for description
+                                    });
+                                    URL.revokeObjectURL(img.src); // Clean up
+                                } else {
+                                    field.onChange(null);
+                                }
+                            }} accept="image/*" />
                             <div className="flex items-center gap-4">
                                 <Button type="button" variant="outline" onClick={() => heroImageRef.current?.click()}><Upload className="mr-2 h-4 w-4" />Choose Image</Button>
-                                {field.value && <div className="flex items-center gap-2 text-sm text-muted-foreground"><span>{field.value.name}</span><Button type="button" variant="ghost" size="icon" onClick={() => field.onChange(null)}><X className="h-4 w-4" /></Button></div>}
+                                {field.value && (
+                                    <div className="relative w-32 h-32">
+                                        <img src={URL.createObjectURL(field.value.file)} alt="Hero image preview" className="object-cover w-full h-full rounded-md" />
+                                        <Button type="button" variant="destructive" size="icon" className="absolute top-1 right-1 h-6 w-6" onClick={() => field.onChange(null)}><X className="h-4 w-4" /></Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </FormControl>
                     <FormMessage />
                 </FormItem>
             )} />
+
+            <div className="space-y-4 pt-4 border-t border-dashed">
+                <h3 className="text-lg font-semibold">Additional Festival Details</h3>
+
+                <FormField control={form.control} name="ticketInfo" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Ticket & Cost Information (Optional)</FormLabel>
+                        <FormControl><Textarea placeholder="e.g., Free entry, tickets required for main events, prices range from $X to $Y..." className="resize-y min-h-[80px]" {...field} /></FormControl>
+                        <FormDescription>Details about entry fees, ticket prices, and where to purchase.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
+                <FormField control={form.control} name="venueDetails" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Venue & Location Details (Optional)</FormLabel>
+                        <FormControl><Textarea placeholder="e.g., Held in Plaza del Pueblo, main events at X Park, accessible via Y metro line..." className="resize-y min-h-[80px]" {...field} /></FormControl>
+                        <FormDescription>Specific locations, venues, and transportation tips.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
+                <FormField control={form.control} name="scheduleHighlights" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Schedule Highlights (Optional)</FormLabel>
+                        <FormControl><Textarea placeholder="e.g., Opening ceremony on Day 1, main parade on Day 3, closing fireworks on Day 7..." className="resize-y min-h-[80px]" {...field} /></FormControl>
+                        <FormDescription>Key events or a brief overview of the festival's program.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
+                <FormField control={form.control} name="uniqueAspects" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Unique Aspects & Highlights (Optional)</FormLabel>
+                        <FormControl><Textarea placeholder="e.g., Known for its giant puppets, features a unique traditional dance, only festival of its kind..." className="resize-y min-h-[80px]" {...field} /></FormControl>
+                        <FormDescription>What makes this festival truly special or stand out.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+            </div>
 
             <div className="space-y-4">
                 <FormLabel>Content Sections</FormLabel>
@@ -218,9 +401,69 @@ export default function ContributeForm() {
                     <FormLabel>Gallery Images</FormLabel>
                     <FormControl>
                         <div>
-                            <input type="file" multiple className="hidden" ref={galleryRef} onChange={(e) => field.onChange(e.target.files ? Array.from(e.target.files) : [])} accept="image/*" />
+                            <input type="file" multiple className="hidden" ref={galleryRef} onChange={async (e) => {
+                                const files = e.target.files ? Array.from(e.target.files) : [];
+                                const currentImageCount = field.value?.length || 0;
+                                const availableSlots = 8 - currentImageCount;
+
+                                if (availableSlots <= 0) {
+                                    toast.error("Gallery is full. Maximum 8 images allowed.");
+                                    return;
+                                }
+
+                                const filesToProcess = files.slice(0, availableSlots);
+                                if (files.length > availableSlots) {
+                                    toast.info(`${files.length - availableSlots} images were not added because the gallery is full.`);
+                                }
+
+                                const validFiles = filesToProcess.filter(file => {
+                                    if (file.size > 2 * 1024 * 1024) { // 2MB
+                                        toast.error(`${file.name} size exceeds 2MB limit.`);
+                                        return false;
+                                    }
+                                    return true;
+                                });
+
+                                const processedFiles = await Promise.all(validFiles.map(async (file) => {
+                                    // Get dimensions
+                                    const img = new Image();
+                                    img.src = URL.createObjectURL(file);
+                                    await new Promise(resolve => img.onload = resolve); // Wait for image to load
+
+                                    const result = {
+                                        file: file,
+                                        width: img.width,
+                                        height: img.height,
+                                        description: "", // Placeholder for description
+                                    };
+                                    URL.revokeObjectURL(img.src); // Clean up
+                                    return result;
+                                }));
+                                field.onChange([...(field.value || []), ...processedFiles]); // Append new valid files
+                            }} accept="image/*" />
                             <Button type="button" variant="outline" onClick={() => galleryRef.current?.click()}><Upload className="mr-2 h-4 w-4" />Choose Images</Button>
-                            {field.value?.length > 0 && <div className="mt-2 space-y-2">{field.value.map((file, i) => <div key={i} className="text-sm text-muted-foreground">{file.name}</div>)}</div>}
+                            {field.value?.length > 0 && (
+                                <div className="mt-4 grid grid-cols-3 gap-4">
+                                    {field.value.map((imgData, i) => (
+                                        <div key={i} className="relative">
+                                            <img src={URL.createObjectURL(imgData.file)} alt={`Gallery image ${i + 1}`} className="object-cover w-full h-24 rounded-md" />
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="icon"
+                                                className="absolute top-1 right-1 h-6 w-6"
+                                                onClick={() => {
+                                                    const newGallery = [...field.value];
+                                                    newGallery.splice(i, 1);
+                                                    field.onChange(newGallery);
+                                                }}
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </FormControl>
                     <FormMessage />
@@ -235,7 +478,9 @@ export default function ContributeForm() {
               </FormItem>
             )} />
 
-            <Button type="submit">Submit Contribution</Button>
+            <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit Contribution"}
+            </Button>
           </form>
         </Form>
       </CardContent>

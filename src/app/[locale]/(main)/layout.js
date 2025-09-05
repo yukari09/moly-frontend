@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import AppHeader from "@/components/layout/AppHeader";
 import AppFooter from "@/components/layout/AppFooter";
+import FontVariables from "@/components/layout/FontVariables"; // NEW IMPORT
 
 const lora = Lora({
   subsets: ["latin"],
@@ -62,8 +63,9 @@ export default async function RootLayout({ children, params }) {
     notFound();
   }
   return (
-    <html lang={locale} className={`${lora.variable} ${montserrat.variable}`}>
+    <html lang={locale} suppressHydrationWarning>
       <body>
+        <FontVariables />
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <AppHeader />

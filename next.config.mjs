@@ -1,6 +1,11 @@
 import createNextIntlPlugin from 'next-intl/plugin';
  
 const nextConfig = {
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '20mb',
+        },
+    },
     images: {
         remotePatterns: [
             {

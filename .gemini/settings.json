@@ -10,6 +10,12 @@
       "env": {
         "REGISTRY_URL": "https://platejs.org/r/registry.json"
       }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
     }
   }
 }
