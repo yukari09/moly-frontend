@@ -2,7 +2,8 @@
 // It applies to all routes and just sets up the html and body tags.
 // The actual layout for different sections is handled by layouts in route groups.
 
-export default function RootLayout({ children, params: { locale } }) {
+export default async function RootLayout({ children, params }) {
+  const { locale } = await params;
   return (
     <html lang={locale}>
       <body>
