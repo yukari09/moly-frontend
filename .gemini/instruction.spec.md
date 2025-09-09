@@ -8,6 +8,32 @@ This document outlines the main technologies, libraries, and frameworks used in 
 - **UI**: [React](https://react.dev/) (v19)
 - **Language**: JavaScript
 
+## API & Data Layer
+
+- **GraphQL API**: Custom GraphQL client with WordPress-compatible schema
+  - Centralized request handling with authentication
+  - WordPress-style data structures (posts, categories, tags, user meta)
+  - Environment-based configuration (GRAPHQL_API_URL, GRAPHQL_SECRET_KEY, GRAPHQL_TENANT)
+- **Search**: [Elasticsearch](https://www.elastic.co/elasticsearch/) - Used for search functionality
+  - Configured with authentication (ELASTICSEARCH_NODE, ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD)
+  - Singleton client pattern for connection management
+- **Caching/Rate Limiting**: [Redis](https://redis.io/) (via `ioredis`)
+  - Custom rate limiting implementation
+  - Email rate limiting and general purpose caching
+  - Graceful connection handling with fallbacks
+
+## WordPress-Compatible Structure
+
+The project uses a WordPress-inspired data model:
+
+- **Posts**: `postTitle`, `postContent`, `postStatus`, `postTags`
+- **Taxonomies**: `categories` and `tags` with term relationships
+- **User Meta**: Flexible user metadata system
+- **GraphQL Schema**: WordPress-style mutations and queries
+  - `listPostsOffset`, `listTermsOffset` for pagination
+  - `createPost`, `updatePost`, `destroyPost` for content management
+  - `createTerm`, `updateTerm`, `destroyTerm` for taxonomy management
+
 ## UI & Styling
 
 - **Component Library**: [shadcn/ui](https://ui.shadcn.com/) - A collection of re-usable components built on Radix UI and Tailwind CSS.
@@ -26,6 +52,7 @@ This document outlines the main technologies, libraries, and frameworks used in 
 ## Authentication
 
 - **Framework**: [NextAuth.js](https://next-auth.js.org/) - Provides authentication for Next.js applications.
+- **Integration**: Works with GraphQL backend for user management
 
 ## Internationalization
 
@@ -33,8 +60,6 @@ This document outlines the main technologies, libraries, and frameworks used in 
 
 ## Backend Services & Data
 
-- **Search**: [Elasticsearch](https://www.elastic.co/elasticsearch/) - Used for search functionality.
-- **Caching/In-Memory Store**: [Redis](https://redis.io/) (via `ioredis`) - Used for caching and other tasks like rate limiting.
 - **File Storage**: [AWS S3](https://aws.amazon.com/s3/) - Used for object storage.
 
 ## Testing
