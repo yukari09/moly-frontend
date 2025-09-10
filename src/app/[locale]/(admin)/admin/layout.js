@@ -1,5 +1,5 @@
 import { Geist } from "next/font/google";
-import "./admin.css"; // Use the existing globals.css
+import "./../admin.css"; // Use the existing globals.css
 import AuthProvider from "@/components/auth-provider";
 import { AppSidebar } from "@/components/app-sidebar"
 import {
