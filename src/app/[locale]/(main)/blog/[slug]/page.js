@@ -18,7 +18,7 @@ const allPosts = [
       {
         type: 'p',
         children: [
-          { text: 'The world of web development is in a constant state of flux. New frameworks, libraries, and paradigms emerge at a dizzying pace, making it both an exciting and challenging field to be a part of. In this article, we\'ll explore some of the key trends and technologies that are shaping the future of the web.' },
+          { text: 'The world of web development is in a constant state of flux. New frameworks, libraries, and paradigms emerge at a dizzying pace, making it both an exciting and challenging field to be a part of. In this article, we\'ll Latest some of the key trends and technologies that are shaping the future of the web.' },
         ],
       },
       {

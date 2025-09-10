@@ -77,7 +77,7 @@ const data = {
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Latest",
           url: "#",
         },
         {

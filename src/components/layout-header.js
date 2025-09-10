@@ -86,34 +86,44 @@ export default function Header() {
     <header>
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 h-[65px]">
         <div className="flex justify-between items-center gap-3 sm:gap-6 sticky py-4">
-          <Link href="/" className="flex-1 width-1/2">
-            <Image 
-              src="/logo.svg"
-              height="32"
-              width="32"
-            />
-          </Link>
+          <div className="flex-1 flex items-center gap-8">
+            <Link href="/">
+              <Image 
+                src="/logo.svg"
+                height="32"
+                width="32"
+              />
+            </Link>
 
-          <div className="hidden md:block">
-            <NavigationMenu>
-              <NavigationMenuList>
- 
-                <NavigationMenuItem>
-                   
-                    <NavigationMenuLink asChild>
-                      <Link href="/" className="font-medium" >Home</Link>
-                    </NavigationMenuLink>
-                   
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                   
-                    <NavigationMenuLink asChild>
-                      <Link href="/explore" className="font-medium">{t.rich("Explore")}</Link>
-                    </NavigationMenuLink>
-                   
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <div className="hidden md:block">
+              <NavigationMenu>
+                <NavigationMenuList>
+  
+                  <NavigationMenuItem>
+                    
+                      <NavigationMenuLink asChild>
+                        <Link href="/" className="font-medium" >Home</Link>
+                      </NavigationMenuLink>
+                    
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    
+                      <NavigationMenuLink asChild>
+                        <Link href="/latest" className="font-medium">{t.rich("latest")}</Link>
+                      </NavigationMenuLink>
+                    
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    
+                      <NavigationMenuLink asChild>
+                        <Link href="/tags" className="font-medium">{t.rich("tags")}</Link>
+                      </NavigationMenuLink>
+                    
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 flex-1 justify-end width-1/2">

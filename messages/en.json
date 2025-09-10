@@ -11,7 +11,8 @@
     "log_in": "Log In",
     "pricing": "Pricing",
     "setting": "Setting",
-    "Explore": "Explore"
+    "latest": "Latest",
+    "tags": "Tags"
   },
   "UserSetting": {
     "account_settings": "Account Settings",
