@@ -14,7 +14,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { name, slug, description } = body;
+    const { name, slug, description, parentId, show_in_menu } = body;
 
     if (!name || !slug) {
       return new Response(JSON.stringify({ error: 'Name and Slug are required' }), { 
@@ -26,10 +26,12 @@ export async function POST(req) {
     const input = {
       name: name,
       slug: slug,
+      termMeta: [{ termKey: 'show_in_menu', termValue: show_in_menu ? '1' : '0' }],
       termTaxonomy: [
         {
           taxonomy: 'category',
-          description: description || ''
+          description: description || '',
+          parent_id: parentId || null
         }
       ]
     };

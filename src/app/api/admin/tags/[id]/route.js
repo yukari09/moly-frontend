@@ -24,8 +24,8 @@ export async function GET(req, context) {
   }
 }
 
-export async function PUT(req, context) {
-  const { params } = context;
+export async function PUT(req, { params }) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
@@ -50,7 +50,7 @@ export async function PUT(req, context) {
       ]
     };
 
-    const updatedTerm = await updateTerm(params.id, input, session);
+    const updatedTerm = await updateTerm(id, input, session);
     return NextResponse.json(updatedTerm);
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { 

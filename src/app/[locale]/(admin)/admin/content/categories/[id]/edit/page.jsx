@@ -2,58 +2,72 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { CategoryForm } from '../../category-form';
+import { getTermValue } from '@/lib/utils';
 
 export default function EditCategoryPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
 
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [description, setDescription] = useState('');
+  const [initialData, setInitialData] = useState(null);
+  const [parentCategories, setParentCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (id) {
-      const fetchCategory = async () => {
+      const fetchCategoryData = async () => {
         setIsLoading(true);
         try {
-          const response = await fetch(`/api/admin/categories/${id}`);
-          if (!response.ok) throw new Error('Failed to fetch category data.');
-          const category = await response.json();
-          setName(category.name);
-          setSlug(category.slug);
-          setDescription(category.termTaxonomy?.[0]?.description || '');
+          const categoryResponse = await fetch(`/api/admin/categories/${id}`);
+          if (!categoryResponse.ok) throw new Error('Failed to fetch category data.');
+          const category = await categoryResponse.json();
+          
+          const allCategoriesResponse = await fetch('/api/admin/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ limit: 1000 }),
+          });
+          if (!allCategoriesResponse.ok) throw new Error('Failed to load categories list.');
+          const allCategoriesData = await allCategoriesResponse.json();
+
+          setInitialData({
+            name: category.name,
+            slug: category.slug,
+            description: category.termTaxonomy?.[0]?.description || '',
+            parentId: category.termTaxonomy?.[0]?.parent?.id || '',
+            show_in_menu: getTermValue(category.termMeta, 'show_in_menu') === '1',
+          });
+          
+          setParentCategories(allCategoriesData.results.filter(c => c.id !== id));
+
         } catch (error) {
           toast.error(error.message);
         }
         setIsLoading(false);
       };
-      fetchCategory();
+      fetchCategoryData();
     }
   }, [id]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (data) => {
     setIsSaving(true);
+
+    const finalParentId = (data.parentId && data.parentId !== 'none') ? data.parentId : null;
 
     try {
       const response = await fetch(`/api/admin/categories/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, slug, description }),
+        body: JSON.stringify({ ...data, parentId: finalParentId }),
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to update category.');
+        const apiError = await response.json();
+        throw new Error(apiError.error || 'Failed to update category.');
       }
 
       toast.success('Category updated successfully!');
@@ -66,56 +80,27 @@ export default function EditCategoryPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="p-4 max-w-2xl">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
+       <div>
           <h1 className="text-2xl font-bold">Edit Category</h1>
           <p className="text-muted-foreground pt-1">Update the details for this category.</p>
         </div>
-
-        <div className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
+        <div className="pt-6">
+          {isLoading || !initialData ? (
+             <div className="flex items-center justify-center p-8">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <CategoryForm 
+              onSubmit={handleSubmit}
+              initialData={initialData}
+              parentCategories={parentCategories}
+              isSaving={isSaving}
+              isEdit={true}
             />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="A short description of the category."
-            />
-          </div>
+          )}
         </div>
-
-        <Button type="submit" disabled={isSaving}>
-          {isSaving ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </form>
     </div>
   );
 }

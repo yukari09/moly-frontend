@@ -7,14 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eraser, Undo, Redo } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tag, TagInput } from 'emblor';
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { TagInput } from "@/components/ui/tag-input";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 const Editor = dynamic(() => import('./editor'), {
   ssr: false,
@@ -24,7 +24,7 @@ const createPostSchema = z.object({
   postTitle: z.string().min(3, { message: "postTitle must be at least 3 characters long" }),
   postContent: z.string().min(6, { message: "postContent must be at least 6 characters long" }),
   categories: z.array(z.string()).optional(),
-  tags: z.array(z.string()).optional()
+  tags: z.array(z.object({ id: z.string(), text: z.string() })).optional(),
 });
 
 const generateSlug = (str) => {
@@ -85,11 +85,11 @@ const CategoryCheckboxItem = ({ category, level = 0, selectedCategories, onCateg
 };
 
 export default function PostNewPage() {
+  const [tags, setTags] = useState([]);
   const [editorData, setEditorData] = useState(null);
   const [undoData, setUndoData] = useState([]);
   const [redoData, setRedoData] = useState([]);
   const editorRef = useRef(null);
-  const isClearingRef = useRef(false);
   const [allCategories, setAllCategories] = useState([]);
 
   const form = useForm({
@@ -98,12 +98,12 @@ export default function PostNewPage() {
       postTitle: "",
       postContent: "",
       categories: [],
-      tags: []
+      tags: [],
     },
     mode: "onChange",
   });
 
-  const { register, handleSubmit, formState: { isSubmitting, isValid, isDirty }, setValue, watch, control, reset } = form;
+  const { register, handleSubmit, formState: { isSubmitting, isValid }, setValue, watch, control } = form;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -135,8 +135,6 @@ export default function PostNewPage() {
   };
 
   const onDataChange = useCallback((data) => {
-    if (isClearingRef.current) return;
-
     if (editorRef.current?.isProgrammaticChange) {
         editorRef.current.isProgrammaticChange = false;
         return;
@@ -185,26 +183,12 @@ export default function PostNewPage() {
     }
   }
 
-  const handleClear = () => {
-    isClearingRef.current = true;
-    reset();
-    if (editorRef.current) {
-      editorRef.current.clear();
-    }
-    setEditorData(null);
-    setUndoData([]);
-    setRedoData([]);
-    setTimeout(() => {
-      isClearingRef.current = false;
-    }, 100);
-  };
-
   const handleSubmission = (data) => {
-    const tagNames = data.tags || [];
-    const formattedTags = tagNames.map(tagName => {
-        const slug = generateSlug(tagName);
+    const tagObjects = data.tags || [];
+    const formattedTags = tagObjects.map(tag => {
+        const slug = generateSlug(tag.text);
         return JSON.stringify({
-            name: tagName,
+            name: tag.text,
             slug: slug,
             term_taxonomy: [{ taxonomy: 'post_tag' }]
         });
@@ -221,13 +205,13 @@ export default function PostNewPage() {
   const onSubmit = (data) => {
     const payload = handleSubmission(data);
     console.log("Publishing Post:", payload);
-    // TODO: Implement public submission logic
+    // TODO: Implement public submission logic using the payload
   }
 
   const onSaveDraft = (data) => {
     const payload = handleSubmission(data);
     console.log("Saving Draft:", payload);
-    // TODO: Implement draft submission logic
+    // TODO: Implement draft submission logic using the payload
   }
 
   return (
@@ -240,72 +224,74 @@ export default function PostNewPage() {
             </div>
             <div className="flex items-center">
                 <Button size="sm" variant="ghost" onClick={handleSubmit(onSaveDraft)} disabled={!isValid || isSubmitting}>Save draft</Button>
-                <Button type="button" size="sm" variant="ghost" className="mr-3" onClick={handleClear} disabled={!isDirty || isSubmitting}><Eraser className="size-4" />Clear</Button>
+                <Button size="sm" variant="ghost" className="mr-3" disabled={isSubmitting}><Eraser className="size-4" />Clear</Button>
                 <Button size="sm" onClick={handleSubmit(onSubmit)} disabled={!isValid || isSubmitting}>Public</Button>
             </div>
         </div>
 
         <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex items-top justify-between mx-auto h-[calc(100vh-4rem)]">
-                <div className="flex-1 h-full overflow-y-scroll">
-                    <div className="mx-auto lg:w-[840px] ">
-                        <div className="w-[650px] mx-auto mt-12">
-                            <textarea {...register("postTitle")} placeholder='Add a title' className="w-full !border-0 !p-0 !text-4xl font-bold field-sizing-content !outline-none break-words resize-none overflow-hidden" disabled={isSubmitting}/>
-                            <Editor holder="editor-container" placeholder="Type text or paste a link" onDataChange={onDataChange} className="pt-8 prose" editorRef={editorRef} />
-                        </div>
-                    </div>
-                </div>
-                <div className="right-0 w-[384px] h-[calc(100vh-65px)] border-l">
-
-                  <div className="p-2 border-b">
-                    <Label>Excerpt</Label>
-                     <Textarea name="postExcerpt" rows="5" className="my-2"></Textarea>
+          <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex items-top justify-between mx-auto h-[calc(100vh-4rem)]">
+                  <div className="flex-1 h-full overflow-y-scroll">
+                      <div className="mx-auto lg:w-[840px] ">
+                          <div className="w-[650px] mx-auto mt-12">
+                              <textarea {...register("postTitle")} placeholder='Add a title' className="w-full !border-0 !p-0 !text-4xl font-bold field-sizing-content !outline-none break-words resize-none overflow-hidden" disabled={isSubmitting}/>
+                              <Editor holder="editor-container" placeholder="Type text or paste a link" onDataChange={onDataChange} className="pt-8 prose" editorRef={editorRef} />
+                          </div>
+                      </div>
                   </div>
+                  <div className="right-0 w-[384px] h-[calc(100vh-65px)] border-l">
 
-                  <div className="p-2 border-b">
-                    <Label>Categories</Label>
-                    <div className="max-h-48 overflow-y-scroll py-2 space-y-1">
-                        {categoryTree.length > 0 ? (
-                            categoryTree.map(category => (
-                                <CategoryCheckboxItem
-                                    key={category.id}
-                                    category={category}
-                                    selectedCategories={watchedCategories}
-                                    onCategoryChange={handleCategoryChange}
-                                />
-                            ))
-                        ) : (
-                            <p className="text-sm text-muted-foreground p-2">Loading categories...</p>
+                    <div className="p-2 border-b">
+                      <Label className="p-2">Excerpt</Label>
+                       <Textarea name="postExcerpt" rows="5" className="my-2"></Textarea>
+                    </div>
+
+                    <div className="p-2 border-b">
+                      <Label className="p-2">Categories</Label>
+                      <div className="max-h-48 overflow-y-scroll py-2 space-y-1">
+                          {categoryTree.length > 0 ? (
+                              categoryTree.map(category => (
+                                  <CategoryCheckboxItem
+                                      key={category.id}
+                                      category={category}
+                                      selectedCategories={watchedCategories}
+                                      onCategoryChange={handleCategoryChange}
+                                  />
+                              ))
+                          ) : (
+                              <p className="text-sm text-muted-foreground p-2">Loading categories...</p>
+                          )}
+                      </div>
+                    </div>
+
+                    <div className="p-2 border-b">
+                      <Label className="p-2">Tags</Label>
+                      <FormField
+                        control={control}
+                        name="tags"
+                        render={({ field }) => (
+                          <FormItem className="my-2">
+                            <FormControl>
+                              <TagInput
+                                {...field}
+                                placeholder="Enter a topic"
+                                tags={tags}
+                                setTags={(newTags) => {
+                                  setTags(newTags);
+                                  setValue("tags", newTags, { shouldValidate: true });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
                         )}
+                      />
                     </div>
-                  </div>
 
-                  <div className="p-2 border-b">
-                    <FormField
-                      control={control}
-                      name="tags"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Tags</FormLabel>
-                          <FormControl>
-                            <TagInput
-                              placeholder="Enter a tag..."
-                              value={field.value || []}
-                              onChange={field.onChange}
-                              ref={field.ref}
-                            />
-                          </FormControl>
-                          <FormDescription>Add tags to your post.</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                   </div>
-
-                </div>
-            </div>
-        </form>
+              </div>
+          </form>
         </Form>
     </div>
   );

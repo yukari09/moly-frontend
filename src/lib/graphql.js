@@ -106,6 +106,7 @@ const LIST_TERMS_OFFSET_QUERY = `
           taxonomy
           description
           count
+          parent_id
         }
         insertedAt
       }
@@ -162,6 +163,9 @@ const GET_TERM_QUERY = `
         taxonomy
         count
         description
+        parent {
+          id
+        }
       }
       termMeta{
         termKey
