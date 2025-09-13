@@ -11,12 +11,15 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { useDebounce } from '@/hooks/use-debounce';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 export function ResourcePage({ 
   columns, 
   dataProvider, 
   resourceName, 
   newResourceLink,
-  filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }]
+  filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }],
+  defaultFilters = []
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -39,7 +42,6 @@ export function ResourcePage({
   const debouncedFilterValue = useDebounce(filters.filterValue, 500);
 
   
-
   useEffect(() => {
     const params = new URLSearchParams();
     params.set('page', filters.pageIndex + 1);
@@ -123,6 +125,18 @@ export function ResourcePage({
           <Link href={newResourceLink}>New {resourceName}</Link>
         </Button>
       </div>
+
+      {
+        defaultFilters.length > 0 ? (
+          <Tabs defaultValue="account" size="sm" className="w-[400px] mb-8">
+            <TabsList>
+              {defaultFilters.map((filter) => (
+                <TabsTrigger value={filter.value}>{filter.label}</TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        ) : null
+      }
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
