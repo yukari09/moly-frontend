@@ -1,21 +1,42 @@
-"use client"
+'use client'
 
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
-export function PostItem({post}){
+export function PostItem({ post }) {
+    // Placeholder image if no featured image is found in the data
+    const imageUrl = post.featured_image || `/11.jpg`; 
+
     return (
-        <article class="flex flex-col gap-4">
-            <Image src="/14.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm" />
-            <div className="space-y-2">
-                <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
-                <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter">What's the Best Way to Discipline My Child?</h3>
-                <p className="line-clamp-2 text-muted-foreground">
-                I know we're all here chasing the dream: building something that makes money while we sleep. The internet is flooded with gurus selling courses on how to achieve financial freedom with "surefire" passive income streams. But I want to throw a bit of a curveball today. Let's not talk about what's going to work. Let's talk about what's going to die.
-                </p>
-                <Badge variant="secondary">Ai Content</Badge>
-            </div>
-        </article>
+        <Link href={`/article/${post.post_name}`} className="block">
+            <article className="flex flex-col gap-4 group">
+                <div className="overflow-hidden rounded-sm">
+                    <Image 
+                        src={imageUrl} 
+                        alt={post.post_title} 
+                        width={640} 
+                        height={360} 
+                        className="aspect-[2/1] object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <div className="text-sm text-muted-foreground font-medium">
+                        <time dateTime={post.inserted_at}>
+                            {new Date(post.inserted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </time>
+                    </div>
+                    <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter group-hover:underline">
+                        {post.post_title}
+                    </h3>
+                    <p className="line-clamp-2 text-muted-foreground">
+                        {post.post_excerpt}
+                    </p>
+                    {post.category && post.category.length > 0 && (
+                         <Badge variant="secondary">{post.category[0].name}</Badge>
+                    )}
+                </div>
+            </article>
+        </Link>
     )
 }

@@ -30,7 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-export function DataTable({ columns, data, rowSelection, onRowSelectionChange, getRowId, totalCount, pagination, onPaginationChange, sorting, onSortingChange, emptyStateMessage = "No results." }) {
+export function DataTable({ columns, data, rowSelection, onRowSelectionChange, getRowId, totalCount, pagination, onPaginationChange, sorting, onSortingChange, emptyStateMessage = "No results.", refreshData }) {
   const [columnFilters, setColumnFilters] = React.useState([])
 
   const pageCount = totalCount ? Math.ceil(totalCount / pagination.pageSize) : -1;
@@ -56,6 +56,9 @@ export function DataTable({ columns, data, rowSelection, onRowSelectionChange, g
       columnFilters,
       pagination,
     },
+    meta: {
+      refreshData,
+    }
   })
 
   return (

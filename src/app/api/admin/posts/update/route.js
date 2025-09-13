@@ -14,7 +14,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { id, postTitle, postContent, categories, tags } = body;
+    const { id, postTitle, postContent, postExcerpt, categories, tags } = body;
 
     if (!id) {
       return new Response(JSON.stringify({ error: 'Post ID is required' }), { 
@@ -33,6 +33,7 @@ export async function POST(req) {
     const input = {
       postTitle: postTitle,
       postContent: postContent,
+      postExcerpt: postExcerpt,
     };
 
     if (categories && Array.isArray(categories)) {

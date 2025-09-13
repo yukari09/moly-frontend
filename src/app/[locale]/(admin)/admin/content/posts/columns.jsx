@@ -1,10 +1,71 @@
 'use client'
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { postsDataProvider } from './data-provider';
+
+const ActionsCell = ({ row, table }) => {
+  const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const post = row.original;
+
+  const handleDelete = async () => {
+    try {
+      await postsDataProvider.deleteData([post.id]);
+      toast.success('Post deleted successfully.');
+      if (table.options.meta?.refreshData) {
+        table.options.meta.refreshData();
+      } else {
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete post.');
+    }
+  };
+
+  return (
+    <>
+      <ConfirmDialog 
+        open={isDialogOpen} 
+        onOpenChange={setIsDialogOpen}
+        onConfirm={handleDelete}
+        title="Are you sure you want to delete this post?"
+        description="This action cannot be undone. This will permanently delete the post."
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem asChild>
+            <Link href={`/post/${post.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem 
+            onSelect={(e) => {
+              e.preventDefault();
+              setIsDialogOpen(true);
+            }}
+            className="text-red-600"
+          >
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+};
 
 export const columns = [
   {
@@ -92,27 +153,6 @@ export const columns = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
-      const post = row.original
- 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/content/posts/${post.id}/edit`}>Edit</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: (props) => <ActionsCell {...props} />,
   },
 ]

@@ -417,6 +417,7 @@ const GET_POST_QUERY = `
       id
       postTitle
       postContent
+      postExcerpt
       postStatus
       postTags{
         name
@@ -426,6 +427,7 @@ const GET_POST_QUERY = `
         }
       }
       categories{
+        name
         termTaxonomy(filter: {taxonomy: {eq: "category"}}){
           id
         }
@@ -438,12 +440,45 @@ export async function getPost(id, session) {
   return data.getPost;
 }
 
+const GET_POST_BY_POST_NAME_QUERY = `
+  query GetPostByPostName($postName: String!) {
+    getPostByPostName(postName: $postName) {
+      id
+      postTitle
+      postContent
+      postExcerpt
+      postStatus
+      postName
+      insertedAt
+      postTags{
+        name
+        slug
+        termTaxonomy(filter: {taxonomy: {eq: "post_tag"}}){
+          id
+        }
+      }
+      categories{
+        name
+        slug
+        termTaxonomy(filter: {taxonomy: {eq: "category"}}){
+          id
+        }
+      }
+    }
+  }
+`;
+export async function getPostByPostName(postName, session) {
+  const data = await _request(GET_POST_BY_POST_NAME_QUERY, { postName }, session);
+  return data.getPostByPostName;
+}
+
 const UPDATE_POST_MUTATION = `
   mutation UpdatePost($id: ID!, $input: UpdatePostInput!) {
     updatePost(id: $id, input: $input) {
       result {
         id
         postTitle
+        postExcerpt
       }
       errors {
         message
@@ -490,5 +525,3 @@ export async function uploadMedia(file, session) {
   logger.warn("uploadMedia is not fully implemented in the GraphQL client yet.");
   return null;
 }
-
-

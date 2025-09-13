@@ -1,3 +1,4 @@
+import { PostItem } from "@/components/post-item";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -96,21 +97,11 @@ export default function Home() {
             </div>
           </section>
           <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-12">
-            <h2 class="text-primary leading-tighter text-2xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Featured Posts</h2>
+            <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Featured Posts</h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-8">
-              <article class="flex flex-col gap-4">
-                <Image src="/12.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm" />
-                <div className="space-y-2">
-                  <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
-                  <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter">What's the Best Way to Discipline My Child?</h3>
-                  <p className="line-clamp-2 text-muted-foreground">
-                    I know we're all here chasing the dream: building something that makes money while we sleep. The internet is flooded with gurus selling courses on how to achieve financial freedom with "surefire" passive income streams. But I want to throw a bit of a curveball today. Let's not talk about what's going to work. Let's talk about what's going to die.
-                  </p>
-                  <Badge variant="secondary">Ai Content</Badge>
-                </div>
-              </article>
-              <div class="flex flex-col gap-8">
-                <article class="flex gap-4">
+              <PostItem  />
+              <div className="flex flex-col gap-8">
+                <article className="flex gap-4">
                   <Image src="/14.jpg" width="320" height="180" className="aspect-[2/1] rounded-sm object-cover" />
                   <div className="space-y-2">
                     <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -122,7 +113,7 @@ export default function Home() {
                   </div>
                 </article>
 
-                <article class="flex gap-4">
+                <article className="flex gap-4">
                   <Image src="/18.jpg" width="320" height="180" className="aspect-[2/1] rounded-sm object-cover" />
                   <div className="space-y-2">
                     <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -138,9 +129,9 @@ export default function Home() {
             </div>
           </section>
           <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-28 mb-8">
-            <h2 class="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Latest Posts</h2>
+            <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Latest Posts</h2>
             <div className="grid grid-cols-3 gap-8 mt-8">
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/11.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm object-cover" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -151,7 +142,7 @@ export default function Home() {
                   <Badge variant="secondary">Ai Content</Badge>
                 </div>
               </article>
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/12.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground font-medium">Oct 21, 2024</div>
@@ -162,7 +153,7 @@ export default function Home() {
                   <Badge variant="secondary">Ai Content</Badge>
                 </div>
               </article>
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/12.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -174,7 +165,7 @@ export default function Home() {
                 </div>
               </article>
 
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/14.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -186,7 +177,7 @@ export default function Home() {
                 </div>
               </article>
 
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/05.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm object-cover" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -198,7 +189,7 @@ export default function Home() {
                 </div>
               </article>
 
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/19.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm object-cover" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -210,7 +201,7 @@ export default function Home() {
                 </div>
               </article>
 
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/19.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm object-cover" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>
@@ -222,7 +213,7 @@ export default function Home() {
                 </div>
               </article>
 
-              <article class="flex flex-col gap-4">
+              <article className="flex flex-col gap-4">
                 <Image src="/18.jpg" width="640" height="360" className="aspect-[2/1] rounded-sm object-cover" />
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground  font-medium">Oct 21, 2024</div>

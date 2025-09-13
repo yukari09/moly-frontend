@@ -50,7 +50,7 @@ class CustomImage extends ImageTool {
   }
 }
 
-const EditorComponent = ({ holder, onDataChange, className, placeholder, editorRef, initialData }) => {
+const EditorComponent = ({ holder, onDataChange, className, placeholder, editorRef }) => {
   const timeoutRef = useRef(null);
   const [csrfToken, setCsrfToken] = useState('');
 
@@ -110,7 +110,6 @@ const EditorComponent = ({ holder, onDataChange, className, placeholder, editorR
       holder: holder,
       placeholder: placeholder,
       tools: EDITOR_TOOLS,
-      data: initialData,
       onChange: async () => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);

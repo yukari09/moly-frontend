@@ -3,8 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { Eraser, Undo, Redo } from 'lucide-react';
+import { Eraser, Undo, Redo, Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -15,13 +14,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { TagInput } from "@/components/ui/tag-input";
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
-const Editor = dynamic(() => import('./editor'), {
+const Editor = dynamic(() => import('../../new/editor'), {
   ssr: false,
 });
 
-const createPostSchema = z.object({
+const editPostSchema = z.object({
   postTitle: z.string().min(3, { message: "postTitle must be at least 3 characters long" }),
   postContent: z.string().min(6, { message: "postContent must be at least 6 characters long" }),
   postExcerpt: z.string().optional(),
@@ -89,18 +88,19 @@ const CategoryCheckboxItem = ({ category, level = 0, selectedCategories, onCateg
     );
 };
 
-export default function PostNewPage() {
+export default function PostEditPage() {
   const [editorData, setEditorData] = useState(null);
-  const [undoData, setUndoData] = useState([]);
-  const [redoData, setRedoData] = useState([]);
+  const [initialContent, setInitialContent] = useState(null);
   const editorRef = useRef(null);
-  const isClearingRef = useRef(false);
   const [allCategories, setAllCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
+  const params = useParams();
+  const { id } = params;
 
   const form = useForm({
-    resolver: zodResolver(createPostSchema),
+    resolver: zodResolver(editPostSchema),
     defaultValues: {
       postTitle: "",
       postContent: "",
@@ -114,22 +114,53 @@ export default function PostNewPage() {
   const { register, handleSubmit, formState: { isSubmitting, isValid, isDirty }, setValue, watch, control, reset } = form;
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch('/api/admin/categories', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ limit: 1000 }),
-        });
-        if (!response.ok) throw new Error('Failed to load categories.');
-        const data = await response.json();
-        setAllCategories(data.results || []);
+        const [postResponse, categoriesResponse] = await Promise.all([
+          fetch(`/api/admin/posts/${id}`),
+          fetch('/api/admin/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ limit: 1000 }),
+          })
+        ]);
+
+        if (!postResponse.ok) throw new Error('Failed to fetch post data.');
+        if (!categoriesResponse.ok) throw new Error('Failed to load categories.');
+
+        const post = await postResponse.json();
+        const categoriesData = await categoriesResponse.json();
+
+        setAllCategories(categoriesData.results || []);
+
+        const initialData = {
+            postTitle: post.postTitle,
+            postContent: post.postContent,
+            postExcerpt: post.postExcerpt || '',
+            categories: post.categories.map(c => c.termTaxonomy[0].id),
+            tags: post.postTags.map(t => t.name)
+        };
+
+        reset(initialData);
+        
+        if (post.postContent) {
+            const parsedContent = JSON.parse(post.postContent);
+            setInitialContent(parsedContent);
+            setEditorData(parsedContent);
+        }
+
       } catch (error) {
         toast.error(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchCategories();
-  }, []);
+
+    if (id) {
+      fetchData();
+    }
+  }, [id, reset]);
 
   const categoryTree = useMemo(() => buildCategoryTree(allCategories), [allCategories]);
   const watchedCategories = watch("categories", []);
@@ -143,69 +174,10 @@ export default function PostNewPage() {
   };
 
   const onDataChange = useCallback((data) => {
-    if (isClearingRef.current) return;
-
-    if (editorRef.current?.isProgrammaticChange) {
-        editorRef.current.isProgrammaticChange = false;
-        return;
-    }
     const content = JSON.stringify(data);
     setValue("postContent", content, { shouldValidate: true, shouldDirty: true });
     setEditorData(data);
-    setUndoData(prev => [...prev, data]);
-    setRedoData([]);
   }, [setValue]);
-
-  const updateFormOnUndoRedo = (data) => {
-    const content = JSON.stringify(data);
-    setValue("postContent", content, { shouldValidate: true, shouldDirty: true });
-  };
-
-  const handleUndo = () => {
-    if (undoData.length > 1) {
-      const newUndoData = undoData.slice(0, -1);
-      setUndoData(newUndoData);
-      
-      const previousData = newUndoData[newUndoData.length - 1];
-      setRedoData(prev => [editorData, ...prev]);
-      setEditorData(previousData);
-      updateFormOnUndoRedo(previousData);
-
-      if (editorRef.current) {
-        editorRef.current.isProgrammaticChange = true;
-        editorRef.current.render(previousData);
-      }
-    }
-  }
-  
-  const handleRedo = () => {
-    if (redoData.length > 0) {
-      const [redoState, ...remainingRedo] = redoData;
-      setUndoData(prev => [...prev, redoState]);
-      setEditorData(redoState);
-      setRedoData(remainingRedo);
-      updateFormOnUndoRedo(redoState);
-
-      if (editorRef.current) {
-        editorRef.current.isProgrammaticChange = true;
-        editorRef.current.render(redoState);
-      }
-    }
-  }
-
-  const handleClear = () => {
-    isClearingRef.current = true;
-    reset();
-    if (editorRef.current) {
-      editorRef.current.clear();
-    }
-    setEditorData(null);
-    setUndoData([]);
-    setRedoData([]);
-    setTimeout(() => {
-      isClearingRef.current = false;
-    }, 100);
-  };
 
   const handleSubmission = async (data, status) => {
     const tagNames = data.tags || [];
@@ -219,13 +191,14 @@ export default function PostNewPage() {
     });
 
     const payload = {
+        id: id,
         ...data,
         tags: formattedTags,
         postStatus: status,
     };
 
     try {
-      const response = await fetch('/api/admin/posts/new', {
+      const response = await fetch('/api/admin/posts/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -233,10 +206,10 @@ export default function PostNewPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || `Failed to ${status === 'draft' ? 'save draft' : 'publish post'}.`);
+        throw new Error(errorData.error || `Failed to ${status === 'draft' ? 'save draft' : 'update post'}.`);
       }
 
-      toast.success(`Post ${status === 'draft' ? 'saved' : 'published'} successfully!`);
+      toast.success(`Post ${status === 'draft' ? 'saved' : 'updated'} successfully!`);
       router.push('/admin/content/posts');
       router.refresh();
 
@@ -249,18 +222,23 @@ export default function PostNewPage() {
 
   const onSaveDraft = (data) => handleSubmission(data, 'draft');
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-16 w-16 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="h-[100vh] overflow-hidden">
         <div className="h-[64px] border-b px-4 flex justify-between items-center">
             <div className="flex items-center gap-2">
                 <Image src="/logo.svg" alt="logo" width="32" height="32" />
-                <Button onClick={handleUndo} variant="ghost" size="sm"  disabled={undoData.length < 2 || isSubmitting}><Undo className="size-4" /></Button>
-                <Button onClick={handleRedo} variant="ghost" size="sm"   disabled={redoData.length === 0  || isSubmitting}><Redo className="size-4" /></Button>
             </div>
             <div className="flex items-center">
-                <Button size="sm" variant="ghost" onClick={handleSubmit(onSaveDraft)} disabled={!isValid || isSubmitting || !editorData || editorData.blocks.length === 0}>Save draft</Button>
-                <Button type="button" size="sm" variant="ghost" className="mr-3" onClick={handleClear} disabled={!isDirty || isSubmitting || !editorData || editorData.blocks.length === 0}><Eraser className="size-4" />Clear</Button>
-                <Button size="sm" onClick={handleSubmit(onSubmit)} disabled={!isValid || isSubmitting || !editorData || editorData.blocks.length === 0}>Public</Button>
+                <Button size="sm" variant="ghost" onClick={handleSubmit(onSaveDraft)} disabled={!isDirty || isSubmitting}>Save Changes</Button>
+                <Button size="sm" onClick={handleSubmit(onSubmit)} disabled={!isDirty || isSubmitting}>Update</Button>
             </div>
         </div>
 
@@ -271,7 +249,14 @@ export default function PostNewPage() {
                     <div className="mx-auto lg:w-[840px] ">
                         <div className="w-[650px] mx-auto mt-12">
                             <textarea {...register("postTitle")} placeholder='Add a title' className="w-full !border-0 !p-0 !text-4xl font-bold field-sizing-content !outline-none break-words resize-none overflow-hidden" disabled={isSubmitting}/>
-                            <Editor holder="editor-container" placeholder="Type text or paste a link" onDataChange={onDataChange} className="pt-8 prose" editorRef={editorRef} />
+                            <Editor 
+                                holder="editor-container" 
+                                placeholder="Type text or paste a link" 
+                                onDataChange={onDataChange} 
+                                className="pt-8 prose" 
+                                editorRef={editorRef} 
+                                initialData={initialContent}
+                            />
                         </div>
                     </div>
                 </div>

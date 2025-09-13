@@ -132,7 +132,7 @@ export function ForgotPasswordForm({
                   <Turnstile
                     siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
                     onSuccess={setTurnstileToken}
-                    class="mx-auto"
+                    className="mx-auto"
                   />
                   <Button type="submit" className="w-full" disabled={isLoading || !turnstileToken}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

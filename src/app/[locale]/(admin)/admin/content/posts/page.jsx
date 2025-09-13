@@ -13,7 +13,7 @@ export default function PostsPage() {
         dataProvider={postsDataProvider}
         filterableFields={[{ value: 'postTitle', label: 'Title' }, { value:'postStatus', label: 'Status' }]}
         resourceName="Post"
-        newResourceLink="/admin/content/posts/new"
+        newResourceLink="/post/new"
       />
     </Suspense>
   );

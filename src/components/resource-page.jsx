@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -125,8 +124,8 @@ export function ResourcePage({
         </Button>
       </div>
 
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
           <Select 
             onValueChange={setBulkAction} 
             value={bulkAction} 
@@ -218,6 +217,7 @@ export function ResourcePage({
               }
             }}
             emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}
+            refreshData={fetchData}
           />
         </div>
       </div>

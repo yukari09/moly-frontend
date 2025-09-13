@@ -73,3 +73,84 @@ The project uses a WordPress-inspired data model:
 - **Charts**: `recharts`
 - **Notifications**: `sonner`
 - **Email**: `nodemailer`
+
+## File Upload Specification (S3/MinIO)
+
+This section details the process for uploading files (e.g., images for blog posts) from the client to the backend.
+
+### 1. API Endpoint
+
+- **URL:** `/api/admin/posts/upload`
+- **Method:** `POST`
+
+### 2. Authentication
+
+- The endpoint is protected and requires a valid `next-auth` session.
+- The request must include the CSRF token provided by `next-auth`, sent in the `x-csrf-token` header.
+
+### 3. Request Format
+
+- The request body must be of type `multipart/form-data`.
+- The file being uploaded must be in a field named `image`.
+
+### 4. Storage Logic (MinIO)
+
+- **SDK:** File handling is done using the `@aws-sdk/client-s3` library.
+- **Client Configuration:** The S3 client is configured to connect to a MinIO instance by using the `endpoint` and `forcePathStyle: true` parameters, which are read from environment variables (`S3_ENDPOINT`, etc.).
+- **File Naming & Path:**
+    - A unique path is generated for each uploaded file to prevent collisions.
+    - **Format:** `media/YYYY/MM/{uuid}.{extension}`
+    - `YYYY`: 4-digit year (e.g., 2025)
+    - `MM`: 2-digit month (e.g., 09)
+    - `{uuid}`: A cryptographically random UUID.
+    - `{extension}`: The original file extension.
+- **Object Metadata:**
+    - `ContentType`: The original MIME type of the file is preserved.
+    - `ACL`: Set to `public-read` to allow services like Imagor to access the file.
+
+### 5. Post-Processing (GraphQL)
+
+- After a successful upload to MinIO, a corresponding record is created in the GraphQL backend.
+- A `createPost` mutation is called with the following input:
+    - `postType`: `'attachment'`
+    - `postTitle`: The original filename.
+    - `postStatus`: `'inherit'`
+    - `postMimeType`: The file's MIME type.
+    - `postMeta`: An array containing an object to link the file. The structure is `{ metaKey: '_wp_attached_file', metaValue: '{s3Key}' }`, where `{s3Key}` is the full path generated in the previous step.
+
+### 6. Response Format
+
+#### Success
+
+- **Status Code:** `200 OK`
+- **Body:** A JSON object confirming the upload and providing URLs for consumption.
+
+```json
+{
+  "success": 1,
+  "file": {
+    "url": "https://.../medium_size.jpg",
+    "urls": {
+      "thumbnail": "https://.../thumbnail_size.jpg",
+      "medium": "https://.../medium_size.jpg",
+      "large": "https://.../large_size.jpg",
+      "original": "https://.../original.jpg"
+    },
+    "id": "POST_ID_FROM_GRAPHQL",
+    "s3Key": "PATH_IN_S3"
+  }
+}
+```
+- `file.url`: The default URL for editor preview (medium size).
+- `file.urls`: An object containing multiple sizes for responsive rendering on the frontend.
+
+#### Failure
+
+- **Status Code:** `400`, `401`, `500`, etc.
+- **Body:**
+```json
+{
+  "success": 0,
+  "message": "Error description"
+}
+```

@@ -14,7 +14,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { postTitle, postContent, categories, tags } = body;
+    const { postTitle, postContent, postExcerpt, categories, tags, postStatus } = body;
 
     if (!postTitle) {
       return new Response(JSON.stringify({ error: 'Title is required' }), { 
@@ -26,7 +26,8 @@ export async function POST(req) {
     const input = {
       postTitle: postTitle,
       postContent: postContent,
-      postStatus: 'publish',
+      postExcerpt: postExcerpt,
+      postStatus: postStatus || 'publish',
       postType: 'post',
       postDate: new Date().toISOString(),
     };

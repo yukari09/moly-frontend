@@ -119,8 +119,8 @@ export function ResourcePage({ columns, dataProvider, resourceName, newResourceL
         </Button>
       </div>
 
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
           <Select 
             onValueChange={setBulkAction} 
             value={bulkAction} 
