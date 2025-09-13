@@ -1,7 +1,7 @@
 export const postsDataProvider = {
   fetchData: async (params) => {
-    const { limit, offset, filterField, filterValue, sortParam } = params;
-    const requestBody = { limit, offset, filterField, filterValue, sortParam };
+    const { limit, offset, filterField, filterValue, sortParam, defaultFilter } = params;
+    const requestBody = { limit, offset, filterField, filterValue, sortParam,  defaultFilter};
 
     const response = await fetch('/api/admin/posts', {
       method: 'POST',

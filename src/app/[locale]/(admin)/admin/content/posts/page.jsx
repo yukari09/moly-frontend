@@ -14,7 +14,11 @@ export default function PostsPage() {
         filterableFields={[{ value: 'postTitle', label: 'Title' }, { value:'postStatus', label: 'Status' }]}
         resourceName="Post"
         newResourceLink="/post/new"
-        defaultFilters={[{value: null, label: "All"}, {value: "publish", label: "Publish"},{value: "draft", label: "Draft"}]}
+        defaultFilter={[
+          {value: "all", label: "All", field: "postStatus"}, 
+          {value: "publish", label: "Publish", field: "postStatus"},
+          {value: "draft", label: "Draft", field: "postStatus"}
+        ]}
       />
     </Suspense>
   );

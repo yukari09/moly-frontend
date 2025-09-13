@@ -19,7 +19,7 @@ export function ResourcePage({
   resourceName, 
   newResourceLink,
   filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }],
-  defaultFilters = []
+  defaultFilter = []
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -37,6 +37,7 @@ export function ResourcePage({
     sortDesc: searchParams.get('sortDesc') === 'true',
     filterField: searchParams.get('filterField') || (filterableFields.length > 0 ? filterableFields[0].value : ''),
     filterValue: searchParams.get('filterValue') || '',
+    defaultFilter: searchParams.get('defaultFilter') || '',
   });
 
   const debouncedFilterValue = useDebounce(filters.filterValue, 500);
@@ -58,32 +59,40 @@ export function ResourcePage({
     } else {
       params.delete('filterValue');
     }
+    if (filters.defaultFilter) {
+      params.set('defaultFilter', filters.defaultFilter);
+    } else {
+      params.delete('defaultFilter');
+    }
     router.push(`?${params.toString()}`);
-  }, [filters.pageIndex, filters.pageSize, filters.sort, filters.sortDesc, filters.filterField, filters.filterValue, router]);
+  }, [filters, router]);
+
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const sortParams = filters.sort ? [{
+      const sortParam = filters.sort ? JSON.stringify([{
         field: filters.sort === 'insertedAt' ? 'INSERTED_AT' : filters.sort.toUpperCase(),
         order: filters.sortDesc ? 'DESC' : 'ASC'
-      }] : undefined;
+      }]) : undefined;
 
       const result = await dataProvider.fetchData({
         limit: filters.pageSize,
         offset: filters.pageIndex * filters.pageSize,
         filterField: filters.filterField,
         filterValue: debouncedFilterValue,
-        sortParam: sortParams ? JSON.stringify(sortParams) : undefined,
+        defaultFilter: filters.defaultFilter,
+        sortParam,
       });
 
       setData(result.results);
       setTotalCount(result.count);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }, [dataProvider, filters.pageIndex, filters.pageSize, filters.sort, filters.sortDesc, filters.filterField, debouncedFilterValue]);
+  }, [dataProvider, filters, debouncedFilterValue]); // 简化了！
 
   useEffect(() => {
     fetchData();
@@ -117,6 +126,10 @@ export function ResourcePage({
     }
   };
 
+  const handleDefaultFilter = async (field, value) => {
+    setFilters(f => ({ ...f, defaultFilter: [field, value] }));
+  }
+
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-8 border-b pb-6">
@@ -127,11 +140,11 @@ export function ResourcePage({
       </div>
 
       {
-        defaultFilters.length > 0 ? (
-          <Tabs defaultValue="account" size="sm" className="w-[400px] mb-8">
+        defaultFilter.length > 0 ? (
+          <Tabs defaultValue={"all"} size="sm" className="w-[400px] mb-8">
             <TabsList>
-              {defaultFilters.map((filter) => (
-                <TabsTrigger value={filter.value}>{filter.label}</TabsTrigger>
+              {defaultFilter.map((filter) => (
+                <TabsTrigger key={`filter-default-${filter.value}`} value={filter.value} onClick={() => {handleDefaultFilter(filter.field, filter.value)}}>{filter.label}</TabsTrigger>
               ))}
             </TabsList>
           </Tabs>

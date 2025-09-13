@@ -14,7 +14,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { limit, offset, filterField, filterValue, sortParam } = body;
+    const { limit, offset, filterField, filterValue, sortParam, defaultFilter} = body;
 
     // Start with the mandatory filter for postType
     let filter = { postType: { eq: 'post' } };
@@ -26,7 +26,14 @@ export async function POST(req) {
         filter[filterField] = { eq: filterValue };
       } else {
         // Use fuzzy match for other fields like title
-        filter[filterField] = { ilike: `${filterValue}%` };
+        filter[filterField] = { like: `%${filterValue}%` };
+      }
+    }
+
+    if(defaultFilter){
+      const [defaultFilterField, defaultFilterValue] = defaultFilter;
+      if (![false, null, "","all"].includes(defaultFilterValue)){
+        filter[defaultFilterField] = { eq: defaultFilterValue };
       }
     }
 
