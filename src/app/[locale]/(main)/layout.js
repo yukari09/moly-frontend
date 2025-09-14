@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout-header";
 import Footer from "@/components/layout-footer";
+import { listTermsOffset } from "@/lib/graphql";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -43,6 +44,9 @@ export const metadata = {
   },
 };
 
+const requestCategories = await listTermsOffset("category", 1000, 0, {"termMeta": {"termKey": {"eq": "show_in_menu"},"termValue": {"eq": "1"}}}, null, null, null, null, { revalidate: 3600 })
+const categories = requestCategories.results
+
 export default async function RootLayout({ children, params }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
@@ -59,7 +63,7 @@ export default async function RootLayout({ children, params }) {
       <body>
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <Header />
+            <Header categories={categories} />
             {children}
             <Toaster />
             <Footer />

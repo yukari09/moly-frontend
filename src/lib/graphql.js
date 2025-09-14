@@ -40,8 +40,10 @@ async function _request(query, variables = {}, session = null, cacheConfig = nul
   };
 
   if (cacheConfig) {
+    // If user passes { next: ... }, use its value. Otherwise, use the object directly.
+    const nextConfig = cacheConfig.next ? cacheConfig.next : cacheConfig;
     // @ts-ignore
-    fetchOptions.next = cacheConfig;
+    fetchOptions.next = nextConfig;
   } else {
     // @ts-ignore
     fetchOptions.cache = 'no-store';
@@ -67,8 +69,8 @@ const IS_USERNAME_AVAILABLE_QUERY = `
     isNotUsernameAvailable(username: $username)
   }
 `;
-export async function isUsernameAvailable(username, session) {
-  const data = await _request(IS_USERNAME_AVAILABLE_QUERY, { username }, session);
+export async function isUsernameAvailable(username, session, cacheConfig) {
+  const data = await _request(IS_USERNAME_AVAILABLE_QUERY, { username }, session, cacheConfig);
   return data.isNotUsernameAvailable;
 }
 
@@ -92,8 +94,8 @@ const LIST_TERMS_QUERY = `
     }
   }
 `;
-export async function listTerms(taxonomyName, first, after, filter, session) {
-  const data = await _request(LIST_TERMS_QUERY, { taxonomyName, first, after, filter }, session);
+export async function listTerms(taxonomyName, first, after, filter, session, cacheConfig) {
+  const data = await _request(LIST_TERMS_QUERY, { taxonomyName, first, after, filter }, session, cacheConfig);
   return data.listTerms;
 }
 
@@ -123,8 +125,8 @@ const LIST_TERMS_OFFSET_QUERY = `
     }
   }
 `;
-export async function listTermsOffset(taxonomyName, limit, offset, filter, session, sort, parent, slug) {
-  const data = await _request(LIST_TERMS_OFFSET_QUERY, { taxonomyName, limit, offset, filter, sort, parent, slug }, session);
+export async function listTermsOffset(taxonomyName, limit, offset, filter, session, sort, parent, slug, cacheConfig) {
+  const data = await _request(LIST_TERMS_OFFSET_QUERY, { taxonomyName, limit, offset, filter, sort, parent, slug }, session, cacheConfig);
   return data.listTermsOffset;
 }
 
@@ -155,8 +157,8 @@ const LIST_POSTS_OFFSET_QUERY = `
     }
   }
 `;
-export async function listPostsOffset(limit, offset, filter, sort, session) {
-  const data = await _request(LIST_POSTS_OFFSET_QUERY, { limit, offset, filter, sort }, session);
+export async function listPostsOffset(limit, offset, filter, sort, session, cacheConfig) {
+  const data = await _request(LIST_POSTS_OFFSET_QUERY, { limit, offset, filter, sort }, session, cacheConfig);
   return data.listPostsOffset;
 }
 
@@ -184,8 +186,8 @@ const GET_TERM_QUERY = `
     }
   }
 `;
-export async function getTerm(id, taxonomyName, session) {
-  const data = await _request(GET_TERM_QUERY, { id, taxonomyName }, session);
+export async function getTerm(id, taxonomyName, session, cacheConfig) {
+  const data = await _request(GET_TERM_QUERY, { id, taxonomyName }, session, cacheConfig);
   return data.getTerm;
 }
 
@@ -201,14 +203,14 @@ const GET_USER_BY_USERNAME_QUERY = `
     }
   }
 `;
-export async function getUserByUsername(username, session) {
+export async function getUserByUsername(username, session, cacheConfig) {
   const filter = {
     userMeta: {
       metaKey: { eq: "username" },
       metaValue: { eq: username },
     },
   };
-  const data = await _request(GET_USER_BY_USERNAME_QUERY, { filter }, session);
+  const data = await _request(GET_USER_BY_USERNAME_QUERY, { filter }, session, cacheConfig);
   return data.readOneUser;
 }
 
@@ -445,8 +447,8 @@ const GET_POST_QUERY = `
     }
   }
 `;
-export async function getPost(id, session) {
-  const data = await _request(GET_POST_QUERY, { id }, session);
+export async function getPost(id, session, cacheConfig) {
+  const data = await _request(GET_POST_QUERY, { id }, session, cacheConfig);
   return data.getPost;
 }
 
@@ -477,8 +479,8 @@ const GET_POST_BY_POST_NAME_QUERY = `
     }
   }
 `;
-export async function getPostByPostName(postName, session) {
-  const data = await _request(GET_POST_BY_POST_NAME_QUERY, { postName }, session);
+export async function getPostByPostName(postName, session, cacheConfig) {
+  const data = await _request(GET_POST_BY_POST_NAME_QUERY, { postName }, session, cacheConfig);
   return data.getPostByPostName;
 }
 

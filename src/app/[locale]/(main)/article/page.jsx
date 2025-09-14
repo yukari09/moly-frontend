@@ -1,4 +1,4 @@
-import { PostItem } from "@/components/post-item";
+import { PostItem } from "@/components/article-item";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";

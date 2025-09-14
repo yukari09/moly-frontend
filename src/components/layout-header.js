@@ -71,7 +71,7 @@ function LanguageSwitcher() {
   );
 }
 
-export default function Header() {
+export default function Header({categories}) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const t = useTranslations('Header');
@@ -98,29 +98,26 @@ export default function Header() {
             <div className="hidden md:block">
               <NavigationMenu>
                 <NavigationMenuList>
-  
                   <NavigationMenuItem>
-                    
                       <NavigationMenuLink asChild>
                         <Link href="/" className="font-medium" >Home</Link>
                       </NavigationMenuLink>
-                    
                   </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    
-                      <NavigationMenuLink asChild>
-                        <Link href="/latest" className="font-medium">{t.rich("latest")}</Link>
-                      </NavigationMenuLink>
-                    
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    
-                      <NavigationMenuLink asChild>
-                        <Link href="/tags" className="font-medium">{t.rich("tags")}</Link>
-                      </NavigationMenuLink>
-                    
-                  </NavigationMenuItem>
+                  {
+                    Array.isArray(categories) && categories.length > 0 &&
+                    categories.map((item, index) => {
+                      if(item.termTaxonomy[0]?.parentId != null){
+                        return null
+                      }
+                      return (
+                        <NavigationMenuItem>
+                            <NavigationMenuLink asChild>
+                              <Link href={`/articles/cat-${item.slug}`} className="font-medium capitalize" >{item.name}</Link>
+                            </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )
+                    })
+                  }
                 </NavigationMenuList>
               </NavigationMenu>
             </div>

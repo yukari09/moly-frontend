@@ -1,0 +1,73 @@
+'use client'
+
+import Link from "next/link";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+// Helper function to find the first image URL in Editor.js content
+function getImageUrlFromContent(postContent) {
+    if (!postContent || typeof postContent !== 'string') {
+        return null;
+    }
+    try {
+        const content = JSON.parse(postContent);
+        const imageBlock = content.blocks.find(block => block.type === 'image');
+        return imageBlock ? imageBlock.data.file.url : null;
+    } catch (error) {
+        // console.error("Failed to parse post content for image:", error);
+        return null;
+    }
+}
+
+export function PostItem({ post, layout = 'vertical' }) {
+    // 1. Get image URL from content, then fallback to a placeholder
+    const imageUrl = getImageUrlFromContent(post.post_content) || `/11.jpg`;
+    const isHorizontal = layout === 'horizontal';
+
+    return (
+        <Link href={`/article/${post.post_name}`} className="block group h-full">
+            <article className={cn(
+                "flex gap-4 group h-full",
+                isHorizontal ? "flex-row" : "flex-col"
+            )}>
+                {/* Image Container */}
+                <div className={cn(
+                    "overflow-hidden rounded-sm",
+                    isHorizontal ? "w-1/3" : "w-full"
+                )}>
+                    <Image 
+                        src={imageUrl} 
+                        alt={post.post_title} 
+                        width={640} 
+                        height={360} 
+                        className={cn(
+                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-full",
+                            isHorizontal ? "aspect-[4/3]" : "aspect-[2/1]"
+                        )}
+                    />
+                </div>
+                {/* Text Content Container */}
+                <div className={cn(
+                    "flex flex-col space-y-2",
+                    isHorizontal ? "w-2/3" : "w-full"
+                )}>
+                    <div className="text-sm text-muted-foreground font-medium">
+                        <time dateTime={post.inserted_at}>
+                            {new Date(post.inserted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </time>
+                    </div>
+                    <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter group-hover:underline">
+                        {post.post_title}
+                    </h3>
+                    <p className="line-clamp-2 text-muted-foreground flex-grow">
+                        {post.post_excerpt}
+                    </p>
+                    {post.category && post.category.length > 0 && (
+                         <Badge variant="secondary">{post.category[0].name}</Badge>
+                    )}
+                </div>
+            </article>
+        </Link>
+    )
+}
