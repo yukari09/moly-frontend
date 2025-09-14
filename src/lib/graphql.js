@@ -8,7 +8,7 @@ import logger from "./logger";
  * @param {object} [session=null] The NextAuth session object, used for authentication.
  * @returns {Promise<any>} The `data` part of the GraphQL response.
  */
-async function _request(query, variables = {}, session = null) {
+async function _request(query, variables = {}, session = null, cacheConfig = null) {
   const secretKey = process.env.GRAPHQL_SECRET_KEY;
   if (!secretKey) {
     throw new Error("GRAPHQL_SECRET_KEY is not defined in environment variables.");
@@ -33,11 +33,21 @@ async function _request(query, variables = {}, session = null) {
     }
   }
 
-  const res = await fetch(process.env.GRAPHQL_API_URL, {
+  const fetchOptions = {
     method: 'POST',
     headers,
     body: JSON.stringify({ query, variables: cleanedVariables }),
-  });
+  };
+
+  if (cacheConfig) {
+    // @ts-ignore
+    fetchOptions.next = cacheConfig;
+  } else {
+    // @ts-ignore
+    fetchOptions.cache = 'no-store';
+  }
+
+  const res = await fetch(process.env.GRAPHQL_API_URL, fetchOptions);
 
   const data = await res.json();
 
