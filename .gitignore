@@ -43,7 +43,6 @@ next-env.d.ts
 #screencapture-vercel-templates-next-js-image-gallery-starter-2025-08-05-11_52_06.png
 /src/generated/prisma
 bun.lockb
-.env.local
 .env
 .env.testing
-.env.production
+.env.local

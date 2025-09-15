@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="max-w-screen-2xl mx-auto px-6">
           <div className="py-16 grid grid-cols-1 xl:grid-cols-6 gap-4 xl:gap-20">
             <div className="xl:col-span-2 space-y-4">
-              <Image src="/logo.svg" width="32" height="32" />
+              <Image src="/logo.svg" width="32" height="32" alt="" />
               <p className="text-muted-foreground">{t.rich("websiteInfo")}</p>
               <div className="flex items-center gap-4">
                   <a href="#" aria-label="Github">

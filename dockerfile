@@ -51,4 +51,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["bun", "./server.js"]
+CMD ["bun", "./server.js", "--turbopack"]

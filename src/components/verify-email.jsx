@@ -16,6 +16,7 @@ export function VerifyEmail() {
   const { data: session, update: updateSession } = useSession();
   const t = useTranslations('VerifyEmailPage');
   
+  const [sessionUpdated, setSessionUpdated] = useState(false)
   const [verificationStatus, setVerificationStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState(t('verifyingMessage'));
 
@@ -53,7 +54,7 @@ export function VerifyEmail() {
       updateSession({ user: { status: 'active' } });
       setSessionUpdated(true);
     }
-  }, [verificationStatus, session, updateSession, sessionUpdated]);
+  }, [verificationStatus, session, updateSession, sessionUpdated, setSessionUpdated]);
 
   return (
     <div className="flex items-center justify-center py-24">
