@@ -5,7 +5,7 @@ WORKDIR /app
 
 # 复制 package 文件并用 npm 安装依赖
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+RUN npm install
 
 # 构建阶段 - 使用 npm
 FROM node:24-alpine AS builder
