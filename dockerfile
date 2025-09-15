@@ -1,58 +1,47 @@
+# ---------- Base Image ----------
 FROM oven/bun AS base
-
-# Install dependencies only when needed
-FROM base AS deps
-
 WORKDIR /app
 
-export CSS_TRANSFORMER_WASM=1
-
-# Install dependencies
+# ---------- Dependencies Stage ----------
+FROM base AS deps
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-# Rebuild the source code only when needed
+# ---------- Build Stage ----------
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Disable telemetry during the build
-ENV NEXT_TELEMETRY_DISABLED 1
-
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN bun run build
 
-# Production image, copy all the files and run next
+# ---------- Production Stage ----------
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+# 设置生产环境变量
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOST=0.0.0.0
 
-# Disable telemetry
-ENV NEXT_TELEMETRY_DISABLED 1
-
+# 创建非 root 用户
 RUN adduser --system --uid 1001 nextjs
 
+# 复制必要的文件
 COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:bun .next
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:bun /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:bun /app/.next/static ./.next/static
 
+# 确保 .next 缓存权限正确
+RUN mkdir -p .next/cache
+RUN chown -R nextjs:bun .next
+
+# 切换到非 root 用户
 USER nextjs
 
+# 暴露端口
 EXPOSE 3000
 
-ENV PORT 3000
-
-# Set hostname to localhost
-ENV HOSTNAME "0.0.0.0"
-
+# 入口命令
 CMD ["bun", "server.js", "--turbopack"]
