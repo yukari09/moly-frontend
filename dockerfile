@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install --arch=arm64 --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
