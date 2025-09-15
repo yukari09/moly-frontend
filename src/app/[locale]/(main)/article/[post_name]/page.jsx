@@ -77,19 +77,9 @@ export default async function ArticlePage({ params }) {
     <main className="bg-background">
       <article className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="flex flex-wrap gap-2 justify-center mb-4">
-            {post.category?.map((cat, index) => (
-                <Badge key={index} variant="secondary">{cat.name}</Badge>
-            ))}
-          </div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             {post.post_title}
           </h1>
-          {post.post_excerpt && (
-            <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-              {post.post_excerpt}
-            </p>
-          )}
           <div className="mt-8 flex justify-center items-center space-x-4 text-muted-foreground">
             <Avatar className="h-10 w-10">
                 <AvatarImage src={post.author?.avatar} />
@@ -101,6 +91,10 @@ export default async function ArticlePage({ params }) {
                 <time dateTime={post.inserted_at}>
                     {new Date(post.inserted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </time>
+                <span className="mx-2">•</span>
+                {post.category?.map((cat, index) => (
+                    <Badge key={index} variant="secondary">{cat.name}</Badge>
+                ))}
             </div>
           </div>
         </div>

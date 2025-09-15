@@ -52,7 +52,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: 1,
       file: {
-        url: urls.medium, // Use medium size for editor preview
+        url: urls.original, // Use medium size for editor preview
         urls: urls,       // Provide all sizes for the frontend to use later
         id: newPost.id,
         s3Key: s3Key,

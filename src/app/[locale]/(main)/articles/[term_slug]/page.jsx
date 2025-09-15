@@ -8,19 +8,17 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis
 } from "@/components/ui/pagination";
-import Link from "next/link";
+import { StructuredData } from "@/components/structured-data";
+import { generateTermPageMetadata, generateBreadcrumbJsonLd, getTermInfoBySlug } from "@/lib/seo";
 
 const POSTS_PER_PAGE = 9;
 
-/**
- * Fetches posts from Elasticsearch based on a term slug and pagination.
- * @param {string} termSlugWithPrefix - The slug with a prefix, e.g., 'cat-google' or 'tag-bing'.
- * @param {number} limit - The number of posts to fetch.
- * @param {number} offset - The starting offset for fetching posts.
- * @returns {Promise<{posts: any[], total: number, termName: string}>}
- */
+// Generate metadata by calling the helper function
+export async function generateMetadata({ params }) {
+  return generateTermPageMetadata({ params });
+}
+
 async function getPostsByTerm(termSlugWithPrefix, limit, offset) {
   if (!process.env.GRAPHQL_TENANT) {
     throw new Error("GRAPHQL_TENANT environment variable is not set.");
@@ -29,129 +27,98 @@ async function getPostsByTerm(termSlugWithPrefix, limit, offset) {
 
   let taxonomyField = "";
   let slug = "";
-  let termName = "";
 
   if (termSlugWithPrefix.startsWith('cat-')) {
     taxonomyField = "category.slug.keyword";
     slug = termSlugWithPrefix.substring(4);
-    termName = `Category: ${slug.charAt(0).toUpperCase() + slug.slice(1)}`;
   } else if (termSlugWithPrefix.startsWith('tag-')) {
     taxonomyField = "post_tag.slug.keyword";
     slug = termSlugWithPrefix.substring(4);
-    termName = `Tag: ${slug.charAt(0).toUpperCase() + slug.slice(1)}`;
   } else {
-    // If no prefix, we can decide to show all or nothing.
-    // Let's treat it as a 404 for now.
-    return { posts: [], total: 0, termName: "" };
+    return { posts: [], total: 0 };
   }
 
-  const esQuery = {
-    index: indexName,
-    size: limit,
-    from: offset,
-    query: {
-      bool: {
-        filter: [
-          { term: { post_status: "publish" } },
-          { term: { post_type: "post" } },
-          { term: { [taxonomyField]: slug } }
-        ]
-      }
-    },
-    sort: [
-      { "inserted_at": { "order": "desc" } }
-    ]
-  };
-
   try {
-    const response = await esClient.search(esQuery);
+    const response = await esClient.search({
+      index: indexName,
+      size: limit,
+      from: offset,
+      query: {
+        bool: {
+          filter: [
+            { term: { post_status: "publish" } },
+            { term: { post_type: "post" } },
+            { term: { [taxonomyField]: slug } }
+          ]
+        }
+      },
+      sort: [{ "inserted_at": { "order": "desc" } }]
+    });
     const posts = response.hits.hits.map(hit => hit._source);
     const total = response.hits.total.value;
-    return { posts, total, termName };
+    return { posts, total };
   } catch (error) {
     console.error("Elasticsearch query failed:", error);
-    return { posts: [], total: 0, termName };
+    return { posts: [], total: 0 };
   }
 }
 
-/**
- * Renders the pagination links based on the current state.
- * @param {{totalPages: number, currentPage: number, basePath: string}}
- */
 function ArticlePagination({ totalPages, currentPage, basePath }) {
   if (totalPages <= 1) return null;
-
-  const renderPageLinks = () => {
-    const links = [];
-    // Previous Button
-    if (currentPage > 1) {
-      links.push(
-        <PaginationItem key="prev">
-          <PaginationPrevious href={`${basePath}?page=${currentPage - 1}`} />
-        </PaginationItem>
-      );
-    }
-
-    // Page Number Buttons
-    for (let i = 1; i <= totalPages; i++) {
-        // Basic pagination logic: show first, last, current, and adjacent pages
-        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            links.push(
-                <PaginationItem key={i}>
-                    <PaginationLink href={`${basePath}?page=${i}`} isActive={i === currentPage}>
-                        {i}
-                    </PaginationLink>
-                </PaginationItem>
-            );
-        } else if (i === currentPage - 2 || i === currentPage + 2) {
-            // Add ellipsis
-            links.push(<PaginationItem key={`ellipsis-${i}`}><PaginationEllipsis /></PaginationItem>);
-        }
-    }
-
-    // Next Button
-    if (currentPage < totalPages) {
-      links.push(
-        <PaginationItem key="next">
-          <PaginationNext href={`${basePath}?page=${currentPage + 1}`} />
-        </PaginationItem>
-      );
-    }
-    return links;
-  };
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <Pagination className="mt-12">
       <PaginationContent>
-        {renderPageLinks()}
+        {currentPage > 1 && (
+          <PaginationItem>
+            <PaginationPrevious href={`${basePath}?page=${currentPage - 1}`} />
+          </PaginationItem>
+        )}
+        {pages.map(page => (
+          <PaginationItem key={page}>
+            <PaginationLink href={`${basePath}?page=${page}`} isActive={page === currentPage}>
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        {currentPage < totalPages && (
+          <PaginationItem>
+            <PaginationNext href={`${basePath}?page=${currentPage + 1}`} />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   );
 }
 
 export default async function ArticlesByTermPage({ params, searchParams }) {
-  const { term_slug } = params;
-  const currentPage = parseInt(searchParams.page || '1', 10);
+  const { term_slug, locale } = await params;
+  const { page } = await searchParams;
+  const currentPage = parseInt(page || '1', 10);
   const offset = (currentPage - 1) * POSTS_PER_PAGE;
 
-  const { posts, total, termName } = await getPostsByTerm(term_slug, POSTS_PER_PAGE, offset);
+  const [termInfo, { posts, total }] = await Promise.all([
+    getTermInfoBySlug(term_slug),
+    getPostsByTerm(term_slug, POSTS_PER_PAGE, offset)
+  ]);
 
-  if (!posts || posts.length === 0) {
-      // You might want a more specific message if the term exists but has no posts.
-      // For now, a simple 404 if no posts are found for the given term.
-      notFound();
+  if (!termInfo || total === 0) {
+    notFound();
   }
 
   const totalPages = Math.ceil(total / POSTS_PER_PAGE);
+  const breadcrumbData = generateBreadcrumbJsonLd({ locale, termInfo });
 
   return (
     <div className="min-h-screen bg-white">
+      <StructuredData data={breadcrumbData} />
       <main className="flex flex-1 flex-col">
         <section className="border-grid">
           <div className="container-wrapper">
             <div className="mx-auto flex flex-col items-center gap-2 py-8 text-center md:py-16 lg:py-20 xl:gap-4">
               <h1 className="text-primary leading-tighter max-w-2xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
-                {termName || "Articles"}
+                {`${termInfo.name}`}
               </h1>
             </div>
           </div>

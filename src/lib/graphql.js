@@ -9,6 +9,10 @@ import logger from "./logger";
  * @returns {Promise<any>} The `data` part of the GraphQL response.
  */
 async function _request(query, variables = {}, session = null, cacheConfig = null) {
+  const apiUrl = process.env.GRAPHQL_API_URL;
+  if (!apiUrl) {
+    throw new Error("GRAPHQL_API_URL is not defined in environment variables.");
+  }
   const secretKey = process.env.GRAPHQL_SECRET_KEY;
   if (!secretKey) {
     throw new Error("GRAPHQL_SECRET_KEY is not defined in environment variables.");
@@ -49,7 +53,7 @@ async function _request(query, variables = {}, session = null, cacheConfig = nul
     fetchOptions.cache = 'no-store';
   }
 
-  const res = await fetch(process.env.GRAPHQL_API_URL, fetchOptions);
+  const res = await fetch(apiUrl, fetchOptions);
 
   const data = await res.json();
 

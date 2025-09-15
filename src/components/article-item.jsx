@@ -20,9 +20,24 @@ function getImageUrlFromContent(postContent) {
     }
 }
 
+function getExcerptFromContent(postContent) {
+    if (!postContent || typeof postContent !== 'string') {
+        return null;
+    }
+    try {
+        const content = JSON.parse(postContent);
+        const imageBlock = content.blocks.find(block => block.type === 'paragraph');
+        return imageBlock ? imageBlock.data.text.url : null;
+    } catch (error) {
+        // console.error("Failed to parse post content for image:", error);
+        return null;
+    }
+}
+
 export function PostItem({ post, layout = 'vertical' }) {
     // 1. Get image URL from content, then fallback to a placeholder
-    const imageUrl = getImageUrlFromContent(post.post_content) || `/11.jpg`;
+    const imageUrl = getImageUrlFromContent(post.post_content) || `/post-cover.jpg`;
+    const excerpt = post.post_excerpt || getExcerptFromContent(post.post_content);
     const isHorizontal = layout === 'horizontal';
 
     return (
@@ -40,10 +55,10 @@ export function PostItem({ post, layout = 'vertical' }) {
                         src={imageUrl} 
                         alt={post.post_title} 
                         width={640} 
-                        height={360} 
+                        height={480} 
                         className={cn(
-                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-full",
-                            isHorizontal ? "aspect-[4/3]" : "aspect-[2/1]"
+                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto",
+                            isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
                         )}
                     />
                 </div>
@@ -57,14 +72,18 @@ export function PostItem({ post, layout = 'vertical' }) {
                             {new Date(post.inserted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </time>
                     </div>
-                    <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter group-hover:underline">
+                    <h3 className="text-primary line-clamp-3 leading-tighter text-lg font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter group-hover:underline">
                         {post.post_title}
                     </h3>
-                    <p className="line-clamp-2 text-muted-foreground flex-grow">
-                        {post.post_excerpt}
+                    <p className="hidden xl:line-clamp-2 text-muted-foreground">
+                        {excerpt}
                     </p>
                     {post.category && post.category.length > 0 && (
-                         <Badge variant="secondary">{post.category[0].name}</Badge>
+                        post.category.map((c,i) => {
+                            return (
+                                <Badge variant="secondary">{c.name}</Badge>
+                            )
+                        })
                     )}
                 </div>
             </article>

@@ -110,7 +110,7 @@ export default function Header({categories}) {
                         return null
                       }
                       return (
-                        <NavigationMenuItem>
+                        <NavigationMenuItem key={`nav-i-${index}`}>
                             <NavigationMenuLink asChild>
                               <Link href={`/articles/cat-${item.slug}`} className="font-medium capitalize" >{item.name}</Link>
                             </NavigationMenuLink>

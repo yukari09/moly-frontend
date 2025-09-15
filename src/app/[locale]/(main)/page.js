@@ -1,20 +1,56 @@
+import { getTranslations } from "next-intl/server";
 import { PostItem } from "@/components/article-item";
-import Link from "next/link";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import esClient from "@/lib/elasticsearch";
-import { ArrowRightCircle } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export const metadata = {
-  title: "Home | Moly's Blog",
-  description: "Welcome to Moly's Blog. Here we share our thoughts on web development, design, and more.",
-};
+export async function generateMetadata({ params }) {
+  const {locale} = await params;
+  const t = await getTranslations('WebSite');
+  const siteName = t('title');
+  const description = t('description');
+  const ogImageUrl = '/og-image.png'; 
+
+  return {
+    title: {
+      default: siteName,
+      template: `%s ${t('subfix')}`,
+    },
+    description: description,
+    openGraph: {
+      title: siteName,
+      description: description,
+      url: '/',
+      siteName: siteName,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: locale === 'zh' ? 'zh_CN' : 'en_US', 
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: siteName,
+      description: description,
+      images: [ogImageUrl],
+    },
+    alternates: {
+      canonical: '/',
+    },
+  };
+}
 
 async function getPostsFromES(limit = 10, offset = 0) {
     if (!process.env.GRAPHQL_TENANT) {
         throw new Error("GRAPHQL_TENANT environment variable is not set.");
     }
     const indexName = `${process.env.GRAPHQL_TENANT}_post`;
+
+    let filters = [{ term: { post_status: "publish" } },{ term: { post_type: "post" } }]
 
     try {
         const response = await esClient.search({
@@ -23,10 +59,7 @@ async function getPostsFromES(limit = 10, offset = 0) {
             from: offset,
             query: {
                 bool: {
-                    filter: [
-                        { term: { post_status: "publish" } },
-                        { term: { post_type: "post" } }
-                    ]
+                    filter: filters
                 }
             },
             sort: [
@@ -42,12 +75,77 @@ async function getPostsFromES(limit = 10, offset = 0) {
 }
 
 
+async function getAggregatedPostsFromES(excludedIds) {
+    if (!process.env.GRAPHQL_TENANT) {
+        throw new Error("GRAPHQL_TENANT environment variable is not set.");
+    }
+    const indexName = `${process.env.GRAPHQL_TENANT}_post`;
+
+    let filters = [
+        { term: { post_status: "publish" } },
+        { term: { post_type: "post" } }
+    ];
+
+    try {
+        const response = await esClient.search({
+            index: indexName,
+            size: 0,
+            query: {
+                bool: {
+                    filter: filters,
+                    must_not: {
+                        ids: {
+                            values: excludedIds
+                        }
+                    }
+                }
+            },
+            aggs: {
+                posts_by_category: { 
+                    terms: {
+                        field: "category.slug.keyword",
+                        size: 15
+                    },
+                    aggs: {
+                        latest_posts: {  
+                            top_hits: {
+                                size: 3, 
+                                sort: [
+                                    { "inserted_at": { "order": "desc" } }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const buckets = response.aggregations.posts_by_category.buckets;
+
+        const aggregatedData = buckets.map(bucket => {
+            const categorySlug = bucket.key;
+            const latestPosts = bucket.latest_posts.hits.hits.map(hit => hit._source);
+            return {
+                category_slug: categorySlug,
+                post_count: bucket.doc_count,
+                posts: latestPosts
+            };
+        });
+
+        return aggregatedData;
+    } catch (error) {
+        console.error("Elasticsearch aggregation query failed:", error);
+        return [];
+    }
+}
+
 export default async function Home() {
-    const posts = await getPostsFromES(9);
+    const posts = await getPostsFromES(4);
 
     const featuredPost = posts.length > 0 ? posts[0] : null;
-    const otherFeaturedPosts = posts.length > 1 ? posts.slice(1, 3) : [];
-    const latestPosts = posts.length > 3 ? posts.slice(3) : [];
+    const otherFeaturedPosts = posts.length > 1 ? posts.slice(1, 4) : [];
+    const excludedIds = posts.map((p) => {return p.id})
+    const postByCat = await getAggregatedPostsFromES(excludedIds)
 
     return (
       <div className="min-h-screen bg-white">
@@ -66,51 +164,37 @@ export default async function Home() {
           </section>
 
           {posts.length > 0 && (
-            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-12">
-              <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Featured Posts</h2>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-8">
-                {featuredPost && <PostItem post={featuredPost} />}
-                <div className="flex flex-col gap-8">
-                  {otherFeaturedPosts.map(post => (
-                      <Link key={post.id} href={`/article/${post.post_name}`} className="block group">
-                        <article className="flex gap-4">
-                            <div className="overflow-hidden rounded-sm w-1/3">
-                                <Image src={post.featured_image || '/14.jpg'} alt={post.post_title} width={320} height={180} className="aspect-[2/1] object-cover group-hover:scale-105 transition-transform duration-300" />
-                            </div>
-                            <div className="space-y-2 w-2/3">
-                                <div className="text-sm text-muted-foreground font-medium">
-                                    <time dateTime={post.inserted_at}>
-                                        {new Date(post.inserted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                    </time>
-                                </div>
-                                <h3 className="text-primary leading-tighter text-lg font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-xl xl:tracking-tighter group-hover:underline">
-                                    {post.post_title}
-                                </h3>
-                                <p className="line-clamp-2 text-muted-foreground">
-                                    {post.post_excerpt}
-                                </p>
-                                {post.category && post.category.length > 0 && (
-                                    <Badge variant="secondary">{post.category[0].name}</Badge>
-                                )}
-                            </div>
-                        </article>
-                      </Link>
-                  ))}
-                </div>
+            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-8 xl:my-12">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-4  xl:mt-8">
+                {featuredPost && <PostItem key={featuredPost.id} post={featuredPost} />}
+                {
+                  otherFeaturedPosts && otherFeaturedPosts.length > 0 &&
+                  <div className="flex flex-col gap-8">
+                    {otherFeaturedPosts.map(post => (
+                        <PostItem layout="horizontal"  key={post.id} post={post} />
+                    ))}
+                  </div>
+                }
               </div>
             </section>
           )}
 
-          {latestPosts.length > 0 && (
-            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-28 mb-8">
-              <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">Latest Posts</h2>
-              <div className="grid grid-cols-3 gap-8 mt-8">
-                {latestPosts.map(post => (
+          {postByCat.map((item, i) => {
+            const first = item.posts[0];
+            return (
+            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-8 xl:my-12" >
+              <div className="flex items-center justify-between">
+                <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">{first.category[0].name}</h2>
+                <Link href={`/articles/cat-${first.category[0].slug}`}><Button variant="secondary" size="sm">More</Button></Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 xl:mt-8">
+                {item.posts.map(post => (
                   <PostItem key={post.id} post={post} />
                 ))}
               </div>
             </section>
-          )}
+            )
+          })}
         </main>
       </div>
     );
