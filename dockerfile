@@ -1,42 +1,49 @@
-# 使用 Node.js 镜像进行构建阶段
-FROM node:24-alpine AS deps
+# -----------------------------------------------------------------------------
+# This Dockerfile.bun is specifically configured for projects using Bun
+# For npm/pnpm or yarn, refer to the Dockerfile instead
+# -----------------------------------------------------------------------------
+
+# Use Bun's official image
+FROM oven/bun AS base
 
 WORKDIR /app
 
-# 复制 package 文件并用 npm 安装依赖
-COPY package.json package-lock.json* ./
-RUN npm install
+# Install dependencies with bun
+FROM base AS deps
+COPY package.json bun.lock* ./
+RUN bun install --no-save --frozen-lockfile
 
-# 构建阶段 - 使用 npm
-FROM node:24-alpine AS builder
+# Rebuild the source code only when needed
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 禁用遥测
-ENV NEXT_TELEMETRY_DISABLED=1
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-# 用 npm 构建项目
-RUN npm run build
+RUN bun run build
 
-# 生产运行阶段 - 使用 Bun
-FROM oven/bun AS runner
+# Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-# 创建用户
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME="0.0.0.0"
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
-# 设置正确的权限
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# 复制构建产物
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
@@ -44,8 +51,4 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-# 用 bun 运行服务器
-CMD ["bun", "server.js"]
+CMD ["bun", "./server.js"]
