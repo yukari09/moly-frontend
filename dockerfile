@@ -20,6 +20,13 @@ COPY . .
 # Disable telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  python3 \
+  pkg-config \
+  libssl-dev \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN bun run build
 
 # Production image, copy all the files and run next
