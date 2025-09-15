@@ -16,6 +16,7 @@ export function VerifyEmail() {
   const { data: session, update: updateSession } = useSession();
   const t = useTranslations('VerifyEmailPage');
   
+  const [sessionUpdated, setSessionUpdated] = useState(false)
   const [verificationStatus, setVerificationStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState(t('verifyingMessage'));
 
@@ -47,17 +48,13 @@ export function VerifyEmail() {
     verifyToken();
   }, [token, t]);
 
+  // Effect 2: Update the user's session after successful verification.
   useEffect(() => {
-    if (verificationStatus === 'success' && session?.user && session.user.status !== 'active') {
-      updateSession({
-        user: {
-          ...session.user,
-          status: 'active',
-          roles: ["user"],
-        },
-      });
+    if (verificationStatus === 'success' && session && session.user?.status !== 'active' && !sessionUpdated) {
+      updateSession({ user: { status: 'active' } });
+      setSessionUpdated(true);
     }
-  }, [verificationStatus, session, updateSession]);
+  }, [verificationStatus, session, updateSession, sessionUpdated, setSessionUpdated]);
 
   return (
     <div className="flex items-center justify-center py-24">

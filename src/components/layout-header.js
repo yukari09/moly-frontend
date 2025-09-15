@@ -92,6 +92,7 @@ export default function Header({categories}) {
                 src="/logo.svg"
                 height="32"
                 width="32"
+                alt="Logo"
               />
             </Link>
 
