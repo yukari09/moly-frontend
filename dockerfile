@@ -5,6 +5,8 @@ FROM base AS deps
 
 WORKDIR /app
 
+export CSS_TRANSFORMER_WASM=1
+
 # Install dependencies
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
