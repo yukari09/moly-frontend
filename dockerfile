@@ -7,7 +7,8 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json bun.lock ./
-RUN bun install --arch=arm64 --frozen-lockfile
+RUN npm rebuild lightningcss --arch=arm64
+RUN bun install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
