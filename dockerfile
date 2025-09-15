@@ -20,7 +20,7 @@ COPY . .
 # Disable telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN bun run build --turbo
+RUN bun run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -53,4 +53,4 @@ ENV PORT 3000
 # Set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["bun", "server.js"]
+CMD ["bun", "server.js", "--turbopack"]
