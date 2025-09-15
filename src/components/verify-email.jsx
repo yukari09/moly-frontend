@@ -47,13 +47,17 @@ export function VerifyEmail() {
     verifyToken();
   }, [token, t]);
 
-  // Effect 2: Update the user's session after successful verification.
   useEffect(() => {
-    if (verificationStatus === 'success' && session && session.user?.status !== 'active' && !sessionUpdated) {
-      updateSession({ user: { status: 'active' } });
-      setSessionUpdated(true);
+    if (verificationStatus === 'success' && session?.user && session.user.status !== 'active') {
+      updateSession({
+        user: {
+          ...session.user,
+          status: 'active',
+          roles: ["user"],
+        },
+      });
     }
-  }, [verificationStatus, session, updateSession, sessionUpdated]);
+  }, [verificationStatus, session, updateSession]);
 
   return (
     <div className="flex items-center justify-center py-24">

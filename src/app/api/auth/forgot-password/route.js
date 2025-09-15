@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyTurnstileToken } from '@/lib/turnstile';
 import logger from '@/lib/logger';
 import { emailRateLimiter } from '@/lib/ratelimiter';
-import * as gql from '@/lib/graphql';
+import { sendEmail } from "@/lib/email";
+import { ResetPasswordTemplate } from "@/emails/ResetPasswordTemplate";
 import { getClientRealIp } from '@/lib/request';
 
 export async function POST(request) {
@@ -17,7 +18,11 @@ export async function POST(request) {
     const { email, turnstileToken } = await request.json();
     await verifyTurnstileToken(turnstileToken);
 
-    await gql.sendResetPasswordEmail(email);
+    await sendEmail({
+      to: email,
+      subject: `Reset your password ${process.env.APP_NAME}`,
+      react: <ResetPasswordTemplate name={userName} verificationLink={verificationLink} />
+    });
 
     // Always return a generic success message.
     return NextResponse.json({ message: "If an account with that email exists, a password reset link has been sent." });
