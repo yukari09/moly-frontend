@@ -16,6 +16,7 @@ RUN bun install --no-save --frozen-lockfile
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+RUN bunx lightningcss
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

@@ -11,8 +11,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
-    "postinstall": "bunx lightningcss-native-install"
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.863.0",
