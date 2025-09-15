@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import EditorJSRenderer from "@/components/editorjs-renderer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import logger from "@/lib/logger";
 
 // Helper function to fetch a single post from Elasticsearch by its slug
 async function getPostBySlug(slug) {
     if (!process.env.GRAPHQL_TENANT) {
-        throw new Error("GRAPHQL_TENANT environment variable is not set.");
+        logger.error("GRAPHQL_TENANT environment variable is not set.");
     }
     const indexName = `${process.env.GRAPHQL_TENANT}_post`;
 

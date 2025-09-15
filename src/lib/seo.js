@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import esClient from "@/lib/elasticsearch";
+import logger from "./logger";
 
 // --- Structured Data Generators ---
 
@@ -37,7 +38,7 @@ export function generateBreadcrumbJsonLd({ locale, termInfo }) {
 
 export async function getTermInfoBySlug(termSlugWithPrefix) {
   if (!process.env.GRAPHQL_TENANT) {
-    throw new Error("GRAPHQL_TENANT environment variable is not set.");
+    logger.error("GRAPHQL_TENANT environment variable is not set.");
   }
   const indexName = `${process.env.GRAPHQL_TENANT}_post`;
 

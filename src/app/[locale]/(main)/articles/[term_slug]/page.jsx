@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { StructuredData } from "@/components/structured-data";
 import { generateTermPageMetadata, generateBreadcrumbJsonLd, getTermInfoBySlug } from "@/lib/seo";
+import logger from "@/lib/logger";
 
 const POSTS_PER_PAGE = 9;
 
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 async function getPostsByTerm(termSlugWithPrefix, limit, offset) {
   if (!process.env.GRAPHQL_TENANT) {
-    throw new Error("GRAPHQL_TENANT environment variable is not set.");
+    logger.error("GRAPHQL_TENANT environment variable is not set.");
   }
   const indexName = `${process.env.GRAPHQL_TENANT}_post`;
 

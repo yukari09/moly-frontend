@@ -46,4 +46,4 @@ bun.lockb
 .env.local
 .env
 .env.testing
-.env.production
+.env.local

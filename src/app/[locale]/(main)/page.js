@@ -3,6 +3,7 @@ import { PostItem } from "@/components/article-item";
 import esClient from "@/lib/elasticsearch";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import logger from "@/lib/logger";
 
 export async function generateMetadata({ params }) {
   const {locale} = await params;
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }) {
 
 async function getPostsFromES(limit = 10, offset = 0) {
     if (!process.env.GRAPHQL_TENANT) {
-        throw new Error("GRAPHQL_TENANT environment variable is not set.");
+        logger.error("GRAPHQL_TENANT environment variable is not set.");
     }
     const indexName = `${process.env.GRAPHQL_TENANT}_post`;
 
@@ -77,7 +78,7 @@ async function getPostsFromES(limit = 10, offset = 0) {
 
 async function getAggregatedPostsFromES(excludedIds) {
     if (!process.env.GRAPHQL_TENANT) {
-        throw new Error("GRAPHQL_TENANT environment variable is not set.");
+        logger.error("GRAPHQL_TENANT environment variable is not set.");
     }
     const indexName = `${process.env.GRAPHQL_TENANT}_post`;
 

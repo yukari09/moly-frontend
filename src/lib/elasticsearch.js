@@ -1,13 +1,14 @@
+import logger from './logger';
 import { Client } from '@elastic/elasticsearch';
 
 if (!process.env.ELASTICSEARCH_NODE) {
-  throw new Error('ELASTICSEARCH_NODE environment variable is not set.');
+  logger.error('ELASTICSEARCH_NODE environment variable is not set.');
 }
 if (!process.env.ELASTICSEARCH_USERNAME) {
-  throw new Error('ELASTICSEARCH_USERNAME environment variable is not set.');
+  logger.error('ELASTICSEARCH_USERNAME environment variable is not set.');
 }
 if (!process.env.ELASTICSEARCH_PASSWORD) {
-  throw new Error('ELASTICSEARCH_PASSWORD environment variable is not set.');
+  logger.error('ELASTICSEARCH_PASSWORD environment variable is not set.');
 }
 
 const clientSingleton = () => {
