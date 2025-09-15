@@ -19,10 +19,5 @@ jobs:
 
       - name: Build and Push Docker image (native arch)
         run: |
-          docker build \
-          --no-cache \
-          --build-arg NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAAAABLfdqrrH9bmKIai \
-          --build-arg NEXT_PUBLIC_SITE_URL=https://dattk.com \
-          --build-arg NEXT_PUBLIC_IMAGE_HOST=https://image.moly.onl \          
-          -t ${{ secrets.DOCKER_USERNAME }}/moly:${{ github.ref_name }} .
+          docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/moly:${{ github.ref_name }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/moly:${{ github.ref_name }}

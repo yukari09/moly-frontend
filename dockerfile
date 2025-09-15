@@ -15,18 +15,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Define build-time arguments for public environment variables
-# These arguments are passed during the 'docker build' command
-ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
-ARG NEXT_PUBLIC_SITE_URL
-ARG NEXT_PUBLIC_IMAGE_HOST
-
-# Set environment variables for the build process
-# The values are taken from the ARG variables above
-ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
-ENV NEXT_PUBLIC_IMAGE_HOST=${NEXT_PUBLIC_IMAGE_HOST}
-
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Disable telemetry during the build
