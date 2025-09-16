@@ -1,14 +1,10 @@
 {
   "WebSite": {
-    "title": "Moly's Blog",
-    "subfix": " - moly",
-    "name": "moly",
-    "description": "New moly supported website.",
-    "websiteInfo": "Features productivity, tips, inspiration and strategies for massive profits. Find out how to set up a successful blog or how to make yours even better!"
-  },
-  "HomePage": {
-    "title": "Website Gallery",
-    "about": "Go to the about page"
+    "title": "Discover the Beauty of World Cultures",
+    "subfix": " - Dattk",
+    "name": "Dattk",
+    "description": "At Dattk, we invite you to embark on a journey beyond borders. Discover breathtaking destinations, experience diverse traditions, and connect with people who make our world extraordinary.",
+    "websiteInfo": "Discover the beauty of world cultures with Dattk. Explore destinations, connect with local traditions, and experience unforgettable journeys across the globe."
   },
   "Header": {
     "profile": "Profile",
