@@ -10,6 +10,7 @@ import Footer from "@/components/layout-footer";
 import { listTermsOffset } from "@/lib/graphql";
 import { SharedDataProvider } from "@/components/shared-data-provider";
 import { generateRootMetadata } from "@/lib/seo";
+import Script from 'next/script';
 
 const geist = Geist({
   subsets: ["latin"],
@@ -61,6 +62,12 @@ export default async function RootLayout({ children, params }) {
             </SharedDataProvider>
           </NextIntlClientProvider>
         </AuthProvider>
+        {process.env.NODE_ENV === "production" &&  <Script
+          strategy="afterInteractive"
+          defer
+          data-domain={new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname}
+          src="https://analytics.moly.onl/js/script.js"
+        />}
       </body>
     </html>
   );
