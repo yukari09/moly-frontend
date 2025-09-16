@@ -11,8 +11,13 @@ const nextConfig = {
                 protocol: 'http',
                 hostname: '192.168.6.2',
             },
+            {
+                protocol: "https",
+                hostname: "image.moly.onl"
+            }
         ],
     },
+    output: 'standalone'
 };
  
 const withNextIntl = createNextIntlPlugin();
