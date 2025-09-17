@@ -3,33 +3,18 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import logger from '@/lib/logger';
 import * as gql from '@/lib/graphql';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { uploadFile } from '@/lib/minio';
 import { buildImagorUrl } from '@/lib/imagor';
-import crypto from "crypto";
 
-// --- Start of S3/MinIO Configuration ---
-const s3Client = new S3Client({
-  endpoint: process.env.MINIO_ENDPOINT,
-  region: process.env.MINIO_REGION,
-  credentials: {
-    accessKeyId: process.env.MINIO_ACCESS_KEY,
-    secretAccessKey: process.env.MINIO_SECRET_KEY,
-  },
-  forcePathStyle: true, // Required for MinIO
-});
-
-const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
-
-const allowedImageTypes = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-};
-
+// Define validation constants
+const allowedImageTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+];
 const MAX_AVATAR_SIZE_MB = 2;
 const MAX_AVATAR_SIZE_BYTES = MAX_AVATAR_SIZE_MB * 1024 * 1024;
-// --- End of S3/MinIO Configuration ---
-
 
 export async function POST(request) {
   const session = await getServerSession(authOptions);
@@ -46,8 +31,8 @@ export async function POST(request) {
     const avatarFile = formData.get('avatar');
     if (avatarFile && typeof avatarFile.size !== 'undefined' && avatarFile.size > 0) {
       // Validate file type
-      if (!allowedImageTypes[avatarFile.type]) {
-        return NextResponse.json({ error: `Invalid content type. Only ${Object.keys(allowedImageTypes).join(', ')} are allowed.` }, { status: 400 });
+      if (!allowedImageTypes.includes(avatarFile.type)) {
+        return NextResponse.json({ error: `Invalid content type. Only ${allowedImageTypes.join(', ')} are allowed.` }, { status: 400 });
       }
 
       // Validate file size
@@ -55,23 +40,11 @@ export async function POST(request) {
         return NextResponse.json({ error: `File size cannot exceed ${MAX_AVATAR_SIZE_MB}MB.` }, { status: 400 });
       }
 
-      const fileExtension = allowedImageTypes[avatarFile.type];
-      const userId = session.user.id;
-      const fileName = generateFileName();
-      const originalImagePath = `avatars/${userId}/${fileName}.${fileExtension}`;
-      
-      // Upload to S3/MinIO
-      const fileBuffer = Buffer.from(await avatarFile.arrayBuffer());
-      const command = new PutObjectCommand({
-        Bucket: process.env.MINIO_BUCKET_NAME,
-        Key: originalImagePath,
-        ContentType: avatarFile.type,
-        Body: fileBuffer,
-      });
-      await s3Client.send(command);
+      // Upload using the library function
+      const s3Key = await uploadFile(avatarFile);
 
-      // Pre-calculate the final, processed Imagor URL
-      const finalAvatarUrl = buildImagorUrl(originalImagePath, {
+      // Build the final URL
+      const finalAvatarUrl = buildImagorUrl(s3Key, {
         width: 128,
         height: 128,
         smart: true,
@@ -100,7 +73,6 @@ export async function POST(request) {
     logger.info("Updating user profile with metadata:", userMeta);
 
     if (userMeta.length === 0) {
-        // This case should ideally not be hit if form is submitted, but as a safeguard:
         return NextResponse.json({ message: 'No update data provided.' }, { status: 200 });
     }
 

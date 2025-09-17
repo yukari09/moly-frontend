@@ -104,7 +104,7 @@ export default function ProfilePage() {
     try {
       const formData = new FormData();
 
-      // Append form values
+      // Append form values from react-hook-form
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value);
       });
@@ -123,7 +123,7 @@ export default function ProfilePage() {
 
       const res = await fetch('/api/user/update', {
         method: 'POST',
-        // The browser will automatically set the 'Content-Type' for FormData
+        // The browser will automatically set the 'Content-Type' header for FormData
         body: formData,
       });
 
