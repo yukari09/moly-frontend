@@ -78,13 +78,15 @@ export function PostItem({ post, layout = 'vertical' }) {
                     <p className="hidden xl:line-clamp-2 text-muted-foreground">
                         {excerpt}
                     </p>
-                    {post.category && post.category.length > 0 && (
-                        post.category.map((c,i) => {
-                            return (
-                                <Badge variant="secondary">{c.name}</Badge>
-                            )
-                        })
-                    )}
+                    <div className="flex items-center gap-1">
+                        {post.category && post.category.length > 0 && (
+                            post.category.map((c,i) => {
+                                return (
+                                    <Badge variant="secondary">{c.name}</Badge>
+                                )
+                            })
+                        )}
+                    </div>
                 </div>
             </article>
         </Link>
