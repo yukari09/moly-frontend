@@ -36,16 +36,20 @@ const BlockRenderer = ({ block }) => {
       );
 
     case 'image':
+      const width = block.data.file.width || 800;
+      const height = block.data.file.height || 600;
       return (
         <figure className="flex flex-col items-center">
-          <div className="relative w-full max-w-4xl h-auto">
-             <Image 
-                src={block.data.file.url} 
-                alt={block.data.caption || 'Image'} 
-                width={block.data.file.width || 800} 
-                height={block.data.file.height || 600}
-                className="rounded-md object-contain"
-             />
+          <div
+            className="relative w-full max-w-4xl overflow-hidden rounded-md"
+            style={{ aspectRatio: `${width} / ${height}` }}
+          >
+            <Image
+              src={block.data.file.url}
+              alt={block.data.caption || 'Image'}
+              fill
+              className="object-contain"
+            />
           </div>
           {block.data.caption && <figcaption className="mt-2 text-sm text-center text-muted-foreground">{block.data.caption}</figcaption>}
         </figure>

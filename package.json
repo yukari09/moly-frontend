@@ -65,6 +65,7 @@
     "embla-carousel-react": "^8.6.0",
     "emblor": "^1.4.8",
     "fzf": "0.5.2",
+    "image-size": "^2.0.2",
     "input-otp": "^1.4.2",
     "ioredis": "^5.7.0",
     "lightningcss": "^1.30.1",
