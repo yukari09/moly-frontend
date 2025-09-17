@@ -86,8 +86,11 @@ export default function ProfilePage() {
   const handleAvatarChange = (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error(t('imageTooLargeError'));
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error(t('imageTooLargeError', { size: 2 }));
+        if (avatarFileRef.current) {
+          avatarFileRef.current.value = "";
+        }
         return;
       }
       const reader = new FileReader();
@@ -99,50 +102,45 @@ export default function ProfilePage() {
   const onSubmit = async (values) => {
     const avatarFile = avatarFileRef.current?.files?.[0];
     try {
-      let finalAvatarUrl = null;
+      const formData = new FormData();
 
+      // Append form values from react-hook-form
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      // Append avatar file if it exists
       if (avatarFile) {
-        const signedUrlRes = await fetch('/api/user/avatar/request-upload-url', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contentType: avatarFile.type }),
-        });
-        if (!signedUrlRes.ok) throw new Error(t('getUploadUrlError'));
-        const resData = await signedUrlRes.json();
-        finalAvatarUrl = resData.finalAvatarUrl;
-
-        const uploadRes = await fetch(resData.signedUrl, {
-          method: 'PUT',
-          body: avatarFile,
-          headers: { 'Content-Type': avatarFile.type },
-        });
-        if (!uploadRes.ok) throw new Error(t('uploadAvatarError'));
+        // A final client-side size check before uploading
+        if (avatarFile.size > 2 * 1024 * 1024) {
+          toast.error(t('imageTooLargeError', { size: 2 }));
+          return;
+        }
+        formData.append('avatar', avatarFile);
       }
 
-      const userMetaPayload = Object.entries(values).map(([key, value]) => ({ metaKey: key, metaValue: value }));
-      if (finalAvatarUrl) {
-        userMetaPayload.push({ metaKey: "avatar", metaValue: finalAvatarUrl });
-      }
-      if (!hasChangedUsername && values.username !== originalUsername) {
-        userMetaPayload.push({ metaKey: "has_been_changed_username", metaValue: "true" });
-      }
-
-      logger.info("Submitting profile update:", userMetaPayload);
+      logger.info("Submitting profile update with FormData...");
 
       const res = await fetch('/api/user/update', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userMetaPayload),
+        // The browser will automatically set the 'Content-Type' header for FormData
+        body: formData,
       });
 
       const result = await res.json();
-      if (!res.ok || result.error) throw new Error(result.error || t('unknownError'));
+      if (!res.ok || result.error) {
+        throw new Error(result.error || t('unknownError'));
+      }
 
       const updatedUserMeta = result.user.userMeta;
       await updateSession({ user: { userMeta: updatedUserMeta } });
 
       toast.success(t('updateSuccess'));
       setAvatarPreview(null);
+      // Reset the file input to allow re-uploading the same file if needed
+      if (avatarFileRef.current) {
+        avatarFileRef.current.value = "";
+      }
       form.reset(values);
 
     } catch (error) {
