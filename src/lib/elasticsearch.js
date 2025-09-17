@@ -1,4 +1,4 @@
-import { Client } from '@elastic/elasticsearch';
+import { Client, HttpConnection } from '@elastic/elasticsearch';
 
 if (!process.env.ELASTICSEARCH_NODE) {
   throw new Error('ELASTICSEARCH_NODE environment variable is not set.');
@@ -13,6 +13,7 @@ if (!process.env.ELASTICSEARCH_PASSWORD) {
 const clientSingleton = () => {
   return new Client({
     node: process.env.ELASTICSEARCH_NODE,
+    Connection: HttpConnection,
     auth: {
       username: process.env.ELASTICSEARCH_USERNAME,
       password: process.env.ELASTICSEARCH_PASSWORD,
