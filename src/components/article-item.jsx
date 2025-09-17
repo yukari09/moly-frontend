@@ -26,8 +26,8 @@ function getExcerptFromContent(postContent) {
     }
     try {
         const content = JSON.parse(postContent);
-        const imageBlock = content.blocks.find(block => block.type === 'paragraph');
-        return imageBlock ? imageBlock.data.text.url : null;
+        const paragraphBlock = content.blocks.find(block => block.type === 'paragraph');
+        return paragraphBlock ? paragraphBlock.data.text : null;
     } catch (error) {
         // console.error("Failed to parse post content for image:", error);
         return null;
@@ -48,18 +48,17 @@ export function PostItem({ post, layout = 'vertical' }) {
             )}>
                 {/* Image Container */}
                 <div className={cn(
-                    "overflow-hidden rounded-sm",
-                    isHorizontal ? "w-1/3" : "w-full"
+                    "overflow-hidden rounded-sm relative",
+                    isHorizontal ? "w-1/3" : "w-full",
+                    isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
                 )}>
-                    <Image 
-                        src={imageUrl} 
-                        alt={post.post_title} 
-                        width={640} 
-                        height={480} 
-                        className={cn(
-                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto",
-                            isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
-                        )}
+                    <Image
+                        src={imageUrl}
+                        alt={post.post_title}
+                        fill
+                        loading="lazy"
+                        placeholder="empty"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                 </div>
                 {/* Text Content Container */}
@@ -78,15 +77,13 @@ export function PostItem({ post, layout = 'vertical' }) {
                     <p className="hidden xl:line-clamp-2 text-muted-foreground">
                         {excerpt}
                     </p>
-                    <div className="flex items-center gap-1">
-                        {post.category && post.category.length > 0 && (
-                            post.category.map((c,i) => {
-                                return (
-                                    <Badge variant="secondary">{c.name}</Badge>
-                                )
-                            })
-                        )}
-                    </div>
+                    {post.category && post.category.length > 0 && (
+                        post.category.map((c,i) => {
+                            return (
+                                <Badge variant="secondary">{c.name}</Badge>
+                            )
+                        })
+                    )}
                 </div>
             </article>
         </Link>
