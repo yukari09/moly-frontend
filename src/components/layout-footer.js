@@ -5,10 +5,10 @@ import {useTranslations} from 'next-intl';
 
 
 const footerLinks = {
-    "Products": ["Pro", "Teams", "Pricing", "Vercel/Ship", "Documentation"],
-    "Resources": ["Next.js", "Examples", "Integrations", "Guides", "Blog"],
-    "Company": ["Home", "About", "Careers", "Contact Us"],
-    "Legal": ["Privacy Policy", "Terms of Service"],
+    "Products": [
+      {"Echo Ai": "https://echo.dattk.com/"},
+      {"Traductor": "https://traductor-castella-catala.dattk.com"}
+    ],
   }
 
 export default function Footer() {
@@ -35,11 +35,16 @@ export default function Footer() {
                 <div key={title}>
                   <h4 className="font-semibold text-primary">{title}</h4>
                   <ul className="mt-4 space-y-3">
-                    {links.map(link => (
-                      <li key={link}>
-                        <a href="#" className="text-muted-foreground">{link}</a>
-                      </li>
-                    ))}
+                    {links.map((linkObj, i) => {
+                      const [label, href] = Object.entries(linkObj)[0];
+                      return (
+                        <li key={i}>
+                          <Link href={href} className="text-muted-foreground">
+                            {label}
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
