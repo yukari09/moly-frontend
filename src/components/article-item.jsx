@@ -48,17 +48,20 @@ export function PostItem({ post, layout = 'vertical' }) {
             )}>
                 {/* Image Container */}
                 <div className={cn(
-                    "overflow-hidden rounded-sm relative",
-                    isHorizontal ? "w-1/3" : "w-full",
-                    isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
+                    "overflow-hidden rounded-sm",
+                    isHorizontal ? "w-1/3" : "w-full"
                 )}>
-                    <Image
-                        src={imageUrl}
-                        alt={post.post_title}
-                        fill
+                    <Image 
+                        src={imageUrl} 
+                        alt={post.post_title} 
+                        width={640} 
+                        height={480} 
                         loading="lazy"
                         placeholder="empty"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className={cn(
+                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto",
+                            isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
+                        )}
                     />
                 </div>
                 {/* Text Content Container */}
