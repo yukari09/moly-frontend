@@ -1,14 +1,13 @@
-import logger from './logger';
 import { Client } from '@elastic/elasticsearch';
 
 if (!process.env.ELASTICSEARCH_NODE) {
-  logger.error('ELASTICSEARCH_NODE environment variable is not set.');
+  throw new Error('ELASTICSEARCH_NODE environment variable is not set.');
 }
 if (!process.env.ELASTICSEARCH_USERNAME) {
-  logger.error('ELASTICSEARCH_USERNAME environment variable is not set.');
+  throw new Error('ELASTICSEARCH_USERNAME environment variable is not set.');
 }
 if (!process.env.ELASTICSEARCH_PASSWORD) {
-  logger.error('ELASTICSEARCH_PASSWORD environment variable is not set.');
+  throw new Error('ELASTICSEARCH_PASSWORD environment variable is not set.');
 }
 
 const clientSingleton = () => {
@@ -26,9 +25,11 @@ const clientSingleton = () => {
   });
 };
 
-const globalForElastic = globalThis;
-const client = globalForElastic.elasticClient ?? clientSingleton();
+// const globalForElastic = globalThis;
+// const client = globalForElastic.elasticClient ?? clientSingleton();
+
+const client = clientSingleton();
 
 export default client;
 
-if (process.env.NODE_ENV !== 'production') globalForElastic.elasticClient = client;
+// if (process.env.NODE_ENV !== 'production') globalForElastic.elasticClient = client;
