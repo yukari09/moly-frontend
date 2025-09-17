@@ -17,19 +17,17 @@ const clientSingleton = () => {
       username: process.env.ELASTICSEARCH_USERNAME,
       password: process.env.ELASTICSEARCH_PASSWORD,
     },
-    // If you are using a self-signed certificate with a local instance,
-    // you might need to uncomment the following lines:
     // tls: {
     //   rejectUnauthorized: false
     // }
   });
 };
 
-// const globalForElastic = globalThis;
-// const client = globalForElastic.elasticClient ?? clientSingleton();
-
-const client = clientSingleton();
+const globalForElastic = globalThis;
+const client = globalForElastic.elasticClient ?? clientSingleton();
 
 export default client;
 
-// if (process.env.NODE_ENV !== 'production') globalForElastic.elasticClient = client;
+if (process.env.NODE_ENV !== 'production') {
+  globalForElastic.elasticClient = client;
+}
