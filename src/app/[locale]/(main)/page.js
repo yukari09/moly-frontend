@@ -165,7 +165,7 @@ export default async function Home() {
           </section>
 
           {posts.length > 0 && (
-            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-8 xl:my-12">
+            <section className="max-w-screen-2xl xl:mx-auto px-4 sm:px-6 mt-8 xl:my-12">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-4  xl:mt-8">
                 {featuredPost && <PostItem key={featuredPost.id} post={featuredPost} />}
                 {
@@ -183,7 +183,7 @@ export default async function Home() {
           {postByCat.map((item, i) => {
             const first = item.posts[0];
             return (
-            <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 mt-8 xl:my-12" >
+            <section className="max-w-screen-2xl xl:mx-auto px-4 sm:px-6 mt-8 xl:my-12" >
               <div className="flex items-center justify-between">
                 <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">{first.category[0].name}</h2>
                 <Link href={`/articles/cat-${first.category[0].slug}`}><Button variant="secondary" size="sm">More</Button></Link>
