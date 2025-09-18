@@ -54,7 +54,7 @@ export function PostItem({ post, layout = 'vertical' }) {
                     <Image 
                         src={imageUrl} 
                         alt={post.post_title} 
-                        width={640} 
+                        width={684} 
                         height={480} 
                         loading="lazy"
                         placeholder="empty"
@@ -80,13 +80,15 @@ export function PostItem({ post, layout = 'vertical' }) {
                     <p className="hidden xl:line-clamp-2 text-muted-foreground">
                         {excerpt}
                     </p>
-                    {post.category && post.category.length > 0 && (
-                        post.category.map((c,i) => {
-                            return (
-                                <Badge variant="secondary">{c.name}</Badge>
-                            )
-                        })
-                    )}
+                    <div className="flex items-center gap-1">
+                        {post.category && post.category.length > 0 && (
+                            post.category.map((c,i) => {
+                                return (
+                                    <Badge variant="secondary">{c.name}</Badge>
+                                )
+                            })
+                        )}
+                    </div>
                 </div>
             </article>
         </Link>
