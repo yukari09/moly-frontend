@@ -107,7 +107,7 @@ export default async function ArticlePage({ params }) {
         )}
 
         <div className="mt-12 pt-8 border-t">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-2">
                 {post.post_tag?.map((tag, index) => (
                     <Badge key={index} variant="outline"># {tag.name}</Badge>
                 ))}
