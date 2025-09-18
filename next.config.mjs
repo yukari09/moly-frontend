@@ -14,8 +14,9 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "image.dattk.com"
-            }
+            },
         ],
+        formats: ['image/webp'],
     },
     output: 'standalone'
 };
