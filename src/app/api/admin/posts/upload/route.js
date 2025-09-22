@@ -51,7 +51,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: 1,
       file: {
-        url: urls.original, // Use original for editor to get dimensions
+        url: buildImagorUrl(s3Key), // Use original for editor to get dimensions
         id: newPost.id,
         s3Key: s3Key,
         width: dimensions.width,
