@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache-arm64
-          key: ${{ runner.os }}-docker-arm64-${{ hashFiles('Dockerfile') }}
+          key: ${{ runner.os }}-docker-arm64-${{ github.ref_name }}-${{ hashFiles('Dockerfile') }}
           restore-keys: |
             ${{ runner.os }}-docker-arm64-
 
