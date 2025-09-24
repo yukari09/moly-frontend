@@ -37,7 +37,17 @@ export default function Footer() {
                   <ul className="mt-4 space-y-3">
                     {links.map(link => (
                       <li key={link}>
-                        <a href="#" className="text-muted-foreground">{link}</a>
+                        {title === 'Legal' && link === 'Privacy Policy' ? (
+                          <Link href="/privacy" className="text-muted-foreground">
+                            {link}
+                          </Link>
+                        ) : title === 'Legal' && link === 'Terms of Service' ? (
+                          <Link href="/terms" className="text-muted-foreground">
+                            {link}
+                          </Link>
+                        ) : (
+                          <a href="#" className="text-muted-foreground">{link}</a>
+                        )}
                       </li>
                     ))}
                   </ul>
