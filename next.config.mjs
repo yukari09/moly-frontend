@@ -13,7 +13,7 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "image.dattk.com"
+                hostname: "image.impressifyai.com"
             },
         ],
         formats: ['image/webp'],
