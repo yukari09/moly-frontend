@@ -5,10 +5,10 @@ import {useTranslations} from 'next-intl';
 
 
 const footerLinks = {
-    "Products": ["Pro", "Teams", "Pricing", "Vercel/Ship", "Documentation"],
-    "Resources": ["Next.js", "Examples", "Integrations", "Guides", "Blog"],
-    "Company": ["Home", "About", "Careers", "Contact Us"],
-    "Legal": ["Privacy Policy", "Terms of Service"],
+    "Legal": [
+      {"Privacy Policy": "/privacy"},
+      {"Terms of Service": "/term"}
+    ],
   }
 
 export default function Footer() {
@@ -35,21 +35,16 @@ export default function Footer() {
                 <div key={title}>
                   <h4 className="font-semibold text-primary">{title}</h4>
                   <ul className="mt-4 space-y-3">
-                    {links.map(link => (
-                      <li key={link}>
-                        {title === 'Legal' && link === 'Privacy Policy' ? (
-                          <Link href="/privacy" className="text-muted-foreground">
-                            {link}
+                    {links.map((linkObj, i) => {
+                      const [label, href] = Object.entries(linkObj)[0];
+                      return (
+                        <li key={i}>
+                          <Link href={href} className="text-muted-foreground">
+                            {label}
                           </Link>
-                        ) : title === 'Legal' && link === 'Terms of Service' ? (
-                          <Link href="/terms" className="text-muted-foreground">
-                            {link}
-                          </Link>
-                        ) : (
-                          <a href="#" className="text-muted-foreground">{link}</a>
-                        )}
-                      </li>
-                    ))}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
