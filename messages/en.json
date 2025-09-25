@@ -1,22 +1,10 @@
 {
   "WebSite": {
-<<<<<<< HEAD
     "title": "Discover the Beauty of World Cultures",
     "subfix": " - Dattk",
     "name": "Dattk",
     "description": "At Dattk, we invite you to embark on a journey beyond borders. Discover breathtaking destinations, experience diverse traditions, and connect with people who make our world extraordinary.",
     "websiteInfo": "Discover the beauty of world cultures with Dattk. Explore destinations, connect with local traditions, and experience unforgettable journeys across the globe."
-=======
-    "title": "Daily News, Tools & Trends in AI",
-    "subfix": " - impressifyai",
-    "name": "impressifyai",
-    "description": "Stay ahead of the AI revolution with daily updates on artificial intelligence news, tools, research papers, and tech trends. Discover what’s next in the world of AI.",
-    "websiteInfo": "Stay ahead of the AI revolution with daily updates on artificial intelligence news, tools, research papers, and tech trends. Discover what’s next in the world of AI."
-  },
-  "HomePage": {
-    "title": "Website Gallery",
-    "about": "Go to the about page"
->>>>>>> main
   },
   "Header": {
     "profile": "Profile",
