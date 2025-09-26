@@ -84,7 +84,7 @@ export function PostItem({ post, layout = 'vertical' }) {
                         {post.category && post.category.length > 0 && (
                             post.category.map((c,i) => {
                                 return (
-                                    <Badge variant="secondary">{c.name}</Badge>
+                                    <Badge key={`${i}`} variant="secondary">{c.name}</Badge>
                                 )
                             })
                         )}
