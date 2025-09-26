@@ -101,7 +101,7 @@ export default async function UserProfilePage({ params }) {
 
       {/* TODO: Add a section to display the websites submitted by this user */}
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-center mb-8">{t('submittedWebsites')}</h2>
+        {/* <h2 className="text-2xl font-bold text-center mb-8">{t('submittedWebsites')}</h2> */}
         <div className="text-center text-muted-foreground">
           <p>({t('comingSoon')})</p>
         </div>
