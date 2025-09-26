@@ -11,7 +11,11 @@ export async function POST(request) {
   }
 
   try {
-    await verifyTurnstileToken(turnstileToken);
+    const cfVerifyResult = await verifyTurnstileToken(turnstileToken); 
+
+    if(cfVerifyResult){
+        return NextResponse.json({ message: "Bad Request" }, { status: 400 });
+    }
 
     if (password !== passwordConfirmation) {
       return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 });
