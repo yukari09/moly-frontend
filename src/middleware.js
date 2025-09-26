@@ -71,5 +71,5 @@ export default function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+  matcher: '/((?!api/(?!admin).*|trpc|_next|_vercel|.*\\..*).*)'
 }
