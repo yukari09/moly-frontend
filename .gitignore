@@ -47,4 +47,5 @@ bun.lockb
 .env.testing
 .env.local
 
-/bun.lock
+bun.lock
+package.lock
