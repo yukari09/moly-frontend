@@ -7,7 +7,7 @@ import {useTranslations} from 'next-intl';
 const footerLinks = {
     "Legal": [
       {"Privacy Policy": "/privacy"},
-      {"Terms of Service": "/term"}
+      {"Terms of Service": "/terms"}
     ],
   }
 
