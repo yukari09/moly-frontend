@@ -167,7 +167,7 @@ export default async function Home() {
           {posts.length > 0 && (
             <section className="max-w-screen-2xl xl:mx-auto px-4 sm:px-6 mt-8 xl:my-12">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-4  xl:mt-8">
-                {featuredPost && <PostItem key={featuredPost.id} post={featuredPost} />}
+                {featuredPost && <PostItem key={`feature-${featuredPost.id}`} post={featuredPost} />}
                 {
                   otherFeaturedPosts && otherFeaturedPosts.length > 0 &&
                   <div className="flex flex-col gap-8">
@@ -183,17 +183,17 @@ export default async function Home() {
           {postByCat.map((item, i) => {
             const first = item.posts[0];
             return (
-            <section className="max-w-screen-2xl xl:mx-auto px-4 sm:px-6 mt-8 xl:my-12" >
-              <div className="flex items-center justify-between">
-                <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">{first.category[0].name}</h2>
-                <Link href={`/articles/cat-${first.category[0].slug}`}><Button variant="secondary" size="sm">More</Button></Link>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 xl:mt-8">
-                {item.posts.map(post => (
-                  <PostItem key={post.id} post={post} />
-                ))}
-              </div>
-            </section>
+              <section key={i} className="max-w-screen-2xl xl:mx-auto px-4 sm:px-6 mt-8 xl:my-12" >
+                <div className="flex items-center justify-between">
+                  <h2 className="text-primary leading-tighter text-2xl font-semibold tracking-tight lg:leading-[1.1] lg:font-semibold xl:text-3xl xl:tracking-tighter">{first.category[0].name}</h2>
+                  <Link href={`/articles/cat-${first.category[0].slug}`}><Button variant="secondary" size="sm">More</Button></Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 xl:mt-8">
+                  {item.posts.map(post => (
+                    <PostItem key={`${first.category[0].slug}-${post.id}`} post={post} />
+                  ))}
+                </div>
+              </section>
             )
           })}
         </main>
