@@ -32,11 +32,11 @@ WORKDIR /app
 
 # Set environment variables for production 
 ENV NODE_ENV=production 
-    PORT=3000 
-    HOSTNAME="0.0.0.0" 
-    # Set timezone and locale to ensure consistency 
-    TZ="Asia/Shanghai" 
-    LANG="en_US.UTF-8" 
+ENV PORT=3000 
+ENV HOSTNAME="0.0.0.0" 
+
+ENV TZ="Asia/Shanghai" 
+ENV LANG="en_US.UTF-8" 
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs 
