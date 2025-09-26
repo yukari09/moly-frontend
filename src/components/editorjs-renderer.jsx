@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 // Recursive component to render list items and their potential nested lists
 const ListItem = ({ item }) => {
@@ -115,15 +116,21 @@ const BlockRenderer = ({ block }) => {
 };
 
 export default function EditorJSRenderer({ data }) {
-  if (!data || !Array.isArray(data.blocks)) {
-    return null;
-  }
+    const [isMounted, setIsMounted] = useState(false);
 
-  return (
-    <div className="prose dark:prose-invert lg:prose-xl max-w-full">
-      {data.blocks.map((block) => (
-        <BlockRenderer key={block.id} block={block} />
-      ))}
-    </div>
-  );
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!data || !Array.isArray(data.blocks) || !isMounted) {
+        return null;
+    }
+
+    return (
+        <div className="prose dark:prose-invert lg:prose-xl max-w-full">
+            {data.blocks.map((block) => (
+                <BlockRenderer key={block.id} block={block} />
+            ))}
+        </div>
+    );
 }
