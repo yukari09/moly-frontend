@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { TagInput } from "@/components/ui/tag-input";
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 
 const Editor = dynamic(() => import('../../new/editor'), {
   ssr: false,
@@ -97,6 +97,7 @@ export default function PostEditPage() {
 
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const { id } = params;
 
   const form = useForm({
@@ -210,8 +211,9 @@ export default function PostEditPage() {
       }
 
       toast.success(`Post ${status === 'draft' ? 'saved' : 'updated'} successfully!`);
-      router.push('/admin/content/posts');
-      router.refresh();
+      // router.push('/admin/content/posts');
+      // router.refresh();
+      history.back(-1)
 
     } catch (error) {
       toast.error(error.message);

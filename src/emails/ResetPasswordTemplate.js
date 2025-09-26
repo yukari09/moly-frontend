@@ -12,8 +12,7 @@ import {
 import * as React from "react";
 
 export const ResetPasswordTemplate = ({
-  name = "User",
-  resetLink = "https://example.com",
+  resetLink,
 }) => (
   <Html>
     <Head />
@@ -21,9 +20,6 @@ export const ResetPasswordTemplate = ({
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Reset Your Password</Heading>
-        <Text style={text}>
-          Hello {name},
-        </Text>
         <Text style={text}>
           Someone has requested a password reset for your account. If this was you, please click the button below to set a new password.
         </Text>

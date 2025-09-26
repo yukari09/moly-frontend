@@ -9,24 +9,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { postsDataProvider } from './data-provider';
+import { usersDataProvider } from './data-provider';
 
 const ActionsCell = ({ row, table }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const post = row.original;
+  const user = row.original;
 
   const handleDelete = async () => {
     try {
-      await postsDataProvider.deleteData([post.id]);
-      toast.success('Post deleted successfully.');
+      await usersDataProvider.deleteData([user.id]);
+      toast.success('User deleted successfully.');
       if (table.options.meta?.refreshData) {
         table.options.meta.refreshData();
       } else {
         router.refresh();
       }
     } catch (error) {
-      toast.error(error.message || 'Failed to delete post.');
+      toast.error(error.message || 'Failed to delete user.');
     }
   };
 
@@ -36,8 +36,8 @@ const ActionsCell = ({ row, table }) => {
         open={isDialogOpen} 
         onOpenChange={setIsDialogOpen}
         onConfirm={handleDelete}
-        title="Are you sure you want to delete this post?"
-        description="This action cannot be undone. This will permanently delete the post."
+        title="Are you sure you want to delete this user?"
+        description="This action cannot be undone. This will permanently delete the user."
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -49,7 +49,7 @@ const ActionsCell = ({ row, table }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/post/${post.id}/edit`}>Edit</Link>
+            <Link href={`/admin/users/${user.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem 
@@ -88,14 +88,18 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: 'postTitle',
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    accessorKey: 'name',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Title
+          Name
           {column.getIsSorted() === 'asc' ? (
             <ArrowUp className="ml-2 h-4 w-4" />
           ) : column.getIsSorted() === 'desc' ? (
@@ -106,52 +110,26 @@ export const columns = [
         </Button>
       )
     },
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'roles',
+    header: 'Roles',
     cell: ({ row }) => {
-      return <Link className=' whitespace-normal' href={`/post/${row.original.id}/edit`}>{row.original.postTitle}</Link>
+      const roles = row.original.userMeta.find(meta => meta.metaKey === 'roles')?.metaValue;
+      return <div className="font-medium">{roles}</div>
     }
   },
   {
-    accessorKey: 'categories',
-    header: 'Category',
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.original.categories?.map(c => c.name).join(", ") || ""}</div>
-    }
-  },
-  {
-    accessorKey: 'post_tags',
-    header: 'Tags',
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.original.postTags?.map(tag => tag.name).join(", ") || ""}</div>
-    }
-  },
-  {
-    accessorKey: 'postStatus',
+    accessorKey: 'status',
     header: 'Status',
-  },
-  {
-    accessorKey: 'insertedAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date
-          {column.getIsSorted() === 'asc' ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : column.getIsSorted() === 'desc' ? (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          )}
-        </Button>
-      )
-    },
     cell: ({ row }) => {
-      const date = new Date(row.getValue('insertedAt'))
-      const formatted = date.toLocaleDateString()
-      return <div className="font-medium">{formatted}</div>
-    }
+        const status = row.original.userMeta.find(meta => meta.metaKey === 'status')?.metaValue;
+        return <div className="font-medium">{status}</div>
+      }
   },
   {
     id: "actions",

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +23,7 @@ export function ResourcePage({
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -244,7 +245,10 @@ export function ResourcePage({
               }
             }}
             emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}
-            refreshData={fetchData}
+            meta={{
+              refreshData: fetchData,
+              callbackUrl: `${pathname}?${searchParams.toString()}`
+            }}
           />
         </div>
       </div>
