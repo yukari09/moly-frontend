@@ -22,7 +22,7 @@ COPY . .
 # Next.js collects completely anonymous telemetry data about general usage. 
 # Learn more here: https://nextjs.org/telemetry 
 # Uncomment the following line in case you want to disable telemetry during the build. 
-ENV NEXT_TELEMETRY_DISABLED=1 
+# ENV NEXT_TELEMETRY_DISABLED=1 
 
 RUN bun run build 
 
@@ -32,11 +32,11 @@ WORKDIR /app
 
 # Set environment variables for production 
 ENV NODE_ENV=production 
-    PORT=3000 
-    HOSTNAME="0.0.0.0" 
-    # Set timezone and locale to ensure consistency 
-    TZ="Asia/Shanghai" 
-    LANG="en_US.UTF-8" 
+ENV PORT=3000 
+ENV HOSTNAME="0.0.0.0" 
+
+ENV TZ="Asia/Shanghai" 
+ENV LANG="en_US.UTF-8" 
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs 
