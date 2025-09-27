@@ -14,7 +14,7 @@ export default function UsersPage() {
         filterableFields={[{ value: 'name', label: 'Name' }, { value:'email', label: 'Email' }]}
         resourceName="User"
         newResourceLink="/admin/users/new"
-      />
+    />
     </Suspense>
   );
 }
