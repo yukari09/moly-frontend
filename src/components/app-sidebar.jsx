@@ -11,6 +11,7 @@ import {
   Settings2,
   SquareTerminal,
   Notebook,
+  UserCircle,
 } from "lucide-react"
 
 import { usePathname } from "next/navigation"
@@ -18,7 +19,7 @@ import { usePathname } from "next/navigation"
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { WebSiteSwitcher } from "@/components/website-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -49,22 +50,14 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Account",
       url: "#",
-      icon: SquareTerminal,
+      icon: UserCircle,
       items: [
         {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
+          title: "Users",
+          url: "/admin/users",
+        }
       ],
     },
     {
@@ -185,7 +178,7 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <WebSiteSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMainWithActiveState} />
