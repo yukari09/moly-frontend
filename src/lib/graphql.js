@@ -166,6 +166,7 @@ export async function listPostsOffset(limit, offset, filter, sort, session, cach
   return data.listPostsOffset;
 }
 
+
 const GET_TERM_QUERY = `
   query GetTerm($id: ID!, $taxonomyName: String!) {
     getTerm(id: $id) {
@@ -216,6 +217,29 @@ export async function getUserByUsername(username, session, cacheConfig) {
   };
   const data = await _request(GET_USER_BY_USERNAME_QUERY, { filter }, session, cacheConfig);
   return data.readOneUser;
+}
+
+const LIST_USERS_OFFSET_QUERY = `
+  query ListUsersOffset($limit: Int, $offset: Int, $filter: UserFilterInput, $sort: [UserSortInput]) {
+    listUsersOffset(limit: $limit, offset: $offset, filter: $filter, sort: $sort) {
+      count
+      results {
+        id
+        email
+        userMeta {
+          id
+          metaKey
+          metaValue
+        } 
+        insertedAt
+        updatedAt
+      }
+    }
+  }
+`;
+export async function listUsersOffset(limit, offset, filter, sort, session, cacheConfig) {
+  const data = await _request(LIST_USERS_OFFSET_QUERY, { limit, offset, filter, sort }, session, cacheConfig);
+  return data.listUsersOffset;
 }
 
 
