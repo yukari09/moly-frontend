@@ -7,7 +7,7 @@ WORKDIR /app
 # 复制 Turbo、Bun 配置和 lockfile
 COPY turbo.json package.json bun.lock ./
 COPY apps/dattk/package.json apps/dattk/package.json
-COPY apps/dattk/.env.production apps/dattk/.env.production
+COPY apps/dattk/.env.build apps/dattk/.env.build
 # COPY apps/impressifyai/package.json apps/impressifyai/package.json
 COPY packages/*/package.json packages/*/package.json
 
@@ -35,7 +35,7 @@ COPY turbo.json .
 RUN bun install
 
 # 构建应用
-RUN turbo run build --filter=dattk
+RUN bun run turbo run build --filter=dattk  --verbose
 # RUN bun run turbo run build --filter=impressifyai
 
 # ========================================
