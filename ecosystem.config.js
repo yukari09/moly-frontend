@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "dattk",
       script: "bun",
-      args: "./.next/standalone/apps/dattk/server.js",
+      args: "./server.js",
       cwd: "apps/dattk",
       env: {
         PORT: 3000,

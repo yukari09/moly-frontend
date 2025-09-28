@@ -45,7 +45,7 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/apps/dattk/public ./apps/dattk/public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next ./apps/dattk/.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next/static ./apps/dattk/.next/static
 
 # 复制 pm2 配置文件
