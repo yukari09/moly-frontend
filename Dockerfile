@@ -4,41 +4,36 @@
 FROM oven/bun:canary-alpine AS prune
 WORKDIR /app
 
-# 复制 Turbo、Bun 配置和 lockfile
-COPY turbo.json package.json bun.lock ./
-COPY apps/dattk/package.json apps/dattk/package.json
-COPY apps/dattk/.env.production apps/dattk/.env.production
-# COPY apps/impressifyai/package.json apps/impressifyai/package.json
-COPY packages/*/package.json packages/*/package.json
+# 复制根目录的配置文件
+COPY turbo.json package.json bun.lock .npmrc ./
+
+# 复制所有工作区的 package.json
+COPY apps/*/package.json ./apps/*/
+COPY packages/*/package.json ./packages/*/
 
 # 全局安装 turbo 并裁剪依赖
+# 这会生成一个 'out' 目录，包含构建所需的最小文件集
 RUN bun add turbo -g && \
     turbo prune --scope=dattk --docker
 
-# ========================================
+# ======================================== 
 # 2️⃣ Builder 阶段：安装依赖并构建
 # ========================================
 FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
-# 复制裁剪后的依赖配置
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun.lock ./bun.lock
+# 复制裁剪后的项目文件和 lockfile
+COPY --from=prune /app/out/full/ .
+COPY --from=prune /app/out/bun.lock ./
 
-# 复制完整源码，确保 Next.js pages/app 存在
-COPY apps/dattk ./apps/dattk
-# COPY apps/impressifyai ./apps/impressifyai
-COPY packages ./packages
-COPY turbo.json .
-
-# 安装依赖
+# 安装所有依赖（包括 devDependencies，因为构建需要它们）
 RUN bun install
 
 # 构建应用
+# --filter 是多余的，因为 prune 已经裁剪了范围，但保留也无害
 RUN bun run turbo run build --filter=dattk...
-# RUN bun run turbo run build --filter=impressifyai
 
-# ========================================
+# ======================================== 
 # 3️⃣ Runner 阶段：生产环境运行
 # ========================================
 FROM oven/bun:canary-alpine AS runner
@@ -47,23 +42,25 @@ WORKDIR /app
 ENV NODE_ENV=production
 EXPOSE 3000 3001
 
-# 安装 pm2 管理多进程
+# 安装 pm2 用于进程管理
 RUN bun add -g pm2
 
-# 复制构建产物
+# 复制裁剪后的 package.json 文件和 lockfile
+COPY --from=prune /app/out/json/ .
+COPY --from=prune /app/out/bun.lock ./
+
+# 只安装生产环境所需的依赖，以减小镜像体积
+RUN bun install --production
+
+# 从 builder 阶段复制构建产物和必要文件
+# Next.js 运行时需要 .next, public, next.config.mjs, 和 package.json
 COPY --from=builder /app/apps/dattk/.next ./apps/dattk/.next
-COPY --from=builder /app/apps/dattk/next.config.js ./apps/dattk/next.config.js
+COPY --from=builder /app/apps/dattk/public ./apps/dattk/public
+COPY --from=builder /app/apps/dattk/next.config.mjs ./apps/dattk/next.config.mjs
 COPY --from=builder /app/apps/dattk/package.json ./apps/dattk/package.json
 
-# COPY --from=builder /app/apps/impressifyai/.next ./apps/impressifyai/.next
-# COPY --from=builder /app/apps/impressifyai/next.config.js ./apps/impressifyai/next.config.js
-# COPY --from=builder /app/apps/impressifyai/package.json ./apps/impressifyai/package.json
-
-# 复制 node_modules
-COPY --from=builder /app/node_modules ./node_modules
-
-# pm2 配置文件
+# 复制 pm2 配置文件
 COPY ecosystem.config.js .
 
-# 用 pm2 启动多个 Next.js 应用
+# 使用 pm2 启动应用
 CMD ["pm2-runtime", "ecosystem.config.js"]
