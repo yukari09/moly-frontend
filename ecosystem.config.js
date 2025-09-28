@@ -3,11 +3,10 @@ module.exports = {
     {
       name: "dattk",
       script: "bun",
-      args: "run next start --port 3000 --dir apps/dattk",
-      cwd: ".",
+      args: "next start -p 3000",
+      cwd: "apps/dattk",
       env: {
         NODE_ENV: "production",
-        PORT: 3000
       },
     }
   ],
