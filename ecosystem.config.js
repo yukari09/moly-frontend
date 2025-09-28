@@ -9,6 +9,7 @@ module.exports = {
         PORT: 3000,
         NODE_ENV: "production",
       },
+      env_file: ".env.production"
     },
     {
       name: "impressifyai",
@@ -19,6 +20,7 @@ module.exports = {
         PORT: 3001,
         NODE_ENV: "production",
       },
+      env_file: ".env.production"
     }
   ],
 };
