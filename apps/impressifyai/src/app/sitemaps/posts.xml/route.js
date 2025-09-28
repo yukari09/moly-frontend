@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import esClient from "@/lib/elasticsearch";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
+const siteUrl = () => {
+    return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';   
+}
 const generateSitemapXml = (urls) => {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -41,7 +42,7 @@ async function getPosts() {
 export async function GET() {
     const posts = await getPosts();
     const postUrls = posts.map(post => ({
-        loc: `${SITE_URL}/article/${post.post_name}`,
+        loc: `${siteUrl()}/article/${post.post_name}`,
         lastmod: new Date(post.updated_at).toISOString(),
     }));
 
