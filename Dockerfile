@@ -27,7 +27,7 @@ COPY --from=prune /app/out/bun.lock .
 RUN rm bun.lock && bun install
 
 # 构建应用
-RUN bun run turbo run build --filter=dattk...
+RUN bun run turbo run build --filter=dattk
 
 # ======================================== 
 # 3️⃣ Runner 阶段：生产环境运行
