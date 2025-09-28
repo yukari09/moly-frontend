@@ -7,12 +7,12 @@ WORKDIR /app
 # 复制 Turbo、Bun 配置和 lockfile
 COPY turbo.json package.json bun.lock ./
 COPY apps/dattk/package.json apps/dattk/package.json
-COPY apps/impressifyai/package.json apps/impressifyai/package.json
+# COPY apps/impressifyai/package.json apps/impressifyai/package.json
 COPY packages/*/package.json packages/*/package.json
 
 # 全局安装 turbo 并裁剪依赖
 RUN bun add turbo -g && \
-    turbo prune --scope=dattk --scope=impressifyai --docker
+    turbo prune --scope=dattk --docker
 
 # ========================================
 # 2️⃣ Builder 阶段：安装依赖并构建
