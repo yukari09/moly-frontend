@@ -41,16 +41,12 @@ EXPOSE 3000 3001
 # 安装 pm2 用于进程管理
 RUN bun add -g pm2
 
-# 复制裁剪后的 package.json 文件和 lockfile
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun.lock .
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# 从 builder 阶段复制构建产物和必要文件
-# Next.js 运行时需要 .next, public, next.config.mjs, 和 package.json
-COPY --from=builder /app/apps/dattk/.next ./apps/dattk/.next
 COPY --from=builder /app/apps/dattk/public ./apps/dattk/public
-COPY --from=builder /app/apps/dattk/next.config.mjs ./apps/dattk/next.config.mjs
-COPY --from=builder /app/apps/dattk/package.json ./apps/dattk/package.json
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next ./apps/dattk/.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next/static ./apps/dattk/.next/static
 
 # 复制 pm2 配置文件
 COPY ecosystem.config.js .
