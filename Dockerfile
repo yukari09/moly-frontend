@@ -50,7 +50,8 @@ COPY --from=prune /app/out/json/ .
 COPY --from=prune /app/out/bun.lock ./
 
 # 只安装生产环境所需的依赖，以减小镜像体积
-RUN bun install --production
+# 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
+RUN rm bun.lock && bun install --production
 
 # 从 builder 阶段复制构建产物和必要文件
 # Next.js 运行时需要 .next, public, next.config.mjs, 和 package.json
