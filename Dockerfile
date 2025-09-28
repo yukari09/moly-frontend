@@ -26,7 +26,7 @@ COPY --from=prune /app/out/bun.lock ./bun.lock
 
 # 复制完整源码，确保 Next.js pages/app 存在
 COPY apps/dattk ./apps/dattk
-COPY apps/impressifyai ./apps/impressifyai
+# COPY apps/impressifyai ./apps/impressifyai
 COPY packages ./packages
 COPY turbo.json .
 
@@ -35,7 +35,7 @@ RUN bun install
 
 # 构建应用
 RUN bun run turbo run build --filter=dattk
-RUN bun run turbo run build --filter=impressifyai
+# RUN bun run turbo run build --filter=impressifyai
 
 # ========================================
 # 3️⃣ Runner 阶段：生产环境运行
@@ -54,9 +54,9 @@ COPY --from=builder /app/apps/dattk/.next ./apps/dattk/.next
 COPY --from=builder /app/apps/dattk/next.config.js ./apps/dattk/next.config.js
 COPY --from=builder /app/apps/dattk/package.json ./apps/dattk/package.json
 
-COPY --from=builder /app/apps/impressifyai/.next ./apps/impressifyai/.next
-COPY --from=builder /app/apps/impressifyai/next.config.js ./apps/impressifyai/next.config.js
-COPY --from=builder /app/apps/impressifyai/package.json ./apps/impressifyai/package.json
+# COPY --from=builder /app/apps/impressifyai/.next ./apps/impressifyai/.next
+# COPY --from=builder /app/apps/impressifyai/next.config.js ./apps/impressifyai/next.config.js
+# COPY --from=builder /app/apps/impressifyai/package.json ./apps/impressifyai/package.json
 
 # 复制 node_modules
 COPY --from=builder /app/node_modules ./node_modules
