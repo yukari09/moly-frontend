@@ -20,7 +20,7 @@ COPY --from=prune /app/out/json/ .
 COPY --from=prune /app/out/bun.lock ./bun.lock
 
 # 安装依赖
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # 复制完整源码
 COPY --from=prune /app/out/full/ .
