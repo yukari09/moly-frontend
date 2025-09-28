@@ -1,59 +1,69 @@
 # ========================================
-# 1️⃣ Prune 阶段：裁剪依赖 (简化版)
-# ======================================== 
+# 1️⃣ Prune 阶段：裁剪依赖
+# ========================================
 FROM oven/bun:canary-alpine AS prune
 WORKDIR /app
 
-# 复制整个项目以确保 turbo prune 上下文正确
-# 注意：这会降低缓存效率，但能保证正确性
-COPY . .
+# 只复制必要的配置文件，提高缓存效率
+COPY package.json bun.lock turbo.json ./
+COPY apps/dattk/package.json ./apps/dattk/
+COPY packages/*/package.json ./packages/*/
 
 # 全局安装 turbo 并裁剪依赖
 RUN bun add turbo -g && \
     turbo prune --scope=dattk --docker
 
-# ======================================== 
+# ========================================
 # 2️⃣ Builder 阶段：安装依赖并构建
-# ======================================== 
+# ========================================
 FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
-# 复制裁剪后的项目文件和 lockfile
+# 复制裁剪后的项目文件
 COPY --from=prune /app/out/full/ .
-COPY --from=prune /app/out/bun.lock .
+COPY --from=prune /app/out/bun.lock ./bun.lock
 
-# 安装所有依赖（包括 devDependencies，因为构建需要它们）
-# 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
-RUN rm bun.lock && bun install
+# 安装依赖 - 保留 lockfile 以确保版本一致性
+RUN bun install --frozen-lockfile
+
+# 复制源代码
+COPY --from=prune /app/out/full/ .
 
 # 构建应用
 RUN bun run turbo run build --filter=dattk...
 
-# ======================================== 
+# ========================================
 # 3️⃣ Runner 阶段：生产环境运行
-# ======================================== 
+# ========================================
 FROM oven/bun:canary-alpine AS runner
 WORKDIR /app
 
+# 创建非 root 用户提高安全性
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
 ENV NODE_ENV=production
-EXPOSE 3000 3001
+EXPOSE 3000
 
-# 安装 pm2 用于进程管理
-RUN bun add -g pm2
-
-# 复制裁剪后的 package.json 文件和 lockfile
+# 复制 package.json 和安装生产依赖
 COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun.lock .
+COPY --from=prune /app/out/bun.lock ./bun.lock
 
-# 从 builder 阶段复制构建产物和必要文件
-# Next.js 运行时需要 .next, public, next.config.mjs, 和 package.json
-COPY --from=builder /app/apps/dattk/.next ./apps/dattk/.next
-COPY --from=builder /app/apps/dattk/public ./apps/dattk/public
-COPY --from=builder /app/apps/dattk/next.config.mjs ./apps/dattk/next.config.mjs
-COPY --from=builder /app/apps/dattk/package.json ./apps/dattk/package.json
+# 只安装生产依赖
+RUN bun install --production --frozen-lockfile
 
-# 复制 pm2 配置文件
-COPY ecosystem.config.js .
+# 复制构建产物
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next ./apps/dattk/.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/public ./apps/dattk/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/next.config.mjs ./apps/dattk/next.config.mjs
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/package.json ./apps/dattk/package.json
 
-# 使用 pm2 启动应用
+# 如果使用 pm2，复制配置文件
+COPY --chown=nextjs:nodejs ecosystem.config.js .
+
+# 切换到非 root 用户
+USER nextjs
+
+# 使用 Next.js 内置服务器（推荐）或 pm2
+# CMD ["bun", "run", "--cwd", "apps/dattk", "start"]
 CMD ["pm2-runtime", "ecosystem.config.js"]
