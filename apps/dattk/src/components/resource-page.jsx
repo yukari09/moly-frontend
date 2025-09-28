@@ -1,0 +1,257 @@
+'use client';
+
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { DataTable } from '@/components/ui/data-table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
+import { useDebounce } from '@/hooks/use-debounce';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+export function ResourcePage({ 
+  columns, 
+  dataProvider, 
+  resourceName, 
+  newResourceLink,
+  filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }],
+  defaultFilter = []
+}) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rowSelection, setRowSelection] = useState({});
+  const [bulkAction, setBulkAction] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
+
+  const [filters, setFilters] = useState({
+    pageIndex: searchParams.get('page') ? Number(searchParams.get('page')) - 1 : 0,
+    pageSize: searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10,
+    sort: searchParams.get('sort'),
+    sortDesc: searchParams.get('sortDesc') === 'true',
+    filterField: searchParams.get('filterField') || (filterableFields.length > 0 ? filterableFields[0].value : ''),
+    filterValue: searchParams.get('filterValue') || '',
+    defaultFilter: searchParams.get('defaultFilter') || '',
+  });
+
+  const debouncedFilterValue = useDebounce(filters.filterValue, 500);
+
+  
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('page', filters.pageIndex + 1);
+    params.set('pageSize', filters.pageSize);
+    if (filters.sort) {
+      params.set('sort', filters.sort);
+      params.set('sortDesc', filters.sortDesc);
+    }
+    if (filters.filterField) {
+      params.set('filterField', filters.filterField);
+    }
+    if (filters.filterValue) {
+      params.set('filterValue', filters.filterValue);
+    } else {
+      params.delete('filterValue');
+    }
+    if (filters.defaultFilter) {
+      params.set('defaultFilter', filters.defaultFilter);
+    } else {
+      params.delete('defaultFilter');
+    }
+    router.push(`?${params.toString()}`);
+  }, [filters, router]);
+
+
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const sortParam = filters.sort ? JSON.stringify([{
+        field: filters.sort === 'insertedAt' ? 'INSERTED_AT' : filters.sort.toUpperCase(),
+        order: filters.sortDesc ? 'DESC' : 'ASC'
+      }]) : undefined;
+
+      const result = await dataProvider.fetchData({
+        limit: filters.pageSize,
+        offset: filters.pageIndex * filters.pageSize,
+        filterField: filters.filterField,
+        filterValue: debouncedFilterValue,
+        defaultFilter: filters.defaultFilter,
+        sortParam,
+      });
+
+      setData(result.results);
+      setTotalCount(result.count);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dataProvider, filters, debouncedFilterValue]); // 简化了！
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleFilterSubmit = (event) => {
+    event.preventDefault();
+    setFilters(f => ({ ...f, pageIndex: 0 }));
+  };
+
+  const handleClearFilter = () => {
+    setFilters(f => ({
+      ...f,
+      filterField: filterableFields.length > 0 ? filterableFields[0].value : '',
+      filterValue: '',
+      pageIndex: 0,
+    }));
+  };
+
+  const handleDeleteSelected = async () => {
+    const idsToDelete = Object.keys(rowSelection);
+    if (idsToDelete.length === 0) return;
+
+    try {
+      await dataProvider.deleteData(idsToDelete);
+      toast.success(`${idsToDelete.length} ${resourceName}(s) deleted successfully.`);
+      setRowSelection({});
+      fetchData(); // Refetch data
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleDefaultFilter = async (field, value) => {
+    setFilters(f => ({ ...f, defaultFilter: [field, value] }));
+  }
+
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-8 border-b pb-6">
+        <h1 className="text-2xl font-bold">{resourceName}</h1>
+        <Button size="sm" variant="secondary" asChild>
+          <Link href={newResourceLink}>New {resourceName}</Link>
+        </Button>
+      </div>
+
+      {
+        defaultFilter.length > 0 ? (
+          <Tabs defaultValue={"all"} size="sm" className="w-[400px] mb-8">
+            <TabsList>
+              {defaultFilter.map((filter) => (
+                <TabsTrigger key={`filter-default-${filter.value}`} value={filter.value} onClick={() => {handleDefaultFilter(filter.field, filter.value)}}>{filter.label}</TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        ) : null
+      }
+
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Select 
+            onValueChange={setBulkAction} 
+            value={bulkAction} 
+            disabled={Object.keys(rowSelection).length === 0}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Bulk Action" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="delete">Delete</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button 
+            disabled={Object.keys(rowSelection).length === 0 || !bulkAction}
+            variant="outline"
+            onClick={() => {
+              if (bulkAction === 'delete') {
+                handleDeleteSelected();
+              }
+            }}
+          >
+            Apply
+          </Button>
+        </div>
+        <div className="flex items-center justify-between">
+          <form onSubmit={handleFilterSubmit} className="flex items-center gap-2">
+            <Select 
+              name="filter_field" 
+              value={filters.filterField} 
+              onValueChange={(value) => setFilters(f => ({ ...f, filterField: value }))}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by" />
+              </SelectTrigger>
+              <SelectContent>
+                {filterableFields.map(field => (
+                  <SelectItem key={field.value} value={field.value}>{field.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              name="filter_value"
+              placeholder="Filter value..."
+              value={filters.filterValue}
+              onChange={(e) => setFilters(f => ({ ...f, filterValue: e.target.value }))}
+              className="max-w-sm"
+            />
+            <Button type="submit" disabled={isLoading}>Filter</Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleClearFilter}
+              disabled={isLoading || (!filters.filterValue && filterableFields.length > 0 && filters.filterField === filterableFields[0].value)}
+            >
+              Clear
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      <div className="relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/50 z-10">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+        <div className={isLoading ? 'opacity-50 transition-opacity' : ''}>
+          <DataTable 
+            columns={columns} 
+            data={data} 
+            rowSelection={rowSelection}
+            onRowSelectionChange={setRowSelection}
+            getRowId={(row) => row.id}
+            totalCount={totalCount}
+            pagination={{
+              pageIndex: filters.pageIndex,
+              pageSize: filters.pageSize,
+            }}
+            onPaginationChange={(updater) => {
+              setFilters(f => ({ ...f, ...updater(f) }));
+            }}
+            sorting={filters.sort ? [{ id: filters.sort, desc: filters.sortDesc }] : []}
+            onSortingChange={(updater) => {
+              const newSorting = updater(filters.sort ? [{ id: filters.sort, desc: filters.sortDesc }] : []);
+              if (newSorting.length === 0) {
+                setFilters(f => ({ ...f, sort: null, sortDesc: false }));
+              } else {
+                setFilters(f => ({ ...f, sort: newSorting[0].id, sortDesc: newSorting[0].desc }));
+              }
+            }}
+            emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}
+            meta={{
+              refreshData: fetchData,
+              callbackUrl: `${pathname}?${searchParams.toString()}`
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

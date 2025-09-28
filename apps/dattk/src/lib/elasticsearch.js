@@ -1,0 +1,34 @@
+import { Client, HttpConnection } from '@elastic/elasticsearch';
+
+if (!process.env.ELASTICSEARCH_NODE) {
+  throw new Error('ELASTICSEARCH_NODE environment variable is not set.');
+}
+if (!process.env.ELASTICSEARCH_USERNAME) {
+  throw new Error('ELASTICSEARCH_USERNAME environment variable is not set.');
+}
+if (!process.env.ELASTICSEARCH_PASSWORD) {
+  throw new Error('ELASTICSEARCH_PASSWORD environment variable is not set.');
+}
+
+const clientSingleton = () => {
+  return new Client({
+    node: process.env.ELASTICSEARCH_NODE,
+    Connection: HttpConnection,
+    auth: {
+      username: process.env.ELASTICSEARCH_USERNAME,
+      password: process.env.ELASTICSEARCH_PASSWORD,
+    },
+    // tls: {
+    //   rejectUnauthorized: false
+    // }
+  });
+};
+
+const globalForElastic = globalThis;
+const client = globalForElastic.elasticClient ?? clientSingleton();
+
+export default client;
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForElastic.elasticClient = client;
+}
