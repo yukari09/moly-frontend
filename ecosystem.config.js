@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "dattk",
       script: "bun",
-      args: "run start -- -p 3000",
+      args: ["run", "start"],
       cwd: "apps/dattk",
       env: {
         NODE_ENV: "production",
