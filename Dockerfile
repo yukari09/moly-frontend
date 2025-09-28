@@ -24,7 +24,7 @@ COPY --from=prune /app/out/bun.lock .:
 
 # 安装所有依赖（包括 devDependencies，因为构建需要它们）
 # 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
-RUN rm bun.lock && bun install
+RUN bun install
 
 # 构建应用
 RUN bun run turbo run build --filter=dattk...
