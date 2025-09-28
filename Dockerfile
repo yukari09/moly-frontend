@@ -1,6 +1,6 @@
 # ========================================
 # 1️⃣ Prune 阶段：裁剪依赖 (简化版)
-# ========================================
+# ======================================== 
 FROM oven/bun:canary-alpine AS prune
 WORKDIR /app
 
@@ -14,24 +14,24 @@ RUN bun add turbo -g && \
 
 # ======================================== 
 # 2️⃣ Builder 阶段：安装依赖并构建
-# ========================================
+# ======================================== 
 FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
 # 复制裁剪后的项目文件和 lockfile
 COPY --from=prune /app/out/full/ .
-COPY --from=prune /app/out/bun.lock .:
+COPY --from=prune /app/out/bun.lock .
 
 # 安装所有依赖（包括 devDependencies，因为构建需要它们）
 # 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
-RUN bun install
+RUN rm bun.lock && bun install
 
 # 构建应用
 RUN bun run turbo run build --filter=dattk...
 
 # ======================================== 
 # 3️⃣ Runner 阶段：生产环境运行
-# ========================================
+# ======================================== 
 FROM oven/bun:canary-alpine AS runner
 WORKDIR /app
 
