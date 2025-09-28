@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "dattk",
-      script: "bun",
+      script: "./node_modules/.bin/next",
       args: ["run", "start"],
       cwd: "apps/dattk",
       env: {
