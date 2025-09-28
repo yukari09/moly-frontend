@@ -27,8 +27,8 @@ COPY --from=prune /app/out/full/ .
 COPY turbo.json .
 
 # 构建 web 和 admin
-RUN bun run turbo run build --filter=dattk...
-RUN bun run turbo run build --filter=impressifyai...
+RUN bun run turbo run build --filter=dattk
+RUN bun run turbo run build --filter=impressifyai
 
 # ========== 3. Runner 阶段 ==========
 FROM oven/bun:latest AS runner
