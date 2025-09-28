@@ -56,4 +56,5 @@ COPY --from=builder /app/apps/dattk/package.json ./apps/dattk/package.json
 COPY ecosystem.config.js .
 
 # 使用 pm2 启动应用
-CMD ["pm2-runtime", "ecosystem.config.js"]
+# CMD ["pm2-runtime", "ecosystem.config.js"]
+CMD ["sleep", "infinity"]
