@@ -9,6 +9,16 @@ module.exports = {
         PORT: 3000,
         NODE_ENV: "production",
       },
+    },
+    {
+      name: "impressifyai",
+      script: "bun",
+      args: "./server.js",
+      cwd: "apps/impressifyai",
+      env: {
+        PORT: 3001,
+        NODE_ENV: "production",
+      },
     }
   ],
 };

@@ -10,7 +10,7 @@ COPY . .
 
 # 全局安装 turbo 并裁剪依赖
 RUN bun add turbo -g && \
-    turbo prune --scope=dattk --docker
+    turbo prune --scope=dattk --scope=impressifyai --docker
 
 # ======================================== 
 # 2️⃣ Builder 阶段：安装依赖并构建
@@ -28,6 +28,7 @@ RUN rm bun.lock && bun install
 
 # 构建应用
 RUN bun run turbo run build --filter=dattk
+RUN bun run turbo run build --filter=impressifyai
 
 # ======================================== 
 # 3️⃣ Runner 阶段：生产环境运行
@@ -44,9 +45,15 @@ RUN bun add -g pm2
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
+#Dattk
 COPY --from=builder /app/apps/dattk/public ./apps/dattk/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/dattk/.next/static ./apps/dattk/.next/static
+
+#ImpressifyAi
+COPY --from=builder /app/apps/impressifyai/public ./apps/impressifyai/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/impressifyai/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/impressifyai/.next/static ./apps/impressifyai/.next/static
 
 # 复制 pm2 配置文件
 COPY ecosystem.config.js .
