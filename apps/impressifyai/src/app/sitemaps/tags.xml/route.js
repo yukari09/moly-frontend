@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import esClient from "@/lib/elasticsearch";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const siteUrl = () => {
+    return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';   
+}
 
 const generateSitemapXml = (urls) => {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -37,7 +39,7 @@ async function getTerms(taxonomyField) {
 export async function GET() {
     const tags = await getTerms("post_tag.slug.keyword");
     const tagUrls = tags.map(slug => ({
-        loc: `${SITE_URL}/articles/tag-${slug}`,
+        loc: `${siteUrl()}/articles/tag-${slug}`,
         lastmod: new Date().toISOString(),
     }));
 

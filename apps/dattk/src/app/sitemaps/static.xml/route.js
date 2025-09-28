@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const siteUrl = () => {
+    return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';   
+}
 
 const generateSitemapXml = (urls) => {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -15,7 +17,7 @@ const generateSitemapXml = (urls) => {
 
 export async function GET() {
     const staticUrls = [{
-        loc: SITE_URL,
+        loc: siteUrl(),
         lastmod: new Date().toISOString()
     }];
     const xml = generateSitemapXml(staticUrls);
