@@ -1,18 +1,14 @@
 # ========================================
-# 1️⃣ Prune 阶段：裁剪依赖
+# 1️⃣ Prune 阶段：裁剪依赖 (简化版)
 # ========================================
 FROM oven/bun:canary-alpine AS prune
 WORKDIR /app
 
-# 复制根目录的配置文件
-COPY turbo.json package.json bun.lock .npmrc ./
-
-# 复制所有工作区的 package.json
-COPY apps/*/package.json ./apps/*/
-COPY packages/*/package.json ./packages/*/
+# 复制整个项目以确保 turbo prune 上下文正确
+# 注意：这会降低缓存效率，但能保证正确性
+COPY . .
 
 # 全局安装 turbo 并裁剪依赖
-# 这会生成一个 'out' 目录，包含构建所需的最小文件集
 RUN bun add turbo -g && \
     turbo prune --scope=dattk --docker
 
@@ -24,13 +20,13 @@ WORKDIR /app
 
 # 复制裁剪后的项目文件和 lockfile
 COPY --from=prune /app/out/full/ .
-COPY --from=prune /app/out/bun.lock ./
+COPY --from=prune /app/out/bun.lock .:
 
 # 安装所有依赖（包括 devDependencies，因为构建需要它们）
-RUN bun install
+# 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
+RUN rm bun.lock && bun install
 
 # 构建应用
-# --filter 是多余的，因为 prune 已经裁剪了范围，但保留也无害
 RUN bun run turbo run build --filter=dattk...
 
 # ======================================== 
@@ -47,7 +43,7 @@ RUN bun add -g pm2
 
 # 复制裁剪后的 package.json 文件和 lockfile
 COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun.lock ./
+COPY --from=prune /app/out/bun.lock .
 
 # 只安装生产环境所需的依赖，以减小镜像体积
 # 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
