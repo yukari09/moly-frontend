@@ -1,7 +1,7 @@
 # ========================================
 # 1️⃣ Prune 阶段：裁剪依赖
 # ========================================
-FROM oven/bun:latest AS prune
+FROM oven/bun:canary-alpine AS prune
 WORKDIR /app
 
 # 复制 Turbo、Bun 配置和 lockfile
@@ -18,7 +18,7 @@ RUN bun add turbo -g && \
 # ========================================
 # 2️⃣ Builder 阶段：安装依赖并构建
 # ========================================
-FROM oven/bun:latest AS builder
+FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
 # 复制裁剪后的依赖配置
@@ -41,7 +41,7 @@ RUN bun run turbo run build --filter=dattk
 # ========================================
 # 3️⃣ Runner 阶段：生产环境运行
 # ========================================
-FROM oven/bun:latest AS runner
+FROM oven/bun:canary-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
