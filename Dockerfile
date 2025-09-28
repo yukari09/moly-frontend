@@ -35,7 +35,7 @@ COPY turbo.json .
 RUN bun install
 
 # 构建应用
-RUN bun run turbo run build --filter=dattk  --verbosity 10
+RUN bun run turbo run build --filter=dattk
 # RUN bun run turbo run build --filter=impressifyai
 
 # ========================================
