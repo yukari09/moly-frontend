@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: "dattk",
-      script: "./node_modules/.bin/next",
-      args: "start",
+      script: "bun",
+      args: "run start -- -p 3000",
       cwd: "apps/dattk",
       env: {
         NODE_ENV: "production",

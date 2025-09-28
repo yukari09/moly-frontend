@@ -19,8 +19,10 @@ FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
 # 复制裁剪后的项目文件和 lockfile
+COPY --from=prune /app/out/json/ .
+COPY --from=prune /app/out/bun.lock* ./
+RUN bun install --frozen-lockfile
 COPY --from=prune /app/out/full/ .
-COPY --from=prune /app/out/bun.lock .
 
 # 安装所有依赖（包括 devDependencies，因为构建需要它们）
 # 通过删除 lockfile 解决 turbo prune 和 bun 的兼容性问题
