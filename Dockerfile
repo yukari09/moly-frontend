@@ -7,7 +7,7 @@ WORKDIR /app
 # 复制 Turbo、Bun 配置和 lockfile
 COPY turbo.json package.json bun.lock ./
 COPY apps/dattk/package.json apps/dattk/package.json
-COPY apps/dattk/.evn.production apps/dattk/.evn.production
+COPY apps/dattk/.env.production apps/dattk/.env.production
 # COPY apps/impressifyai/package.json apps/impressifyai/package.json
 COPY packages/*/package.json packages/*/package.json
 
