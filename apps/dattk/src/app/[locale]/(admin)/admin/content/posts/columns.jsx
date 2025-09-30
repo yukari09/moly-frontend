@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal } from 'lucide-react'
+import { ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, SquareArrowOutUpRight } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -107,7 +107,12 @@ export const columns = [
       )
     },
     cell: ({ row }) => {
-      return <Link className='whitespace-normal font-medium' href={`/post/${row.original.id}/edit`}>{row.original.postTitle}</Link>
+      return (
+        <div className="flex items-center gap-1">
+          <Link className='whitespace-normal font-medium' href={`/post/${row.original.id}/edit`}>{row.original.postTitle}</Link>
+          <Link href={`/article/${row.original.postName}`} target="_blank"><SquareArrowOutUpRight className="size-4 text-foreground/50"/></Link>
+        </div>
+      )
     }
   },
   {

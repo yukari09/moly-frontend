@@ -143,6 +143,7 @@ const LIST_POSTS_OFFSET_QUERY = `
         postTitle
         postStatus
         insertedAt
+        postName
         postTags{
           name
           slug
