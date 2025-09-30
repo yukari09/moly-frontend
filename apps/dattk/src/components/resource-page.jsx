@@ -19,7 +19,8 @@ export function ResourcePage({
   resourceName, 
   newResourceLink,
   filterableFields = [{ value: 'name', label: 'Name' }, { value: 'slug', label: 'Slug' }],
-  defaultFilter = []
+  defaultFilter = [],
+  bulkActions = [{ value: 'deleteData', label: 'Delete' }]
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -113,14 +114,22 @@ export function ResourcePage({
     }));
   };
 
-  const handleDeleteSelected = async () => {
-    const idsToDelete = Object.keys(rowSelection);
-    if (idsToDelete.length === 0) return;
+  const handleApplyBulkAction = async () => {
+    const selectedIds = Object.keys(rowSelection);
+    if (selectedIds.length === 0 || !bulkAction) return;
+
+    const actionFunc = dataProvider[bulkAction];
+    if (typeof actionFunc !== 'function') {
+      toast.error(`Action "${bulkAction}" is not a valid function.`);
+      return;
+    }
 
     try {
-      await dataProvider.deleteData(idsToDelete);
-      toast.success(`${idsToDelete.length} ${resourceName}(s) deleted successfully.`);
+      await actionFunc(selectedIds);
+      const actionLabel = bulkActions.find(a => a.value === bulkAction)?.label || bulkAction;
+      toast.success(`${selectedIds.length} ${resourceName}(s) successfully processed with action: ${actionLabel}.`);
       setRowSelection({});
+      setBulkAction('');
       fetchData(); // Refetch data
     } catch (error) {
       toast.error(error.message);
@@ -163,17 +172,17 @@ export function ResourcePage({
               <SelectValue placeholder="Bulk Action" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="delete">Delete</SelectItem>
+              {bulkActions.map((action) => (
+                <SelectItem key={action.value} value={action.value}>
+                  {action.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <Button 
             disabled={Object.keys(rowSelection).length === 0 || !bulkAction}
             variant="outline"
-            onClick={() => {
-              if (bulkAction === 'delete') {
-                handleDeleteSelected();
-              }
-            }}
+            onClick={handleApplyBulkAction}
           >
             Apply
           </Button>
@@ -241,7 +250,7 @@ export function ResourcePage({
               if (newSorting.length === 0) {
                 setFilters(f => ({ ...f, sort: null, sortDesc: false }));
               } else {
-                setFilters(f => ({ ...f, sort: newSorting[0].id, sortDesc: newSorting[0].desc }));
+                setFilters(f => ({ ...f, sort: newSorting[0].id, desc: newSorting[0].desc }));
               }
             }}
             emptyStateMessage={`No ${resourceName} found. Try adjusting your filters.`}

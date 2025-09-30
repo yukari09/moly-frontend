@@ -9,6 +9,10 @@ const footerLinks = {
       {"Echo Ai": "https://echo.dattk.com/"},
       {"Traductor": "https://traductor-castella-catala.dattk.com"}
     ],
+    "Legal": [
+      {"Privacy Policy": "/privacy"},
+      {"Terms of Service": "/terms"}
+    ],
   }
 
 export default function Footer() {

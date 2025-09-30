@@ -113,7 +113,7 @@ export async function PUT(req) {
 
   try {
     const body = await req.json();
-    const { ids } = body;
+    const { ids, status } = body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return new Response(JSON.stringify({ error: 'IDs are required for deletion' }), { 
@@ -123,8 +123,8 @@ export async function PUT(req) {
     }
 
     // Use Promise.all to wait for all deletions to complete
-    const deletionPromises = ids.map(id => destroyPost(id, session));
-    const results = await Promise.all(deletionPromises);
+    const updatePromises = ids.map(id => updatePost(id, {postStatus: status}, session));
+    const results = await Promise.all(updatePromises);
 
     return NextResponse.json({ success: true, results });
 

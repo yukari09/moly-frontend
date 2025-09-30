@@ -33,7 +33,7 @@ export const postsDataProvider = {
     const response = await fetch('/api/admin/posts', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ids }),
+      body: JSON.stringify({ ids: ids, status: "draft" }),
     });
 
     if (!response.ok) {
@@ -47,7 +47,7 @@ export const postsDataProvider = {
     const response = await fetch('/api/admin/posts', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ids }),
+      body: JSON.stringify({ ids: ids, status: "publish" }),
     });
 
     if (!response.ok) {
