@@ -40,6 +40,9 @@ export async function POST(req) {
       postMimeType: file.type,
             postMeta: [
         { metaKey: '_attached_file', metaValue: s3Key },
+        { metaKey: '_width', metaValue: dimensions.width },
+        { metaKey: '_height', metaValue: dimensions.height },
+        { metaKey: '_file_size', metaValue: fileBuffer.length }
       ],
       postDate: new Date().toISOString(),
     };

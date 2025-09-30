@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { createPost } from '@/lib/graphql';
+import { imageSize } from 'image-size';
 import { buildImagorUrl } from '@/lib/imagor';
 import { uploadBuffer } from '@/lib/minio';
 import logger from '@/lib/logger';
@@ -28,6 +29,7 @@ export async function POST(req) {
     }
     const contentType = response.headers.get('content-type');
     const buffer = Buffer.from(await response.arrayBuffer());
+    const dimensions = imageSize(buffer);
     
     // Extract a file name from the URL path for better naming
     const originalName = path.basename(new URL(imageUrl).pathname);
@@ -44,6 +46,9 @@ export async function POST(req) {
       postMimeType: contentType,
       postMeta: [
         { metaKey: '_attached_file', metaValue: s3Key },
+        { metaKey: '_width', metaValue: dimensions.width },
+        { metaKey: '_height', metaValue: dimensions.height },
+        { metaKey: '_file_size', metaValue: buffer.length }
       ],
       postDate: new Date().toISOString(),
     };
