@@ -28,4 +28,32 @@ export const postsDataProvider = {
     }
     return await response.json();
   },
+
+  draftData: async (ids) => {
+    const response = await fetch('/api/admin/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Failed to draft posts.');
+    }
+    return await response.json();
+  },
+
+  publishData: async (ids) => {
+    const response = await fetch('/api/admin/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Failed to publish posts.');
+    }
+    return await response.json();
+  },
 };

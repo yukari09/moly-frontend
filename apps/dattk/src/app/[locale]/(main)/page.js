@@ -141,6 +141,7 @@ async function getAggregatedPostsFromES(excludedIds) {
 }
 
 export default async function Home() {
+  const t = await getTranslations('WebSite');
     const posts = await getPostsFromES(4);
 
     const featuredPost = posts.length > 0 ? posts[0] : null;
@@ -155,10 +156,10 @@ export default async function Home() {
             <div className="container-wrapper">
               <div className="mx-auto flex flex-col items-center gap-2 py-8 text-center md:py-16 lg:py-20 xl:gap-4">
                 <h1 className="text-primary leading-tighter max-w-2xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
-                  Discover the Beauty of World Cultures
+                  {t.rich("hero_headline")}
                 </h1>
                 <p className="text-foreground max-w-3xl text-base text-balance sm:text-lg">
-                  Travel beyond borders, embrace diversity, and share unforgettable experiences.
+                  {t.rich("hero_subtitle")}
                 </p>
               </div>
             </div>

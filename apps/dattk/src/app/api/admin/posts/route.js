@@ -101,3 +101,37 @@ export async function DELETE(req) {
     });
   }
 }
+
+export async function PUT(req) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  try {
+    const body = await req.json();
+    const { ids } = body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return new Response(JSON.stringify({ error: 'IDs are required for deletion' }), { 
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Use Promise.all to wait for all deletions to complete
+    const deletionPromises = ids.map(id => destroyPost(id, session));
+    const results = await Promise.all(deletionPromises);
+
+    return NextResponse.json({ success: true, results });
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}

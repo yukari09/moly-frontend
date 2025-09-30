@@ -14,6 +14,11 @@ export default function PostsPage() {
         filterableFields={[{ value: 'postTitle', label: 'Title' }, { value:'postStatus', label: 'Status' }]}
         resourceName="Post"
         newResourceLink="/post/new"
+        bulkActions={[
+          { value: 'deleteData', label: 'Delete' },
+          { value: 'publishData', label: 'Publish' },
+          { value: 'draftData', label: 'Draft' }
+        ]}
         defaultFilter={[
           {value: "all", label: "All", field: "postStatus"}, 
           {value: "publish", label: "Publish", field: "postStatus"},
