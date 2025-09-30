@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { listPostsOffset, destroyPost } from '@/lib/graphql'
+import { listPostsOffset, destroyPost, updatePost } from '@/lib/graphql'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
