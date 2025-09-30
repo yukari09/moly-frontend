@@ -1,40 +1,30 @@
-# ========================================
-# 1️⃣ Prune 阶段：裁剪依赖
-# ======================================== 
-FROM oven/bun:canary-alpine AS prune
-WORKDIR /app
-
-# 只复制 turbo 和依赖管理所需文件（提高缓存命中率）
-COPY package.json bun.lock turbo.json ./
-COPY apps/dattk/package.json ./apps/dattk/
-COPY apps/impressifyai/package.json ./apps/impressifyai/
-COPY packages ./packages
-
-# 全局安装 turbo 并裁剪
-RUN bun add turbo -g && \
-    turbo prune --scope=dattk --scope=impressifyai --docker
+# syntax=docker/dockerfile:1.4
 
 # ======================================== 
-# 2️⃣ Builder 阶段：安装依赖并构建
+# Builder 阶段：使用 BuildKit 缓存
 # ======================================== 
 FROM oven/bun:canary-alpine AS builder
 WORKDIR /app
 
-# 先复制依赖文件（利用 Docker 缓存）
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun.lock ./bun.lock
+# 复制依赖配置
+COPY package.json bun.lock turbo.json ./
+COPY apps/dattk/package.json ./apps/dattk/
+COPY apps/impressifyai/package.json ./apps/impressifyai/
+COPY packages/*/package.json ./packages/
 
-# 安装依赖（这层会被缓存，除非 package.json 或 lockfile 变化）
-RUN bun install --frozen-lockfile
+# 使用缓存挂载加速依赖安装（Bun 缓存目录）
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
 
-# 再复制源码
-COPY --from=prune /app/out/full/ .
+# 复制源码
+COPY . .
 
-# 一次性构建两个应用（更快）
-RUN bun run turbo run build --filter=dattk --filter=impressifyai
+# 使用缓存挂载加速 Turbo 构建
+RUN --mount=type=cache,target=.turbo \
+    bun run turbo run build --filter=dattk --filter=impressifyai
 
 # ======================================== 
-# 3️⃣ Runner 阶段：生产环境运行
+# Runner 阶段：生产环境
 # ======================================== 
 FROM oven/bun:canary-alpine AS runner
 WORKDIR /app
@@ -42,10 +32,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 EXPOSE 3000 3001
 
-# 安装 pm2
 RUN bun add -g pm2
 
-# 创建用户
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
@@ -59,7 +47,6 @@ COPY --from=builder /app/apps/impressifyai/public ./apps/impressifyai/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/impressifyai/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/impressifyai/.next/static ./apps/impressifyai/.next/static
 
-# 复制 pm2 配置
 COPY ecosystem.config.js .
 
 USER nextjs
