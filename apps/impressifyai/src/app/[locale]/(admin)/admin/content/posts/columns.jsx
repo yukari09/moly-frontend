@@ -107,21 +107,21 @@ export const columns = [
       )
     },
     cell: ({ row }) => {
-      return <Link className=' whitespace-normal' href={`/post/${row.original.id}/edit`}>{row.original.postTitle}</Link>
+      return <Link className='whitespace-normal font-medium' href={`/post/${row.original.id}/edit`}>{row.original.postTitle}</Link>
     }
   },
   {
     accessorKey: 'categories',
     header: 'Category',
     cell: ({ row }) => {
-      return <div className="font-medium">{row.original.categories?.map(c => c.name).join(", ") || ""}</div>
+      return <div className="whitespace-normal  max-w-[250px]">{row.original.categories?.map(c => c.name).join(", ") || ""}</div>
     }
   },
   {
     accessorKey: 'post_tags',
     header: 'Tags',
     cell: ({ row }) => {
-      return <div className="font-medium">{row.original.postTags?.map(tag => tag.name).join(", ") || ""}</div>
+      return <div className="whitespace-normal max-w-[250px]">{row.original.postTags?.map(tag => tag.name).join(", ") || ""}</div>
     }
   },
   {
