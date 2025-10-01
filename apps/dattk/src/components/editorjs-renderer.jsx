@@ -4,16 +4,22 @@ import Image from 'next/image';
 
 // Recursive component to render list items and their potential nested lists
 const ListItem = ({ item }) => {
-    return (
-        <li>
-            <span dangerouslySetInnerHTML={{ __html: item.content }} />
-            {item.items && item.items.length > 0 && (
-                <ul>
-                    {item.items.map((nestedItem, index) => <ListItem key={index} item={nestedItem} />)}
-                </ul>
-            )}
-        </li>
-    );
+    // Support for nested lists
+    if (typeof item === 'object' && item !== null) {
+        return (
+            <li>
+                <span dangerouslySetInnerHTML={{ __html: item.content }} />
+                {item.items && item.items.length > 0 && (
+                    <ul>
+                        {item.items.map((nestedItem, index) => <ListItem key={index} item={nestedItem} />)}
+                    </ul>
+                )}
+            </li>
+        );
+    }
+
+    // Support for simple lists
+    return <li dangerouslySetInnerHTML={{ __html: item }} />;
 };
 
 const BlockRenderer = ({ block }) => {
