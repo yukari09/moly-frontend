@@ -10,7 +10,7 @@ export async function GET() {
         'static.xml',
         'posts.xml',
         'categories.xml',
-        'tags.xml'
+        // 'tags.xml'
     ];
 
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
