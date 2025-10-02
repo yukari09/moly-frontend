@@ -59,7 +59,7 @@ export function PostItem({ post, layout = 'vertical' }) {
                         loading="lazy"
                         placeholder="empty"
                         className={cn(
-                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto",
+                            "object-cover group-hover:scale-105 transition-transform duration-300 w-full h-full",
                             isHorizontal ? "aspect-[1/1] xl:aspect-[5/3]" : "aspect-[2/1]"
                         )}
                     />
