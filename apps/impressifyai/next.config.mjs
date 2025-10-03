@@ -13,7 +13,7 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "image.impressifyai.com"
+                hostname: "image.moly.onl"
             },
         ],
         formats: ['image/webp'],
